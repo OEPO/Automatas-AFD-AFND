@@ -1,1 +1,2 @@
-# Automatas-AFD-AFND
+# Automatas
+# AFD-AFND
