@@ -1,20 +1,39 @@
-# TRABAJO UNIDAD II: AUTÓMATAS
+# Aplicación web Flask - Automatas AFD-AFND
 
-## Diseñar una aplicación web (página web) que, en base a los contenidos de la asignatura, permita:
+Esta es una aplicación web que muestra las tareas desarrolladas en el ramo de Grafos y lenguajes formales.
 
-## 1. Ingresar 2 autómatas a la aplicación (pueden ser AFD y/o AFND)
+## Creacion del entorno virtual en Windows 
+```bash
+python -m venv grafos-venv
+```
+```bash
+cd grafos-venv
+```
+```bash
+Scripts\activate
+```
+## Instalación de dependencias
 
-## 2. A partir de los autómatas ingresados, debe:
+En el proyecto se distribuye un fichero (requirements.txt) con todas las dependencias. Para instalarlas
+basta con ejectuar:
 
-+ a. Obtener el AFD equivalente (si es AFND) y simplificarlos.
+```bash
+pip install -r requirements.txt
+```
 
-+ b. Obtener el autómata a partir del complemento, unión, concatenación e intersección entre ambos autómatas.
+## Ejecución con el servidor
 
-+ c. Pasar los autómatas del punto anterior a AFD y simplificarlos.
+Y luego ejecute app.py
 
+```bash
+python app.py
+```
 ## Integrantes
-+ Edgar Matus
 + Jennifer Portiño
 + Diego Tapia
 + Oscar Peñaloza
++ Edgar Matus
 + Daniela Galleguillos
+
+[ Readme en construcción ] 
+
