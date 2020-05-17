@@ -2,12 +2,75 @@
 
 {% block content %}
 
-<div class="jumbotron">
-  <h1 class="display-4">Hello, world!</h1>
-  <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
-  <hr class="my-4">
-  <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
-  <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+<div class="content-section">
+  <form method="POST" action="">
+    {{ form.csrf_token }}
+      <fieldset class="form-group">
+          <legend class="border-bottom mb-4">Automata</legend>
+          <div class="form-group">
+              {{ form.estados.label(class="form-control-label") }}
+
+              {% if form.estados.errors %}
+                  {{ form.estados(class="form-control form-control-lg is-invalid") }}
+                  <div class="invalid-feedback">
+                      {% for error in form.estados.errors %}
+                          <span>{{ error }}</span>
+                      {% endfor %}
+                  </div>
+              {% else %}
+                  {{ form.estados(class="form-control form-control-lg") }}
+              {% endif %}
+          </div>
+
+          <div class="form-group">
+              {{ form.simbolos.label(class="form-control-label") }}
+              {% if form.simbolos.errors %}
+                  {{ form.simbolos(class="form-control form-control-lg is-invalid") }}
+                  <div class="invalid-feedback">
+                      {% for error in form.simbolos.errors %}
+                          <span>{{ error }}</span>
+                      {% endfor %}
+                  </div>
+              {% else %}
+                  {{ form.simbolos(class="form-control form-control-lg") }}
+              {% endif %}
+          </div>
+
+          <div class="form-group">
+            {{ form.transiciones.label(class="form-control-label") }}
+            {% if form.transiciones.errors %}
+                {{ form.transiciones(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.transiciones.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% else %}
+                {{ form.transiciones(class="form-control form-control-lg") }}
+            {% endif %}
+        </div>
+
+          <div class="form-group">
+            {{ form.final.label(class="form-control-label") }}
+            {% if form.final.errors %}
+                {{ form.final(class="form-control form-control-lg is-invalid") }}
+                
+                <div class="invalid-feedback">
+                    {% for error in form.final.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+
+            {% else %}
+                {{ form.final(class="form-control form-control-lg") }}
+            {% endif %}
+        </div>
+      </fieldset>
+      <div class="form-group">
+          {{ form.submit(class="btn btn-outline-info") }}
+      </div>
+  </form>
 </div>
+
 
 {% endblock%}
