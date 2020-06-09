@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div>
+	<form action = "#", method = "POST">
+		<p>
+			cantidad de estados automata 1 : <br>
+			{{ form.cantidad1(value = 3) }} AFND : {{ form.tipo1 }}  / simbolos : {{form.simbolos1(value = "a,b,c") }}
+		</p>
+		<p>
+			cantidad de estados automata 2 : <br>
+			{{ form.cantidad2(value = 4) }} AFND : {{ form.tipo2 }} / simbolos : {{ form.simbolos2(value = "0,1") }}
+		</p>
+		<p>
+			{{ message0 }}
+		</p>
+		<p>
+			{{ form.submit }}
+		</p>
+	</form>
+	
+	
+	<form action = "", method = "POST">	
+		<p>
+			transiciones automata 1 : <br>
+			{{ trans.origen1 }} {{ trans.input1 }} [{{ trans.destino1 }}]-> Es final {{ trans.final1 }}
+		</p>
+		<p>
+			transiciones automata 2 : <br>
+			{{ trans.origen2 }} {{ trans.input2 }} [{{ trans.destino2 }}]-> Es final {{ trans.final2 }}
+		</p>
+		<p>
+			{{ message1 }}
+		</p>
+		<p>
+			{{ message2 }}
+		</p>
+		<p>
+			{{ trans.submit }}
+		</p>
+	</form>
+</div>
+
+{% endblock %}
