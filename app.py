@@ -14,8 +14,7 @@ def index():
     message0 = '' 
     message1 = ''
     message2 = ''
-    tipo1 = ''
-    tipo2 = ''
+
 
     if request.method == 'GET':
 
@@ -23,76 +22,119 @@ def index():
 
     if request.method == 'POST' and form.cantidad1.data and form.cantidad2.data:
         
+        global states1
+        global input_symbols1
+        global final_states1
+        global transitions1
         global alfabeto1
         global est_finales1
-        global alfabeto2
-        global est_finales2
-        global transiciones1
-        global transiciones2
         global AFND1
-        global AFND2
+        global tipo1
+        states1 = {}
+        input_symbols1 = set(form.simbolos1.data.split(','))
+        final_states1 = {}
+        
+        tipo1 = ''
         alfabeto1 = []
         est_finales1 = []
+        alfabeto1.append('--')
+        alfabeto1 = alfabeto1 + form.simbolos1.data.split(',')
+        
+        global states2
+        global input_symbols2
+        global final_states2
+        global transitions2
+        global alfabeto2
+        global est_finales2
+        global AFND2
+        global tipo2
+        states2 = {}
+        input_symbols2 = set(form.simbolos2.data.split(','))
+        final_states2 = {}
+        
+        tipo2 = ''
         alfabeto2 = []
         est_finales2 = []
-        alfabeto1.append('--')
         alfabeto2.append('--')
-        alfabeto1 = alfabeto1 + form.simbolos1.data.split(',')
         alfabeto2 = alfabeto2 + form.simbolos2.data.split(',')
         
         if form.tipo1.data == False:
             
             tipo1 = 'AFD'
             AFND1 = False
-            transiciones1 = { '': { }}
-            [transiciones1.update({'q'+str(i) : { '': ''}}) for i in range(form.cantidad1.data)]
-        
+            transitions1 = { '': { }}
+            aux = []
+            
+            for i in range(form.cantidad1.data):
+                
+                transitions1.update({'q'+str(i) : { '': ''}})
+                aux.append('q'+str(i))
+            
         else:
             
             tipo1 = 'AFND'
             AFND1 = True
-            transiciones1 = { '': {'' : { }}}
-            [transiciones1.update({'q'+str(i) : { '': {} }}) for i in range(form.cantidad1.data)]
+            transitions1 = { '': {'' : { }}}
+            aux = []
+            
+            for i in range(form.cantidad1.data):
+                
+                transitions1.update({'q'+str(i) : { '': { } }}) 
+                aux.append('q'+str(i))
         
+        states1 = set(aux)
+
         if form.tipo2.data == False:
             
             tipo2 = 'AFD'
             AFND2 = False
-            transiciones2 = { '': { }}
-            [transiciones2.update({'q'+str(i) : { '': ''}}) for i in range(form.cantidad2.data)]
+            transitions2 = { '': { }}
+            aux = []
+            
+            for i in range(form.cantidad2.data):
+                
+                transitions2.update({'q'+str(i) : { '': ''}})
+                aux.append('q'+str(i))
         
         else:
             
             tipo2 = 'AFND'
             AFND2 = True
-            transiciones2 = { '': {'' : { }}}
-            [transiciones2.update({'q'+str(i) : { '': {} }}) for i in range(form.cantidad2.data)]
+            transitions2 = { '': {'' : { }}}
+            aux = []
+            
+            for i in range(form.cantidad2.data):
+                
+                transitions2.update({'q'+str(i) : { '': {} }}) 
+                aux.append('q'+str(i))
         
-        transiciones2.pop('', None)
-        transiciones1.pop('', None)
+        states2 = set(aux)
+
+        transitions2.pop('', None)
+        transitions1.pop('', None)
         
-        print(f'{bcolors.OKGREEN}cantidad de estados automata 1 ['+tipo1+'] : ',str(form.cantidad1.data)+bcolors.ENDC)
-        print(f'{bcolors.OKGREEN}cantidad de estados automata 2 ['+tipo2+'] : ',str(form.cantidad2.data)+bcolors.ENDC)
+        print(f'{bcolors.OKGREEN}Estados automata 1 ['+tipo1+'] : ',str(states1)+bcolors.ENDC)
+        print(f'{bcolors.OKGREEN}Estados automata 2 ['+tipo2+'] : ',str(states2)+bcolors.ENDC)
         
-        print(f'{bcolors.OKGREEN}alfabeto del automata 1 : ', str(alfabeto1)+bcolors.ENDC)
-        print(f'{bcolors.OKGREEN}alfabeto del automata 2 : ', str(alfabeto2)+bcolors.ENDC)
+        print(f'{bcolors.OKGREEN}Alfabeto del automata 1 : ', str(input_symbols1)+bcolors.ENDC)
+        print(f'{bcolors.OKGREEN}Alfabeto del automata 2 : ', str(input_symbols2)+bcolors.ENDC)
         
-        print(f'{bcolors.OKGREEN}transiciones automata 1 : ', str(transiciones1)+bcolors.ENDC)
-        print(f'{bcolors.OKGREEN}transiciones automata 2 : ', str(transiciones2)+bcolors.ENDC)
+        print(f'{bcolors.OKGREEN}Transiciones automata 1 : ', str(transitions1)+bcolors.ENDC)
+        print(f'{bcolors.OKGREEN}Transiciones automata 2 : ', str(transitions2)+bcolors.ENDC)
     
-        message0 = 'Automata1 '+tipo1+' y Automata2 '+tipo2+' creados.'
+        message0 = 'Automata1 '+tipo1+' de '+str(form.cantidad1.data)+' estados y Automata2 '+tipo2+' de '+str(form.cantidad2.data)+' estados listos para ser creados.'
     
     if request.method == 'POST':
         
-        trans.origen1.choices = [(i,'q'+str(i-1)) for i in range(len(transiciones1)+1)]   
+        trans.origen1.choices = [(i,'q'+str(i-1)) for i in range(len(transitions1)+1)]   
         trans.input1.choices = [(alfabeto1[i],alfabeto1[i]) for i in range(len(alfabeto1))]
-        trans.destino1.choices = [(i,'q'+str(i-1)) for i in range(len(transiciones1)+1)]
+        trans.destino1.choices = [(i,'q'+str(i-1)) for i in range(len(transitions1)+1)]
         trans.origen1.choices[0] = (0,'--')
         trans.destino1.choices[0] = (0,'--')
         
-        trans.origen2.choices = [(i,'q'+str(i-1)) for i in range(len(transiciones2)+1)]   
+        trans.origen2.choices = [(i,'q'+str(i-1)) for i in range(len(transitions2)+1)]   
         trans.input2.choices = [(alfabeto2[i],alfabeto2[i]) for i in range(len(alfabeto2))]
-        trans.destino2.choices = [(i,'q'+str(i-1)) for i in range(len(transiciones2)+1)]
+        trans.destino2.choices = [(i,'q'+str(i-1)) for i in range(len(transitions2)+1)]
         trans.origen2.choices[0] = (0,'--')
         trans.destino2.choices[0] = (0,'--')
     
@@ -102,47 +144,48 @@ def index():
                 
                 message1 = 'Transicion (q'+str(int(trans.origen1.data)-1)+', '+'"'+trans.input1.data+'"'+', q'+str(int(trans.destino1.data)-1)+') en automata 1 (AFD) agregada'
                 
-                aux = transiciones1.pop('q'+str(int(trans.origen1.data)-1))
+                aux = transitions1.pop('q'+str(int(trans.origen1.data)-1))
                 aux.pop('',-1)
                 aux.update({trans.input1.data : 'q'+str(int(trans.destino1.data)-1) })
-                transiciones1.update({'q'+str(int(trans.origen1.data)-1) : aux })
+                transitions1.update({'q'+str(int(trans.origen1.data)-1) : aux })
             
                 print(bcolors.WARNING+message1+bcolors.ENDC)
-                print(f'{bcolors.OKGREEN}transiciones automata 1 : ', str(transiciones1)+bcolors.ENDC)
+                print(f'{bcolors.OKGREEN}transiciones automata 1 : ', str(transitions1)+bcolors.ENDC)
 
             else:
 
                 message1 = 'Transicion (q'+str(int(trans.origen1.data)-1)+', '+'"'+trans.input1.data+'"'+', q'+str(int(trans.destino1.data)-1)+') en automata 1 (AFND) agregada'
 
-                aux = transiciones1.pop('q'+str(int(trans.origen1.data)-1))
+                aux = transitions1.pop('q'+str(int(trans.origen1.data)-1))
                 
                 if trans.input1.data not in aux.keys():
                     
                     aux0 = aux.pop('')
                     aux0.update({ trans.input1.data : { 'q'+str(int(trans.destino1.data)-1) } })
                     aux0.pop('',-1)
-                    transiciones1.update({'q'+str(int(trans.origen1.data)-1) : aux0 })
+                    transitions1.update({'q'+str(int(trans.origen1.data)-1) : aux0 })
                 
                 else:
                     
                     aux0 = aux.pop(trans.input1.data)
-                    aux1 = list(aux0) #
+                    aux1 = list(aux0)
                     aux1.append('q'+str(int(trans.destino1.data)-1))
                     aux1 = set(aux1)
                     aux2 = {'': ''}
                     aux2.update({ trans.input1.data : aux1 })
                     aux2.pop('',-1)
-                    transiciones1.update({'q'+str(int(trans.origen1.data)-1) : aux2 })
+                    transitions1.update({'q'+str(int(trans.origen1.data)-1) : aux2 })
                 
                 print(bcolors.WARNING+message1+bcolors.ENDC)
-                print(f'{bcolors.OKGREEN}transiciones automata 1 : ', str(transiciones1)+bcolors.ENDC)
+                print(f'{bcolors.OKGREEN}transiciones automata 1 : ', str(transitions1)+bcolors.ENDC)
 
             if trans.final1.data == True:
                 
                 qf = 'q'+str(int(trans.destino1.data)-1)
                 est_finales1.append(qf)
+                final_states1 = set(est_finales1)
 
-                print(f'{bcolors.WARNING}Estado final '+qf+' agregado en automata 1'+bcolors.ENDC)
+                print(f'{bcolors.WARNING}Estado final '+qf+' agregado en los estados finales '+str(final_states1)+' del automata 1'+bcolors.ENDC)
         
         else:
             
@@ -154,45 +197,46 @@ def index():
                 
                 message2 = 'Transicion (q'+str(int(trans.origen2.data)-1)+', '+'"'+trans.input2.data+'"'+', q'+str(int(trans.destino2.data)-1)+') en automata 2 (AFD) agregada'
 
-                aux = transiciones2.pop('q'+str(int(trans.origen2.data)-1))
+                aux = transitions2.pop('q'+str(int(trans.origen2.data)-1))
                 aux.pop('',-1)
                 aux.update({trans.input2.data : 'q'+str(int(trans.destino2.data)-1) })
-                transiciones2.update({'q'+str(int(trans.origen2.data)-1) : aux })
+                transitions2.update({'q'+str(int(trans.origen2.data)-1) : aux })
             
                 print(bcolors.WARNING+message2+bcolors.ENDC)
-                print(f'{bcolors.OKGREEN}transiciones automata 2 : ', str(transiciones1)+bcolors.ENDC)
+                print(f'{bcolors.OKGREEN}transiciones automata 2 : ', str(transitions1)+bcolors.ENDC)
 
             else:
                 
-                aux = transiciones2.pop('q'+str(int(trans.origen2.data)-1))
+                aux = transitions2.pop('q'+str(int(trans.origen2.data)-1))
                 
                 if trans.input2.data not in aux.keys():
                     
                     aux0 = aux.pop('')
                     aux0.update({ trans.input2.data : { 'q'+str(int(trans.destino2.data)-1) } })
                     aux0.pop('',-1)
-                    transiciones2.update({'q'+str(int(trans.origen2.data)-1) : aux0 })
+                    transitions2.update({'q'+str(int(trans.origen2.data)-1) : aux0 })
                 
                 else:
                     
                     aux0 = aux.pop(trans.input2.data)
-                    aux1 = list(aux0) #
+                    aux1 = list(aux0)
                     aux1.append('q'+str(int(trans.destino2.data)-1))
                     aux1 = set(aux1)
                     aux2 = {'': ''}
                     aux2.update({ trans.input2.data : aux1 })
                     aux2.pop('',-1)
-                    transiciones2.update({'q'+str(int(trans.origen2.data)-1) : aux2 })
+                    transitions2.update({'q'+str(int(trans.origen2.data)-1) : aux2 })
 
             print(bcolors.WARNING+message2+bcolors.ENDC)
-            print(f'{bcolors.OKGREEN}transiciones automata 2 : ', str(transiciones2)+bcolors.ENDC)
+            print(f'{bcolors.OKGREEN}transiciones automata 2 : ', str(transitions2)+bcolors.ENDC)
             
             if trans.final2.data == True:
                 
                 qf = 'q'+str(int(trans.destino2.data)-1)
-                est_finales1.append(qf)
+                est_finales2.append(qf)
+                final_states2 = set()
 
-                print(f'{bcolors.WARNING}Estado final '+qf+' agregado en automata 2'+bcolors.ENDC)
+                print(f'{bcolors.WARNING}Estado final '+qf+' agregado en los estados finales '+str(final_states2)+' del automata 2'+bcolors.ENDC)
         
         else:
             
