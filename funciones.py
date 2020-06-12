@@ -151,7 +151,7 @@ def imprimirAutomata(automata):
   print ('transitions : ', automata.transitions)
 
 
-def graph (automata, tipo): # automata , bool 
+def graph (automata, tipo, aux): # automata , bool 
   
   listaEstadosFinal=[]
   for a in automata.final_states:
@@ -182,10 +182,10 @@ def graph (automata, tipo): # automata , bool
           listaTransicion.append(( k,j, i))
 
 # q0:{'0':{q1,q0}}--> (q0,q1,0)(q0,q0,0)
-
-    nombre = nombre + '.sv'
-
+  aux = aux + 1
+  nombre = nombre + str(aux) + '.sv'
   draw(listaSimbolo, listaEstados, EstadoInicial, listaTransicion, listaEstadosFinal, nombre)
+  return aux
 
 def draw( simbolos, estados, inicio, trans, final, nombre):
 
@@ -204,5 +204,4 @@ def draw( simbolos, estados, inicio, trans, final, nombre):
         if t[2] not in simbolos:
             return 0
         g.edge(t[0], t[1], label=str(t[2]))
-    print ('entro :)  asdasdasd    draw kdnjoskvosdkfvsdof')
     g.render(nombre, view=True)
