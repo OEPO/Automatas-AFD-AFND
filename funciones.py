@@ -18,15 +18,19 @@ import graphviz as gv
 # https://github.com/caleb531/automata
 
 def AFNDtoAFD (automata, tipo):
-  
-  if tipo==True:
+  if tipo:
     dfa = DFA.from_nfa(automata) 
     minimal_dfa = dfa.minify()
-    tipo = False
-    print('Conversion OK')
-    return minimal_dfa, tipo
+    return minimal_dfa, False
   else: 
-    return print('El automata ya es AFD')  
+    return automata, tipo  
+
+def AFDtoAFND (automata, tipo):
+  if tipo==False:
+    nfa = NFA.from_dfa(automata) 
+    return nfa, True
+  else: 
+    return automata, tipo 
     
 
 def union (automata1, tipo1, automata2, tipo2):
@@ -55,9 +59,8 @@ def union (automata1, tipo1, automata2, tipo2):
   dic2 = automata2.transitions.copy()
   dic1.update(dic2)
 
-  if tipo1 == tipo2:
-    if tipo1==True:
-      #naf {}
+  if tipo1 == tipo2: # acepta 2 afnd 
+    if tipo1:
       dic1['inicio'] = {'': {automata1.initial_state, automata2.initial_state}}
 
       automata = NFA(
@@ -68,15 +71,23 @@ def union (automata1, tipo1, automata2, tipo2):
         final_states= set(final)
         )
       return automata, tipo1
-        
 # Formato dfa:  'q0': {'0': 'q0', '1': 'q1'},
-    else:
-      print('no se llama')
 # Formato nfa:  'q1': {'0': {'q1'}, '1': {'q2'}},
-  else:
-    print ('error en union') 
+    else:
+      automata2, tipo2 = AFDtoAFND (automata2, tipo2)
+      automata1, tipo1 = AFDtoAFND (automata1, tipo1)
+      return union (automata1, tipo1, automata2, tipo2)
 
-def complemento (automata, tipo):  # Solo AFD
+  else:
+    if tipo1:
+      automata2, tipo2 = AFDtoAFND (automata2, tipo2)
+      return union (automata1, tipo1, automata2, tipo2)
+      
+    if tipo2:
+      automata1, tipo1 = AFDtoAFND (automata1, tipo1)
+      return union (automata1, tipo1, automata2, tipo2)
+
+def complemento (automata, tipo):  
   #intercambiar estados finales por estados
   if tipo == False :
     
@@ -98,15 +109,13 @@ def complemento (automata, tipo):  # Solo AFD
       initial_state=automata.initial_state,
       final_states= finales
     )
-    print ('complemento ok ')
     return automata , tipo
   
   else: 
-    print('No es AFD')
-    ADF = NFA.from_dfa(automata)  #Crea un automata determinista a uno no determinista
+    ADF = NFA.from_dfa(automata)
     complemento(ADF,False)
 
-def concatenacion (automata1, tipo1, automata2 , tipo2 ):  # entran 2 NFA y no se saca la chucha :)
+def concatenacion(automata1, tipo1, automata2, tipo2):  # entran 2 NFA y no se saca la chucha :)
 
   simbolos = []
   #Saca Los simbolos de el automata 1 y 2
@@ -123,48 +132,62 @@ def concatenacion (automata1, tipo1, automata2 , tipo2 ):  # entran 2 NFA y no s
     estados.append(i)
   for a in automata2.states:
     estados.append(a)
-  esta=set(estados)
+  esta2=set(estados)
 
   dic1 = automata1.transitions.copy()
   dic2 = automata2.transitions.copy()
   dic1.update(dic2)
 
   if tipo1 == tipo2:
-    print ('aqui se supone que lo hace qweqwe ')
-    if tipo1 == True:
+    if tipo1:
       dic1[str(automata1.final_states)[2:4]][''] = {str(automata2.initial_state)}
 
       automata = NFA(
-        states=esta,
+        states=esta2,
         input_symbols= sim,
         transitions=dic1,
         initial_state=automata1.initial_state,
         final_states= set(automata2.final_states)
         )
-      print ('aqui se supone que lo hace ')
       return automata, tipo1
 
     else:
-      print('no se llama')
+      automata1, tipo1 = AFDtoAFND (automata1, tipo1)
+      automata2, tipo2 = AFDtoAFND (automata2, tipo2)
+      return concatenacion(automata1, tipo1, automata2, tipo2)
   else:
-    return print('error')
+    if tipo1:
+      automata2, tipo2 = AFDtoAFND (automata2, tipo2)
+      return concatenacion(automata1, tipo1, automata2, tipo2)
+      
+    if tipo2:
+      automata1, tipo1 = AFDtoAFND (automata1, tipo1)
+      return concatenacion(automata1, tipo1, automata2, tipo2)
     
 
 def interseccion (automata1, tipo1, automata2, tipo2): # ingresan 2 automatas afd y salen 1 afnd 
-  
   if tipo1 == tipo2:
     if tipo1 == False:
       automata1, tipo1 = complemento (automata1, tipo1)
-      automata1 = NFA.from_dfa(automata1)
-      tipo1 = True
+      automata1, tipo1 = AFDtoAFND (automata1, tipo1)
       automata2, tipo2 = complemento (automata2, tipo2)
-      automata2 = NFA.from_dfa(automata2)
-      tipo2 = True
+      automata2, tipo2 = AFDtoAFND (automata2, tipo2)
+      automata3, tipo3 = union (automata1, tipo1, automata2, tipo2)
+      automata3, tipo3 = AFNDtoAFD (automata3, tipo3)
+      automata3, tipo3 = complemento (automata3, tipo3)
+      return automata3, tipo3
     else:
-      print('no se llama la interseccion')
+      automata1, tipo1 = AFNDtoAFD (automata1, tipo1)
+      automata2, tipo2 = AFNDtoAFD (automata2, tipo2)
+      return interseccion (automata1, tipo1, automata2, tipo2)
   else:
-    return print('error: los automatas no son afd ')
-  return union (automata1, tipo1, automata2, tipo2)
+    if tipo1:
+      automata2, tipo2 = AFNDtoAFD (automata2, tipo2)
+      return interseccion (automata1, tipo1, automata2, tipo2)
+      
+    if tipo2:
+      automata1, tipo1 = AFNDtoAFD (automata1, tipo1)
+      return interseccion (automata1, tipo1, automata2, tipo2)
   
 
 #Funciones para graficar automata
@@ -177,7 +200,7 @@ def imprimirAutomata(automata):
   print ('transitions : ', automata.transitions)
 
 
-def graph (automata, tipo, aux): # automata , bool 
+def graph (automata, tipo, aux): # automata , bool , int 
   
   listaEstadosFinal=[]
   for a in automata.final_states:
@@ -200,7 +223,7 @@ def graph (automata, tipo, aux): # automata , bool
       for i in v:
         listaTransicion.append(( k, v[i], i))
 
-  else:#nfa
+  else:  #nfa
     nombre = 'nfa'
     for k,v in automata.transitions.items():
       for i in v:
