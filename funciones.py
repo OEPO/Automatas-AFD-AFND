@@ -139,7 +139,22 @@ def concatenacion (automata1, tipo1, automata2 , tipo2 ):  # entran 2 NFA y no s
     return print('error')
     
 
-#def interseccion (automata):
+def interseccion (automata1, tipo1, automata2, tipo2): # ingresan 2 automatas afd y salen 1 afnd 
+  
+  if tipo1 == tipo2:
+    if tipo1 == False:
+      automata1, tipo1 = complemento (automata1, tipo1)
+      automata1 = NFA.from_dfa(automata1)
+      tipo1 = True
+      automata2, tipo2 = complemento (automata2, tipo2)
+      automata2 = NFA.from_dfa(automata2)
+      tipo2 = True
+    else:
+      print('no se llama la interseccion')
+  else:
+    return print('error: los automatas no son afd ')
+  return union (automata1, tipo1, automata2, tipo2)
+  
 
 #Funciones para graficar automata
 def imprimirAutomata(automata):
