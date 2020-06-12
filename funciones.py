@@ -17,6 +17,18 @@ import graphviz as gv
 
 # https://github.com/caleb531/automata
 
+def AFNDtoAFD (automata, tipo):
+  
+  if tipo==True:
+    dfa = DFA.from_nfa(automata) 
+    minimal_dfa = dfa.minify()
+    tipo = False
+    print('Conversion OK')
+    return minimal_dfa, tipo
+  else: 
+    return print('El automata ya es AFD')  
+    
+
 def union (automata1, tipo1, automata2, tipo2):
   # Crear un estado inicial y juntar 2 automatas
   simbolos = []
@@ -55,7 +67,6 @@ def union (automata1, tipo1, automata2, tipo2):
         initial_state='inicio',
         final_states= set(final)
         )
-      imprimirAutomata(automata)
       return automata, tipo1
         
 # Formato dfa:  'q0': {'0': 'q0', '1': 'q1'},
