@@ -15,7 +15,6 @@ def index():
     message1 = ''
     message2 = ''
 
-
     if request.method == 'GET':
 
         print(f'{bcolors.WARNING}usuario detectado{bcolors.ENDC}')
@@ -36,9 +35,9 @@ def index():
         
         tipo1 = ''
         alfabeto1 = []
-        est_finales1 = []
         alfabeto1.append('--')
-        alfabeto1 = alfabeto1 + form.simbolos1.data.split(',')
+        est_finales1 = []
+        
         
         global states2
         global input_symbols2
@@ -54,32 +53,35 @@ def index():
         
         tipo2 = ''
         alfabeto2 = []
-        est_finales2 = []
         alfabeto2.append('--')
-        alfabeto2 = alfabeto2 + form.simbolos2.data.split(',')
+        est_finales2 = []
+        
         
         if form.tipo1.data == False:
             
             tipo1 = 'AFD'
             AFND1 = False
+            alfabeto1 = alfabeto1 + form.simbolos1.data.split(',')
             transitions1 = { '': { }}
             aux = []
             
             for i in range(form.cantidad1.data):
                 
-                transitions1.update({'q'+str(i) : { '': ''}})
+                transitions1.update({'q'+str(i) : { '': ''} } )
                 aux.append('q'+str(i))
             
         else:
             
             tipo1 = 'AFND'
             AFND1 = True
+            alfabeto1.append('')
+            alfabeto1 = alfabeto1 + form.simbolos1.data.split(',')
             transitions1 = { '': {'' : { }}}
             aux = []
             
             for i in range(form.cantidad1.data):
                 
-                transitions1.update({'q'+str(i) : { '': { } }}) 
+                transitions1.update({'q'+str(i) : { '': { } } } ) 
                 aux.append('q'+str(i))
         
         states1 = set(aux)
@@ -88,24 +90,27 @@ def index():
             
             tipo2 = 'AFD'
             AFND2 = False
+            alfabeto2 = alfabeto2 + form.simbolos2.data.split(',')
             transitions2 = { '': { }}
             aux = []
             
             for i in range(form.cantidad2.data):
                 
-                transitions2.update({'q'+str(i) : { '': ''}})
+                transitions2.update({'q'+str(i) : { '': ''} } )
                 aux.append('q'+str(i))
         
         else:
             
             tipo2 = 'AFND'
             AFND2 = True
+            alfabeto2.append('')
+            alfabeto2 = alfabeto2 + form.simbolos2.data.split(',')
             transitions2 = { '': {'' : { }}}
             aux = []
             
             for i in range(form.cantidad2.data):
                 
-                transitions2.update({'q'+str(i) : { '': {} }}) 
+                transitions2.update({'q'+str(i) : { '': { } } } ) 
                 aux.append('q'+str(i))
         
         states2 = set(aux)
@@ -138,46 +143,38 @@ def index():
         trans.origen2.choices[0] = (0,'--')
         trans.destino2.choices[0] = (0,'--')
     
-        if  trans.origen1.data != 'None' and trans.destino1.data != 'None' and trans.input1.data != 'None' and trans.input1.data != '--' and trans.origen1.data != '0' and trans.destino1.data != '0' and trans.input1.data != '0':
+        if  trans.origen1.data != 'None' and trans.destino1.data != 'None' and trans.input1.data != 'None' and trans.input1.data != '--' and trans.origen1.data != '0' and trans.destino1.data != '0':
             
             if AFND1 == False:
-                
-                message1 = 'Transicion (q'+str(int(trans.origen1.data)-1)+', '+'"'+trans.input1.data+'"'+', q'+str(int(trans.destino1.data)-1)+') en automata 1 (AFD) agregada'
                 
                 aux = transitions1.pop('q'+str(int(trans.origen1.data)-1))
                 aux.pop('',-1)
                 aux.update({trans.input1.data : 'q'+str(int(trans.destino1.data)-1) })
-                transitions1.update({'q'+str(int(trans.origen1.data)-1) : aux })
-            
-                print(bcolors.WARNING+message1+bcolors.ENDC)
-                print(f'{bcolors.OKGREEN}transiciones automata 1 : ', str(transitions1)+bcolors.ENDC)
+                transitions1.update( {'q'+str(int(trans.origen1.data)-1) : aux } )
 
             else:
-
-                message1 = 'Transicion (q'+str(int(trans.origen1.data)-1)+', '+'"'+trans.input1.data+'"'+', q'+str(int(trans.destino1.data)-1)+') en automata 1 (AFND) agregada'
 
                 aux = transitions1.pop('q'+str(int(trans.origen1.data)-1))
                 
                 if trans.input1.data not in aux.keys():
                     
-                    aux0 = aux.pop('')
-                    aux0.update({ trans.input1.data : { 'q'+str(int(trans.destino1.data)-1) } })
-                    aux0.pop('',-1)
-                    transitions1.update({'q'+str(int(trans.origen1.data)-1) : aux0 })
-                
+                    aux.update( { trans.input1.data : { 'q'+str(int(trans.destino1.data)-1) } } )
+                    aux.pop('',-1)
+                    transitions1.update( {'q'+str(int(trans.origen1.data)-1) : aux } )
+
                 else:
                     
                     aux0 = aux.pop(trans.input1.data)
                     aux1 = list(aux0)
                     aux1.append('q'+str(int(trans.destino1.data)-1))
                     aux1 = set(aux1)
-                    aux2 = {'': ''}
-                    aux2.update({ trans.input1.data : aux1 })
-                    aux2.pop('',-1)
-                    transitions1.update({'q'+str(int(trans.origen1.data)-1) : aux2 })
+                    aux.update( { trans.input1.data : aux1 } )
+                    transitions1.update( {'q'+str(int(trans.origen1.data)-1) : aux } )
+                    
+            message1 = 'Transicion (q'+str(int(trans.origen1.data)-1)+', '+'"'+trans.input1.data+'"'+', q'+str(int(trans.destino1.data)-1)+') en automata 1 ['+tipo1+'] agregada'
                 
-                print(bcolors.WARNING+message1+bcolors.ENDC)
-                print(f'{bcolors.OKGREEN}transiciones automata 1 : ', str(transitions1)+bcolors.ENDC)
+            print(bcolors.WARNING+message1+bcolors.ENDC)
+            print(f'{bcolors.OKGREEN}transiciones automata 1 : ', str(transitions1)+bcolors.ENDC)
 
             if trans.final1.data == True:
                 
@@ -191,30 +188,24 @@ def index():
             
             print(f'{bcolors.FAIL}la transición del automata 1 es invalida'+bcolors.ENDC)
         
-        if  trans.origen2.data != 'None' and trans.destino2.data != 'None' and trans.input2.data != 'None' and trans.input2.data != '--' and trans.origen2.data != '0' and trans.destino2.data != '0' and trans.input2.data != '0':
+        if  trans.origen2.data != 'None' and trans.destino2.data != 'None' and trans.input2.data != 'None' and trans.input2.data != '--' and trans.origen2.data != '0' and trans.destino2.data != '0':
             
             if AFND2 == False:
-                
-                message2 = 'Transicion (q'+str(int(trans.origen2.data)-1)+', '+'"'+trans.input2.data+'"'+', q'+str(int(trans.destino2.data)-1)+') en automata 2 (AFD) agregada'
 
                 aux = transitions2.pop('q'+str(int(trans.origen2.data)-1))
                 aux.pop('',-1)
                 aux.update({trans.input2.data : 'q'+str(int(trans.destino2.data)-1) })
-                transitions2.update({'q'+str(int(trans.origen2.data)-1) : aux })
+                transitions2.update( {'q'+str(int(trans.origen2.data)-1) : aux } )
             
-                print(bcolors.WARNING+message2+bcolors.ENDC)
-                print(f'{bcolors.OKGREEN}transiciones automata 2 : ', str(transitions1)+bcolors.ENDC)
-
             else:
                 
                 aux = transitions2.pop('q'+str(int(trans.origen2.data)-1))
                 
                 if trans.input2.data not in aux.keys():
                     
-                    aux0 = aux.pop('')
-                    aux0.update({ trans.input2.data : { 'q'+str(int(trans.destino2.data)-1) } })
-                    aux0.pop('',-1)
-                    transitions2.update({'q'+str(int(trans.origen2.data)-1) : aux0 })
+                    aux.update( { trans.input2.data : { 'q'+str(int(trans.destino2.data)-1) } } )
+                    aux.pop('',-1)
+                    transitions2.update( { 'q'+str(int(trans.origen2.data)-1) : aux } )
                 
                 else:
                     
@@ -222,10 +213,10 @@ def index():
                     aux1 = list(aux0)
                     aux1.append('q'+str(int(trans.destino2.data)-1))
                     aux1 = set(aux1)
-                    aux2 = {'': ''}
-                    aux2.update({ trans.input2.data : aux1 })
-                    aux2.pop('',-1)
-                    transitions2.update({'q'+str(int(trans.origen2.data)-1) : aux2 })
+                    aux.update( { trans.input2.data : aux1 } )
+                    transitions2.update( { 'q'+str(int(trans.origen2.data)-1) : aux } )
+
+            message2 = 'Transicion (q'+str(int(trans.origen2.data)-1)+', '+'"'+trans.input2.data+'"'+', q'+str(int(trans.destino2.data)-1)+') en automata 2 ['+tipo2+'] agregada'
 
             print(bcolors.WARNING+message2+bcolors.ENDC)
             print(f'{bcolors.OKGREEN}transiciones automata 2 : ', str(transitions2)+bcolors.ENDC)
