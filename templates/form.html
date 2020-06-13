@@ -6,11 +6,11 @@
 	<form action = "#", method = "POST">
 		<p>
 			cantidad de estados automata 1 : <br>
-			{{ form.cantidad1(value = 3) }} AFND : {{ form.tipo1 }}  / simbolos : {{form.simbolos1(value = "a,b,c") }}
+			{{ form.cantidad1 }} AFND : {{ form.tipo1 }}  / simbolos : {{form.simbolos1(value = "a,b,c") }}
 		</p>
 		<p>
 			cantidad de estados automata 2 : <br>
-			{{ form.cantidad2(value = 4) }} AFND : {{ form.tipo2 }} / simbolos : {{ form.simbolos2(value = "0,1") }}
+			{{ form.cantidad2 }} AFND : {{ form.tipo2 }} / simbolos : {{ form.simbolos2(value = "0,1") }}
 		</p>
 		<p>
 			{{ message0 }}
@@ -34,12 +34,22 @@
 			{{ message1 }}
 		</p>
 		<p>
+			{{ error1 }}
+		</p>
+		<p>
 			{{ message2 }}
+		</p>
+		<p>
+			{{ error2 }}
 		</p>
 		<p>
 			{{ trans.submit }}
 		</p>
 	</form>
+	
+	
+	<form action = "", method = "POST">
+		<input type = "submit" name = "crear" value = "Crear Automatas"/>
+	</form>
 </div>
-
 {% endblock %}

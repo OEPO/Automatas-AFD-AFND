@@ -17,6 +17,37 @@ import graphviz as gv
 
 # https://github.com/caleb531/automata
 
+def validar (sets, tipo):
+  
+  if tipo == False: 
+    
+    aux = list(sets[2].values())
+    
+    for i in range(len(sets[0])):
+      
+      if '' in aux[i].values():
+
+        return False
+    
+    automata = DFA(states = sets[0],
+                  input_symbols = sets[1],
+                  transitions = sets[2],
+                  initial_state = 'q0',
+                  final_states = sets[4]
+              )
+  else: 
+    automata = NFA(states = sets[0],
+                  input_symbols = sets[1],
+                  transitions = sets[2],
+                  initial_state = 'q0',
+                  final_states = sets[4]
+              )
+ 
+  if automata.validate() :
+    return True
+  else:
+    return False
+
 def AFNDtoAFD (automata, tipo):
   if tipo:
     dfa = DFA.from_nfa(automata) 
