@@ -276,18 +276,37 @@ def index():
                     error2 = 'No se puede agregar el estado a finales de automata 2 debido a que es el inicial q0.'
                     print(bcolors.FAIL+error2+bcolors.ENDC)
         
-        elif form.cantidad2.data == None and request.form.get('crear', False) == 'None':
+        elif form.cantidad2.data == None and request.form.get('crear', False) == 'None' :
             
             print(f'{bcolors.FAIL}La transición del automata 2 es invalida{bcolors.ENDC}')
     
-    if request.method == 'POST' and request.form.get('crear', True) == 'Crear Automatas':
+    if request.method == 'POST' and request.form.get('crear', True) == 'Crear Automatas' :
         
         initial_state1 = 'q0'
+        initial_state2 = 'q0'
+        
         automata1 = [states1, input_symbols1, transitions1, initial_state1, final_states1]
+        automata2 = [states2, input_symbols2, transitions1, initial_state2, final_states2]
+        
         validacion1 = validar(automata1,AFND1)
+        validacion2 = validar(automata2,AFND2)
 
-        print(bcolors.WARNING+str(validacion1)+bcolors.ENDC)
+        if validacion1 == True and validacion2 == True :
+        
+            print(bcolors.WARNING+str(validacion1)+bcolors.ENDC)
 
+            return render_template ('automatas.html')
+        
+        else:
+
+            if validacion1 == False :
+                
+                print(f'{bcolors.WARNING}El automata 1 ingresado no pudo ser creado debido a que no es valido.{bcolors.ENDC}')
+    
+            if validacion2 == False :
+
+                print(f'{bcolors.WARNING}El automata 2 ingresado no pudo ser creado debido a que no es valido.{bcolors.ENDC}')
+    
     return render_template('form.html', form = form, trans = trans, message0 = message0, message1 = message1, message2 = message2, error0 = error0, error1 = error1, error2 = error2)
 
 if __name__ == '__main__':

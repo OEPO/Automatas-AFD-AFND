@@ -34,15 +34,20 @@ def validar (sets, tipo):
                   transitions = sets[2],
                   initial_state = 'q0',
                   final_states = sets[4]
-              )
+    )
   else: 
-    automata = NFA(states = sets[0],
+    if sets[4]:
+
+      automata = NFA(states = sets[0],
                   input_symbols = sets[1],
                   transitions = sets[2],
                   initial_state = 'q0',
                   final_states = sets[4]
-              )
- 
+      )
+    
+    else:
+      return False
+  
   if automata.validate() :
     return True
   else:
