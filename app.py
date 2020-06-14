@@ -1,7 +1,11 @@
 from config import Config
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, send_file
 from forms import Form, Transiciones, bcolors
-from funciones import validar, graph, draw
+from funciones import validar
+
+from io import BytesIO
+
+import graphviz as gv
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -12,12 +16,12 @@ def index():
     trans = Transiciones()
     form = Form()
     
-    error0 = ''
-    error1 = ''
-    error2 = ''
-    message0 = '' 
-    message1 = ''
-    message2 = ''
+    global error0
+    global error1
+    global error2
+    global message0
+    global message1
+    global message2
     
     global switch
     
@@ -35,12 +39,19 @@ def index():
 
         switch = False
 
+        error0 = ''
+        error1 = ''
+        error2 = ''
+        message0 = '' 
+        message1 = ''
+        message2 = ''
+        
         print(f'{bcolors.WARNING}usuario detectado{bcolors.ENDC}')
 
     if request.method == 'POST' and form.cantidad1.data and form.cantidad2.data:
         
         switch = True
-
+        
         global alfabeto1
         global est_finales1
         global AFND1
@@ -285,8 +296,11 @@ def index():
         initial_state1 = 'q0'
         initial_state2 = 'q0'
         
+        global automata1
+        global automata2
+        
         automata1 = [states1, input_symbols1, transitions1, initial_state1, final_states1]
-        automata2 = [states2, input_symbols2, transitions1, initial_state2, final_states2]
+        automata2 = [states2, input_symbols2, transitions2, initial_state2, final_states2]
         
         validacion1 = validar(automata1,AFND1)
         validacion2 = validar(automata2,AFND2)
@@ -295,19 +309,32 @@ def index():
         
             print(bcolors.WARNING+str(validacion1)+bcolors.ENDC)
 
-            return render_template ('automatas.html')
+            return redirect('automatas')
         
         else:
 
             if validacion1 == False :
                 
-                print(f'{bcolors.WARNING}El automata 1 ingresado no pudo ser creado debido a que no es valido.{bcolors.ENDC}')
+                print(f'{bcolors.FAIL}El automata 1 ingresado no pudo ser creado debido a que no es valido.{bcolors.ENDC}')
     
             if validacion2 == False :
 
-                print(f'{bcolors.WARNING}El automata 2 ingresado no pudo ser creado debido a que no es valido.{bcolors.ENDC}')
+                print(f'{bcolors.FAIL}El automata 2 ingresado no pudo ser creado debido a que no es valido.{bcolors.ENDC}')
     
     return render_template('form.html', form = form, trans = trans, message0 = message0, message1 = message1, message2 = message2, error0 = error0, error1 = error1, error2 = error2)
+
+
+@app.route('/automatas')
+def automatas() :
+    
+    if switch == False:
+
+        print(f'{bcolors.FAIL}No se ha creado ningun automata aún.{bcolors.ENDC}')
+        
+        return redirect('/')
+
+    return render_template('automatas.html')
+
 
 if __name__ == '__main__':
     app.run(debug=True)

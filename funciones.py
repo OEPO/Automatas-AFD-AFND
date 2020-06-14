@@ -36,6 +36,7 @@ def validar (sets, tipo):
                   final_states = sets[4]
     )
   else: 
+    
     if sets[4]:
 
       automata = NFA(states = sets[0],
@@ -46,6 +47,7 @@ def validar (sets, tipo):
       )
     
     else:
+      
       return False
   
   if automata.validate() :
@@ -236,57 +238,45 @@ def imprimirAutomata(automata):
   print ('transitions : ', automata.transitions)
 
 
-def graph (automata, tipo, aux): # automata , bool , int 
-  
-  listaEstadosFinal=[]
-  for a in automata.final_states:
-    listaEstadosFinal.append(a)
+def draw(automata, tipo, nombre):
 
-  EstadoInicial = [automata.initial_state]
+    nombre = nombre+'.sv'
 
-  listaEstados=[]
-  for d in automata.states:
-    listaEstados.append(d)
+    trans = []
+    
+    if tipo == False: #dfa
+        
+        #nombre = 'dfa'
+    
+        for k,v in automata.transitions.items():
+      
+            for i in v:
+                trans.append(( k, v[i], i))
 
-  listaSimbolo=[]
-  for c in automata.input_symbols:
-    listaSimbolo.append(c)
-
-  listaTransicion = []
-  if tipo == False: #dfa
-    nombre = 'dfa'
-    for k,v in automata.transitions.items():
-      for i in v:
-        listaTransicion.append(( k, v[i], i))
-
-  else:  #nfa
-    nombre = 'nfa'
-    for k,v in automata.transitions.items():
-      for i in v:
-        for j in v[i]:
-          listaTransicion.append(( k,j, i))
-
-# q0:{'0':{q1,q0}}--> (q0,q1,0)(q0,q0,0)
-  aux = aux + 1
-  nombre = nombre + str(aux) + '.sv'
-  draw(listaSimbolo, listaEstados, EstadoInicial, listaTransicion, listaEstadosFinal, nombre)
-  return aux
-
-def draw( simbolos, estados, inicio, trans, final, nombre):
-
-    g = gv.Digraph(filename=nombre ,format='png')
+    else:  #nfa
+        
+        #nombre = 'nfa'
+        
+        for k,v in automata.transitions.items():
+            for i in v:
+                for j in v[i]:
+                    trans.append(( k,j, i))
+    
+    g = gv.Digraph(filename=nombre, format='png')
     g.graph_attr['rankdir'] = 'LR'
     g.node('ini', shape="point")
-    for e in estados:
-        if e in final:
+    
+    for e in list(automata.states):
+        if e in list(automata.final_states):
             g.node(e, shape="doublecircle")
         else:
             g.node(e)
-        if e in inicio:
+        if e in [automata.initial_state]:
             g.edge('ini',e)
 
     for t in trans:
-        if t[2] not in simbolos:
+        if t[2] not in list(automata.input_symbols):
             return 0
         g.edge(t[0], t[1], label=str(t[2]))
+    
     g.render(nombre, view=True)
