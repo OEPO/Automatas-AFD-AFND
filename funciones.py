@@ -25,7 +25,7 @@ def validar (sets, tipo):
     
     for i in range(len(sets[0])):
       
-      if '' in aux[i].values():
+      if '' in aux[i].values() or not sets[4] :
 
         return False
     

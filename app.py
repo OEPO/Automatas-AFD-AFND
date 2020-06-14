@@ -204,7 +204,7 @@ def index():
             message1 = 'Transicion (q'+str(int(trans.origen1.data)-1)+', '+'"'+trans.input1.data+'"'+', q'+str(int(trans.destino1.data)-1)+') en automata 1 ['+tipo1+'] agregada'
                 
             print(bcolors.WARNING+message1+bcolors.ENDC)
-            print(f'{bcolors.OKGREEN}transiciones automata 1 : ', str(transitions1)+bcolors.ENDC)
+            print(f'{bcolors.OKGREEN}Transiciones automata 1 : ', str(transitions1)+bcolors.ENDC)
 
             if trans.final1.data == True:
                 
@@ -225,7 +225,7 @@ def index():
         
         elif form.cantidad1.data == None and request.form.get('crear', False) == 'None':
             
-            print(f'{bcolors.FAIL}la transición del automata 1 es invalida'+bcolors.ENDC)
+            print(f'{bcolors.FAIL}La transición del automata 1 es invalida'+bcolors.ENDC)
         
         if  trans.origen2.data != 'None' and trans.destino2.data != 'None' and trans.input2.data != 'None' and trans.input2.data != '--' and trans.origen2.data != '0' and trans.destino2.data != '0':
             
@@ -258,7 +258,7 @@ def index():
             message2 = 'Transicion (q'+str(int(trans.origen2.data)-1)+', '+'"'+trans.input2.data+'"'+', q'+str(int(trans.destino2.data)-1)+') en automata 2 ['+tipo2+'] agregada'
 
             print(bcolors.WARNING+message2+bcolors.ENDC)
-            print(f'{bcolors.OKGREEN}transiciones automata 2 : ', str(transitions2)+bcolors.ENDC)
+            print(f'{bcolors.OKGREEN}Transiciones automata 2 : ', str(transitions2)+bcolors.ENDC)
             
             if trans.final2.data == True:
                 
@@ -278,7 +278,7 @@ def index():
         
         elif form.cantidad2.data == None and request.form.get('crear', False) == 'None':
             
-            print(f'{bcolors.FAIL}la transición del automata 2 es invalida{bcolors.ENDC}')
+            print(f'{bcolors.FAIL}La transición del automata 2 es invalida{bcolors.ENDC}')
     
     if request.method == 'POST' and request.form.get('crear', True) == 'Crear Automatas':
         
