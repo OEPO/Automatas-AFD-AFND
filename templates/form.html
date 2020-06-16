@@ -8,21 +8,21 @@
 	<div class="logmod__wrapper">
 
 					<div class="logmod__heading">
-					</span>A continuacion ingrese las <strong>transiciones</strong></span>
+					</span>Ingrese los estados para los <strong>Automatas</strong></span>
 								<div>
 											<!--Formulario para ingresar estados--> 
 
 											<form action = "#", method = "POST">
 												<p>
-													cantidad de estados automata 1 : <br>
+													<span class="logmod__heading-subtitle">Ingrese la cantidad de estados del <strong>Automata 1:</strong></span>
 													<!--Se ingresan los estados A1--> 
-													{{ form.cantidad1 }} AFND : {{ form.tipo1 }}  / simbolos : {{form.simbolos1(value = "a,b,c") }}
+													{{ form.cantidad1(placeholder="Ej: 3") }} AFND : {{ form.tipo1 }}  / simbolos : {{form.simbolos1(placeholder="Ej: a,b,c") }}
 													
 												</p>
 												<p>
-													cantidad de estados automata 2 : <br>
+													<span class="logmod__heading-subtitle">Ingrese la cantidad de estados del <strong>Automata 1:</strong></span>
 													<!--Se ingresan los estados A2--> 
-													{{ form.cantidad2 }} AFND : {{ form.tipo2 }} / simbolos : {{ form.simbolos2(value = "0,1") }}
+													{{ form.cantidad2(placeholder="Ej: 3") }} AFND : {{ form.tipo2 }} / simbolos : {{ form.simbolos2(placeholder="Ej: 0,1")}}
 													
 												</p>
 													{% if message0 %}
@@ -32,7 +32,7 @@
 													{% endif %}
 												<p>
 													<!-- Ingresar Estados submit--> 
-													{{ form.submit }} 
+													{{ form.submit(Class="btn grey") }} 
 												</p>
 											</form>
 
@@ -40,17 +40,19 @@
 								</div>
 
 											<!--Formulario para ingresar transiciones--> 
-
+										</span>A continuacion, ingrese las transiciones de los <strong>Automatas</strong></span>
 											<form action = "", method = "POST">	
 												<p>
-													Transiciones automata 1 <br>
-													{{ trans.origen1.label }} {{ trans.origen1 }} {{ trans.input1.label }} {{ trans.input1 }} {{ trans.destino1.label }} [{{ trans.destino1 }}]-> ¿Es final? {{ trans.final1 }}
+													<span class="logmod__heading-subtitle">Ingrese las transiciones del <strong>Automata 1:</strong></span>
 													<!--Se ingresan las transiciones A1--> 
+													{{ trans.origen1.label }} {{ trans.origen1(Class="btn grey") }} {{ trans.input1.label }} {{ trans.input1(Class="btn grey") }} {{ trans.destino1.label }} {{ trans.destino1(Class="btn grey") }} &rarr; ¿Es final? {{ trans.final1 }}
+													
 												</p>
 												<p>
-													Transiciones automata 2 <br>
-													{{ trans.origen2.label }} {{ trans.origen2 }} {{ trans.input2.label }} {{ trans.input2 }} {{ trans.destino2.label }} [{{ trans.destino2 }}]-> ¿Es final? {{ trans.final2 }}
+													<span class="logmod__heading-subtitle">Ingrese las transiciones del <strong>Automata 2:</strong></span>
 													<!--Se ingresan las transiciones A2--> 
+													{{ trans.origen2.label }} {{ trans.origen2(Class="btn grey") }} {{ trans.input2.label }} {{ trans.input2(Class="btn grey") }} {{ trans.destino2.label }} {{ trans.destino2(Class="btn grey") }} &rarr; ¿Es final? {{ trans.final2 }}
+													
 												</p>
 												{% if message1 %}
 												<p>
@@ -73,10 +75,13 @@
 												</p>
 												{% endif %}
 												<p>
-													{{ trans.submit }} <!--Ingresar transiciones submit--> 
+													<!--Ingresar transiciones submit--> 
+													{{ trans.submit(Class="btn grey") }} 
 												</p>
 											</form>
 											<form action = "", method = "POST">
+												<!--Submit para Crear automata--> 
+											</span>Luego de llenar las transiciones, puede crear a los <strong>Automatas</strong></span>
 												<input type = "submit" name = "crear" value = "Crear Automatas"/>
 											</form>
 									</a>
