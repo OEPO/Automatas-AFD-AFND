@@ -2,60 +2,90 @@
 
 {% block content %}
 
-<div>
-	<form action = "#", method = "POST">
-		<p>
-			cantidad de estados automata 1 : <br>
-			{{ form.cantidad1 }} AFND : {{ form.tipo1 }}  / simbolos : {{form.simbolos1(value = "a,b,c") }}
-		</p>
-		<p>
-			cantidad de estados automata 2 : <br>
-			{{ form.cantidad2 }} AFND : {{ form.tipo2 }} / simbolos : {{ form.simbolos2(value = "0,1") }}
-		</p>
-		{% if message0 %}
-		<p>
-			{{ message0 }}
-		</p>
-		{% endif %}
-		<p>
-			{{ form.submit }}
-		</p>
-	</form>
-	<form action = "", method = "POST">	
-		<p>
-			Transiciones automata 1 <br>
-			{{ trans.origen1.label }} {{ trans.origen1 }} {{ trans.input1.label }} {{ trans.input1 }} {{ trans.destino1.label }} [{{ trans.destino1 }}]-> ¿Es final? {{ trans.final1 }}
-		</p>
-		<p>
-			Transiciones automata 2 <br>
-			{{ trans.origen2.label }} {{ trans.origen2 }} {{ trans.input2.label }} {{ trans.input2 }} {{ trans.destino2.label }} [{{ trans.destino2 }}]-> ¿Es final? {{ trans.final2 }}
-		</p>
-		{% if message1 %}
-		<p>
-			{{ message1 }}
-		</p>
-		{% endif %}
-		{% if error1 %}
-		<p>
-			{{ error1 }}
-		</p>
-		{% endif %}
-		{% if message2 %}
-		<p>
-			{{ message2 }}
-		</p>
-		{% endif %}
-		{% if error2 %}
-		<p>
-			{{ error2 }}
-		</p>
-		{% endif %}
-		<p>
-			{{ trans.submit }}
-		</p>
-	</form>
-	<form action = "", method = "POST">
-		<input type = "submit" name = "crear" value = "Crear Automatas"/>
-	</form>
-</div>
+
+
+<div class="logmod">
+	<div class="logmod__wrapper">
+
+					<div class="logmod__heading">
+					</span>A continuacion ingrese las <strong>transiciones</strong></span>
+								<div>
+											<!--Formulario para ingresar estados--> 
+
+											<form action = "#", method = "POST">
+												<p>
+													cantidad de estados automata 1 : <br>
+													<!--Se ingresan los estados A1--> 
+													{{ form.cantidad1 }} AFND : {{ form.tipo1 }}  / simbolos : {{form.simbolos1(value = "a,b,c") }}
+													
+												</p>
+												<p>
+													cantidad de estados automata 2 : <br>
+													<!--Se ingresan los estados A2--> 
+													{{ form.cantidad2 }} AFND : {{ form.tipo2 }} / simbolos : {{ form.simbolos2(value = "0,1") }}
+													
+												</p>
+													{% if message0 %}
+												<p>
+													{{ message0 }}
+												</p>
+													{% endif %}
+												<p>
+													<!-- Ingresar Estados submit--> 
+													{{ form.submit }} 
+												</p>
+											</form>
+
+
+								</div>
+
+											<!--Formulario para ingresar transiciones--> 
+
+											<form action = "", method = "POST">	
+												<p>
+													Transiciones automata 1 <br>
+													{{ trans.origen1.label }} {{ trans.origen1 }} {{ trans.input1.label }} {{ trans.input1 }} {{ trans.destino1.label }} [{{ trans.destino1 }}]-> ¿Es final? {{ trans.final1 }}
+													<!--Se ingresan las transiciones A1--> 
+												</p>
+												<p>
+													Transiciones automata 2 <br>
+													{{ trans.origen2.label }} {{ trans.origen2 }} {{ trans.input2.label }} {{ trans.input2 }} {{ trans.destino2.label }} [{{ trans.destino2 }}]-> ¿Es final? {{ trans.final2 }}
+													<!--Se ingresan las transiciones A2--> 
+												</p>
+												{% if message1 %}
+												<p>
+													{{ message1 }}
+												</p>
+												{% endif %}
+												{% if error1 %}
+												<p>
+													{{ error1 }}
+												</p>
+												{% endif %}
+												{% if message2 %}
+												<p>
+													{{ message2 }}
+												</p>
+												{% endif %}
+												{% if error2 %}
+												<p>
+													{{ error2 }}
+												</p>
+												{% endif %}
+												<p>
+													{{ trans.submit }} <!--Ingresar transiciones submit--> 
+												</p>
+											</form>
+											<form action = "", method = "POST">
+												<input type = "submit" name = "crear" value = "Crear Automatas"/>
+											</form>
+									</a>
+
+
+								</div>
+
+	</div>					
+</div>					
+
+
 {% endblock %}
