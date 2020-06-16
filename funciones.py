@@ -1,6 +1,7 @@
 from automata.fa.dfa import DFA   #Libreria Automata
 from automata.fa.nfa import NFA
 import graphviz as gv
+from forms import bcolors
 
 # Todos los parámetros son listas o tuplas
 # donde:
@@ -17,7 +18,29 @@ import graphviz as gv
 
 # https://github.com/caleb531/automata
 
-def validar (sets, tipo):
+def crear(sets, tipo):
+  
+  if tipo == False :
+    
+    automata = DFA(states = sets[0],
+                  input_symbols = sets[1],
+                  transitions = sets[2],
+                  initial_state = sets[3],
+                  final_states = sets[4]
+    )
+  
+  else:
+    
+    automata = NFA(states = sets[0],
+                  input_symbols = sets[1],
+                  transitions = sets[2],
+                  initial_state = sets[3],
+                  final_states = sets[4]
+    )
+  
+  return automata
+
+def validar(sets, tipo):
   
   if tipo == False: 
     
@@ -32,7 +55,7 @@ def validar (sets, tipo):
     automata = DFA(states = sets[0],
                   input_symbols = sets[1],
                   transitions = sets[2],
-                  initial_state = 'q0',
+                  initial_state = sets[3],
                   final_states = sets[4]
     )
   else: 
@@ -42,7 +65,7 @@ def validar (sets, tipo):
       automata = NFA(states = sets[0],
                   input_symbols = sets[1],
                   transitions = sets[2],
-                  initial_state = 'q0',
+                  initial_state = sets[3],
                   final_states = sets[4]
       )
     
@@ -51,8 +74,10 @@ def validar (sets, tipo):
       return False
   
   if automata.validate() :
+    del automata
     return True
   else:
+    del automata
     return False
 
 def AFNDtoAFD (automata, tipo):
@@ -229,13 +254,14 @@ def interseccion (automata1, tipo1, automata2, tipo2): # ingresan 2 automatas af
   
 
 #Funciones para graficar automata
-def imprimirAutomata(automata):
-
-  print ('initial_state : ', automata.initial_state)
-  print ('final_states : ', automata.final_states)
-  print ('states : ', automata.states)  
-  print ('input_symbols : ', automata.input_symbols)
-  print ('transitions : ', automata.transitions)
+def imprimirAutomata(automata, tipo):
+  
+  print (f'{bcolors.OKGREEN}Tipo ['+tipo+']'+bcolors.ENDC)
+  print (f'{bcolors.OKGREEN}Estados iniciales : {bcolors.ENDC}', bcolors.WARNING+str(automata.initial_state)+bcolors.ENDC)
+  print (f'{bcolors.OKGREEN}Estados Finales : {bcolors.ENDC}', bcolors.WARNING+str(automata.final_states)+bcolors.ENDC)
+  print (f'{bcolors.OKGREEN}Estados : ', bcolors.WARNING+str(automata.states)+bcolors.ENDC)  
+  print (f'{bcolors.OKGREEN}Símbolos de Entrada : {bcolors.ENDC}', bcolors.WARNING+bcolors.WARNING+str(automata.input_symbols)+bcolors.ENDC)
+  print (f'{bcolors.OKGREEN}Transiciones : {bcolors.ENDC}', bcolors.WARNING+str(automata.transitions)+bcolors.ENDC+'\n')
 
 
 def draw(automata, tipo, nombre):

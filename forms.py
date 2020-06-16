@@ -19,18 +19,25 @@ class Form(FlaskForm):
     simbolos2 = StringField('alfabeto2', validators = [])
     tipo1 = BooleanField()
     tipo2 = BooleanField()
+    
     submit = SubmitField(' Ingresar ')
 
 class Transiciones(FlaskForm):
 
-    origen1 = SelectField('origen1', choices = [(0,'--')])
-    input1 = SelectField('input1', choices = [(0,'--')])
-    destino1 = SelectField('destino1', choices = [(0,'--')])
+    origen1 = SelectField('Estado', choices = [(0,'--')])
+    input1 = SelectField('Entrada', choices = [(0,'--')])
+    destino1 = SelectField('Estado', choices = [(0,'--')])
     final1 = BooleanField()
 
-    origen2 = SelectField('origen1', choices = [(0,'--')])
-    input2 = SelectField('input1', choices = [(0,'--')])
-    destino2 = SelectField('destino1', choices = [(0,'--')])
+    origen2 = SelectField('Estado', choices = [(0,'--')])
+    input2 = SelectField('Entrada', choices = [(0,'--')])
+    destino2 = SelectField('Estado', choices = [(0,'--')])
     final2 = BooleanField()
     
     submit = SubmitField('Agregar transicion(es)')
+
+class inputString(FlaskForm):
+
+    inputString = StringField('input', validators = [])
+    
+    submit = SubmitField('Ingresar cadena')

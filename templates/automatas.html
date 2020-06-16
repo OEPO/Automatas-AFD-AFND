@@ -3,12 +3,35 @@
 {% block content %}
 
 <h1> YA ESTAMOS EN EL TEMPLATE DE LOS AUTOMATAS </h1>
-<p>
-    ESTAMOS TRABAJANDO PARA UD.
-</p>
 
-<p>
-    ESTAMOS TRABAJANDO PARA UD.
-</p>
+<div class = "automata">
+    <!-- Referencia a la imagen -->
+    <form action = "", method = "POST">
+		<input type = "submit" name = "AFNDtoAFD1" value = "AFND -> AFD"/>
+	</form>
+    <p>
+        {{ input1.inputString }}
+        {{ input1.submit }}
+    </p>
+
+</div>
+<div>
+    <form action = "", method = "POST">
+        <input type = "submit" name = "complemento" value = "Complemento entre 1 y 2"/>
+        <input type = "submit" name = "union" value = "Unión entre 1 y 2"/>
+        <input type = "submit" name = "concatenacion" value = "Concatenación entre 1 y 2"/>
+        <input type = "submit" name = "interseccion" value = "Intersección entre 1 y 2"/>
+    </form>
+</div>
+<div class = "automata">
+    <!-- Referencia a la imagen -->
+    <form action = "", method = "POST">
+		<input type = "submit" name = "AFNDtoAFD2" value = "AFND -> AFD"/>
+	</form>
+    <p>
+        {{ input2.inputString }}
+        {{ input2.submit }}
+    </p> 
+</div>
 
 {% endblock %}
