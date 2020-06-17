@@ -38,6 +38,7 @@ class Transiciones(FlaskForm):
 
 class inputString(FlaskForm):
 
-    inputString = StringField('input', validators = [])
-    
-    submit = SubmitField('Ingresar cadena')
+    inputString1 = StringField('Cadena de Entrada', validators = [])
+    inputString2 = StringField('Cadena de Entrada', validators = [])
+
+    submit = SubmitField('Ingresar Cadena')
