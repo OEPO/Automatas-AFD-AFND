@@ -6,14 +6,20 @@
 
 <div class = "automata">
     <!-- Referencia a la imagen -->
-    <form action = "", method = "POST">
-		<input type = "submit" name = "AFNDtoAFD1" value = "AFND -> AFD"/>
-	</form>
     <p>
-        {{ input1.inputString }}
-        {{ input1.submit }}
+        <form action = "", method = "POST">
+            <input type = "submit" name = "AFNDtoAFD1" value = "AFND -> AFD"/>
+        </form>
     </p>
-
+    <form action = "", method = "POST">
+        {{ inputs.inputString1 }}
+        {{ inputs.submit }}
+    </form>
+    {% if output1 %}
+    <p class = "output">
+        {{ output1 }}
+    </p>
+    {% endif %}
 </div>
 <div>
     <form action = "", method = "POST">
@@ -25,13 +31,22 @@
 </div>
 <div class = "automata">
     <!-- Referencia a la imagen -->
-    <form action = "", method = "POST">
-		<input type = "submit" name = "AFNDtoAFD2" value = "AFND -> AFD"/>
-	</form>
     <p>
-        {{ input2.inputString }}
-        {{ input2.submit }}
-    </p> 
+        <form action = "", method = "POST">
+            <input type = "submit" name = "AFNDtoAFD2" value = "AFND -> AFD"/>
+        </form>
+    </p>
+    <form action = "", method = "POST">
+        <p>
+            {{ inputs.inputString2 }}
+            {{ inputs.submit }}
+        </p> 
+    </form>
+    {% if output2 %}
+    <p class = "output">
+        {{ output2 }}  
+    </p>
+    {% endif %}
 </div>
 
 {% endblock %}

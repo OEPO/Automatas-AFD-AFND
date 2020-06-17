@@ -27,12 +27,23 @@
 			{{ trans.origen1.label }} {{ trans.origen1 }} {{ trans.input1.label }} {{ trans.input1 }} {{ trans.destino1.label }} [{{ trans.destino1 }}]-> ¿Es final? {{ trans.final1 }}
 		</p>
 		<p>
+			{% if trans_message1 %} {{ trans_message1 }} {% endif %}
+		</p>
+		<p>
 			Transiciones automata 2 <br>
 			{{ trans.origen2.label }} {{ trans.origen2 }} {{ trans.input2.label }} {{ trans.input2 }} {{ trans.destino2.label }} [{{ trans.destino2 }}]-> ¿Es final? {{ trans.final2 }}
+		</p>
+		<p>
+			{% if trans_message2 %} {{ trans_message2 }} {% endif %}
 		</p>
 		{% if message1 %}
 		<p>
 			{{ message1 }}
+		</p>
+		{% endif %}
+		{% if error0 %}
+		<p>
+			{{ error0 }}
 		</p>
 		{% endif %}
 		{% if error1 %}
@@ -53,9 +64,11 @@
 		<p>
 			{{ trans.submit }}
 		</p>
-	</form>
+		</form>
 	<form action = "", method = "POST">
 		<input type = "submit" name = "crear" value = "Crear Automatas"/>
+		<input type = "submit" name = "reset1" value = "Borrar estados finales del Automata 1"/>
+		<input type = "submit" name = "reset2" value = "Borrar estados finales del Automata 2"/>
 	</form>
 </div>
 {% endblock %}

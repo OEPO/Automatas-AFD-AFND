@@ -80,6 +80,16 @@ def validar(sets, tipo):
     del automata
     return False
 
+def leer(automata, entrada):
+
+  if automata.accepts_input(entrada):
+
+    return 'El automata responde al string con el estado : '+automata.read_input(entrada)#+automata.read_input_stepwise(entrada)
+
+  else:
+
+    return 'La cadena ingresada no es válida para el automata.'
+
 def AFNDtoAFD (automata, tipo):
   if tipo:
     dfa = DFA.from_nfa(automata) 
@@ -257,11 +267,11 @@ def interseccion (automata1, tipo1, automata2, tipo2): # ingresan 2 automatas af
 def imprimirAutomata(automata, tipo):
   
   print (f'{bcolors.OKGREEN}Tipo ['+tipo+']'+bcolors.ENDC)
-  print (f'{bcolors.OKGREEN}Estados iniciales : {bcolors.ENDC}', bcolors.WARNING+str(automata.initial_state)+bcolors.ENDC)
-  print (f'{bcolors.OKGREEN}Estados Finales : {bcolors.ENDC}', bcolors.WARNING+str(automata.final_states)+bcolors.ENDC)
-  print (f'{bcolors.OKGREEN}Estados : ', bcolors.WARNING+str(automata.states)+bcolors.ENDC)  
-  print (f'{bcolors.OKGREEN}Símbolos de Entrada : {bcolors.ENDC}', bcolors.WARNING+bcolors.WARNING+str(automata.input_symbols)+bcolors.ENDC)
-  print (f'{bcolors.OKGREEN}Transiciones : {bcolors.ENDC}', bcolors.WARNING+str(automata.transitions)+bcolors.ENDC+'\n')
+  print (f'{bcolors.OKGREEN}Estados iniciales : ', str(automata.initial_state)+bcolors.ENDC)
+  print (f'{bcolors.OKGREEN}Estados Finales : ', str(automata.final_states)+bcolors.ENDC)
+  print (f'{bcolors.OKGREEN}Estados : ', str(automata.states)+bcolors.ENDC)  
+  print (f'{bcolors.OKGREEN}Símbolos de Entrada : ', str(automata.input_symbols)+bcolors.ENDC)
+  print (f'{bcolors.OKGREEN}Transiciones : ', str(automata.transitions)+bcolors.ENDC+'\n')
 
 
 def draw(automata, tipo, nombre):
