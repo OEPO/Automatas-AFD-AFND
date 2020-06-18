@@ -95,7 +95,6 @@ def AFDtoAFND (automata, tipo):
   else: 
     return automata, tipo 
     
-
 def union (automata1, tipo1, automata2, tipo2):
   # Crear un estado inicial y juntar 2 automatas
   simbolos = []
@@ -134,8 +133,8 @@ def union (automata1, tipo1, automata2, tipo2):
         final_states= set(final)
         )
       return automata, tipo1
-# Formato dfa:  'q0': {'0': 'q0', '1': 'q1'},
-# Formato nfa:  'q1': {'0': {'q1'}, '1': {'q2'}},
+  # Formato dfa:  'q0': {'0': 'q0', '1': 'q1'},
+  # Formato nfa:  'q1': {'0': {'q1'}, '1': {'q2'}},
     else:
       automata2, tipo2 = AFDtoAFND (automata2, tipo2)
       automata1, tipo1 = AFDtoAFND (automata1, tipo1)
@@ -227,7 +226,6 @@ def concatenacion(automata1, tipo1, automata2, tipo2):  # entran 2 NFA y no se s
       automata1, tipo1 = AFDtoAFND (automata1, tipo1)
       return concatenacion(automata1, tipo1, automata2, tipo2)
     
-
 def interseccion (automata1, tipo1, automata2, tipo2): # ingresan 2 automatas afd y salen 1 afnd 
   if tipo1 == tipo2:
     if tipo1 == False:
@@ -252,10 +250,8 @@ def interseccion (automata1, tipo1, automata2, tipo2): # ingresan 2 automatas af
       automata1, tipo1 = AFNDtoAFD (automata1, tipo1)
       return interseccion (automata1, tipo1, automata2, tipo2)
   
-
 #Funciones para graficar automata
 def imprimirAutomata(automata, tipo):
-  
   print (f'{bcolors.OKGREEN}Tipo ['+tipo+']'+bcolors.ENDC)
   print (f'{bcolors.OKGREEN}Estados iniciales : {bcolors.ENDC}', bcolors.WARNING+str(automata.initial_state)+bcolors.ENDC)
   print (f'{bcolors.OKGREEN}Estados Finales : {bcolors.ENDC}', bcolors.WARNING+str(automata.final_states)+bcolors.ENDC)
@@ -263,32 +259,20 @@ def imprimirAutomata(automata, tipo):
   print (f'{bcolors.OKGREEN}Símbolos de Entrada : {bcolors.ENDC}', bcolors.WARNING+bcolors.WARNING+str(automata.input_symbols)+bcolors.ENDC)
   print (f'{bcolors.OKGREEN}Transiciones : {bcolors.ENDC}', bcolors.WARNING+str(automata.transitions)+bcolors.ENDC+'\n')
 
-
-def draw(automata, tipo, nombre):
-
-    nombre = nombre+'.sv'
-
-    trans = []
-    
+def draw(automata, tipo):
+    listaTransicion = []
     if tipo == False: #dfa
-        
-        #nombre = 'dfa'
-    
         for k,v in automata.transitions.items():
-      
             for i in v:
-                trans.append(( k, v[i], i))
+                listaTransicion.append(( k, v[i], i))
 
     else:  #nfa
-        
-        #nombre = 'nfa'
-        
         for k,v in automata.transitions.items():
             for i in v:
                 for j in v[i]:
-                    trans.append(( k,j, i))
+                    listaTransicion.append(( k,j, i))
     
-    g = gv.Digraph(filename=nombre, format='png')
+    g = gv.Digraph()
     g.graph_attr['rankdir'] = 'LR'
     g.node('ini', shape="point")
     
@@ -300,9 +284,9 @@ def draw(automata, tipo, nombre):
         if e in [automata.initial_state]:
             g.edge('ini',e)
 
-    for t in trans:
+    for t in listaTransicion:
         if t[2] not in list(automata.input_symbols):
             return 0
         g.edge(t[0], t[1], label=str(t[2]))
     
-    g.render(nombre, view=True)
+    return g.pipe(format='png')

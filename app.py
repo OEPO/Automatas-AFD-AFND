@@ -1,10 +1,11 @@
 from config import Config
 from flask import Flask, render_template, request, redirect, url_for, send_file
 from forms import Form, Transiciones, inputString, bcolors
-from funciones import validar, crear, AFNDtoAFD, AFDtoAFND, union, complemento, concatenacion, interseccion, imprimirAutomata
-
-from io import BytesIO
-
+from funciones import validar, crear, AFNDtoAFD, AFDtoAFND, union, complemento, concatenacion, interseccion, imprimirAutomata, draw
+#Para graficar
+import base64
+import os
+os.environ["PATH"] += os.pathsep + './grafos-venv/release/bin/'
 import graphviz as gv
 
 app = Flask(__name__)
@@ -12,7 +13,6 @@ app.config.from_object(Config)
 
 @app.route('/', methods = ['GET', 'POST'])
 def index():
-    
     trans = Transiciones()
     form = Form()
     
@@ -332,14 +332,10 @@ def index():
     
     return render_template('form.html', form = form, trans = trans, message0 = message0, message1 = message1, message2 = message2, error0 = error0, error1 = error1, error2 = error2)
 
-
 @app.route('/automatas', methods = ['GET', 'POST']) 
 def automatas() :
-    
     if request.method == 'GET' and switch == False:
-
         print(f'{bcolors.FAIL}No se ha creado ningún automata aún.{bcolors.ENDC}')
-        
         return redirect('/')
 
     input1 = inputString()
@@ -347,8 +343,12 @@ def automatas() :
     
     imprimirAutomata(automata1,tipo1)
     imprimirAutomata(automata2,tipo2)
+    au1 = draw(automata1,tipo1)
+    au2 = draw(automata2,tipo2)
+    au1 = base64.b64encode(au1).decode('utf-8')
+    au2 = base64.b64encode(au2).decode('utf-8')
     
-    return render_template('automatas.html', input1 = input1, input2 = input2)
+    return render_template('automatas.html', input1 = input1, input2 = input2, au1=au1, au2=au2)
 
 
 if __name__ == '__main__':
