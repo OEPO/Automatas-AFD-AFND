@@ -1,6 +1,6 @@
 from automata.fa.dfa import DFA   #Libreria Automata
 from automata.fa.nfa import NFA
-import graphviz as gv
+from graphviz import Digraph
 from forms import bcolors
 
 # Todos los parámetros son listas o tuplas
@@ -94,9 +94,9 @@ def AFNDtoAFD (automata, tipo):
   if tipo:
     dfa = DFA.from_nfa(automata) 
     minimal_dfa = dfa.minify()
-    return minimal_dfa, False
+    return minimal_dfa
   else: 
-    return automata, tipo  
+    return automata
 
 def AFDtoAFND (automata, tipo):
   if tipo==False:
@@ -298,7 +298,7 @@ def draw(automata, tipo, nombre):
                 for j in v[i]:
                     trans.append(( k,j, i))
     
-    g = gv.Digraph(filename=nombre, format='png')
+    g = Digraph(filename=nombre, format='png')
     g.graph_attr['rankdir'] = 'LR'
     g.node('ini', shape="point")
     
