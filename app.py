@@ -11,11 +11,11 @@ import graphviz as gv
 app = Flask(__name__)
 app.config.from_object(Config)
 
-@app.route('/home')
+@app.route('/')
 def home():
     return render_template('home.html')
 
-@app.route('/', methods = ['GET', 'POST'])
+@app.route('/formulario', methods = ['GET', 'POST'])
 def index():
     trans = Transiciones()
     form = Form()
