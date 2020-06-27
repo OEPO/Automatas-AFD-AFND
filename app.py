@@ -11,6 +11,10 @@ import graphviz as gv
 app = Flask(__name__)
 app.config.from_object(Config)
 
+@app.route('/home')
+def home():
+    return render_template('home.html')
+
 @app.route('/', methods = ['GET', 'POST'])
 def index():
     trans = Transiciones()
