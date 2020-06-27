@@ -252,7 +252,6 @@ def automatas() :
     au2 = draw(automata2,tipo2)
     au1 = base64.b64encode(au1).decode('utf-8')
     au2 = base64.b64encode(au2).decode('utf-8')
-
     if request.method == 'POST' :
         if inputs.inputString1.data :
             output1 = leer(automata1, inputs.inputString1.data)
@@ -310,7 +309,6 @@ def automatas() :
             #return render_template('interseccion.html')
     
     return render_template('automatas.html', inputs = inputs, output1 = output1, output2 = output2, message = message, au1=au1, au2=au2)
-
 
 if __name__ == '__main__':
     app.run(debug=True)
