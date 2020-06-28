@@ -27,10 +27,10 @@ html {
     display: block;
     background: #FFF;
     position: relative;
-    max-width: 800px;
+    max-width: 900px;
     border-radius: 4px;
     box-shadow: 0 0 18px rgba(0, 0, 0, 0.2);
-    margin: 120px auto;
+    margin: 85px auto;
   }
   .logmod__close {
     display: block;
@@ -616,9 +616,9 @@ html {
     background-image: url(https://basehold.it/i/24);
   }
   .jumbotron {
-    padding: 2rem 1rem;
-    margin-bottom: 2rem;
-    background-color: #b8dce5;
+    padding: 1rem 1rem;
+    margin-bottom: 1rem;
+    background-color: #FFF; /*#b8dce5*/
     border-radius: 0.3rem;
   }
   @media (min-width: 576px) {
@@ -627,9 +627,19 @@ html {
     }
   }
   .footer {
-    height: 4rem 2rem;
+    height: 26%;
     background-color: #143344;
   }
   .text{
     color: #b8dce5;
+    font-size: x-small;
+    margin-left: 10px;
+  }
+  .textTittle{
+    color: #b8dce5;
+    text-align: center;
+    font-size: small;
+  }
+  .icongit{
+    text-align: center;
   }
