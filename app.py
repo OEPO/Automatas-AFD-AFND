@@ -1,11 +1,7 @@
 from config import Config
 from flask import Flask, render_template, request, redirect, url_for, send_file
 from forms import Form, Transiciones, inputString, bcolors
-from funciones import validar, crear, leer, AFNDtoAFD, AFDtoAFND, union, complemento, concatenacion, interseccion, imprimirAutomata
-
-from io import BytesIO
-
-import graphviz as gv
+from funciones import validar, crear, leer, draw, AFNDtoAFD, AFDtoAFND, union, complemento, concatenacion, interseccion, imprimirAutomata
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -25,7 +21,19 @@ def index():
     global trans_message1
     global trans_message2
     
+    trans_message1 = ''
+    trans_message2 = ''
+    message0 = '' 
+    message1 = ''
+    message2 = ''
+    error0 = ''
+    error1 = ''
+    error2 = ''
+
     global switch
+    
+    global automata1
+    global automata2
     
     global states1
     global input_symbols1
@@ -37,22 +45,11 @@ def index():
     global final_states2
     global transitions2
 
-    error0 = ''
-    error1 = ''
-    error2 = ''
-    
     if request.method == 'GET':
 
         switch = False
 
-        trans_message1 = ''
-        trans_message2 = ''
-        
-        message0 = '' 
-        message1 = ''
-        message2 = ''
-        
-        print('\n'+f'{bcolors.OKGREEN}Usuario detectado.{bcolors.ENDC}'+'\n')
+        print(f'{bcolors.OKGREEN}Usuario detectado.{bcolors.ENDC}'+'\n')
 
     if request.method == 'POST' and form.cantidad1.data and form.cantidad2.data :
         
@@ -165,7 +162,7 @@ def index():
         transitions2.pop('', -1)
         transitions1.pop('', -1)
         
-        print('\n'+f'{bcolors.OKGREEN}Estados automata 1 ['+tipo1+'] : ',str(states1)+bcolors.ENDC)
+        print(f'{bcolors.OKGREEN}Estados automata 1 ['+tipo1+'] : ',str(states1)+bcolors.ENDC)
         print(f'{bcolors.OKGREEN}Estados automata 2 ['+tipo2+'] : ',str(states2)+bcolors.ENDC)
         
         print(f'{bcolors.OKGREEN}Alfabeto del automata 1 : ', str(input_symbols1)+bcolors.ENDC)
@@ -220,31 +217,22 @@ def index():
                     aux.update( { trans.input1.data : aux1 } )
                     transitions1.update( {'q'+str(int(trans.origen1.data)-1) : aux } )
                     
-            trans_message1 = str(transitions1)
             message1 = 'Transición (q'+str(int(trans.origen1.data)-1)+', '+'"'+trans.input1.data+'"'+', q'+str(int(trans.destino1.data)-1)+') en automata 1 ['+tipo1+'] agregada.'
             
             if trans.final1.data == True :
                 
                 qf = 'q'+str(int(trans.destino1.data)-1)
-                
-                if qf != 'q0':
-                
-                    qf = 'q'+str(int(trans.destino1.data)-1)
-                    est_finales1.append(qf)
-                    final_states1 = set(est_finales1)
+                est_finales1.append(qf)
+                final_states1 = set(est_finales1)
+                est_finales1.clear()
 
-                    message1 = message1+' Estado final '+qf+' agregado en los estados finales '+str(final_states1)+'.'
-        
-                else:
-
-                    error1 = 'No se puede agregar el estado a finales de automata 1 debido a que es el inicial q0.'
-                    message1 = message1+' '+error1
-                    
-                    print(bcolors.FAIL+error1+bcolors.ENDC)
+                message1 = message1+' Estado final '+qf+' agregado en los estados finales.'
             
-            print('\n'+bcolors.OKGREEN+message1+'\n'+trans_message1+bcolors.ENDC+'\n')
+            trans_message1 = str(transitions1)+', finales '+str(final_states1)
+            
+            print(bcolors.OKGREEN+message1+bcolors.ENDC+' '+bcolors.FAIL+error1+bcolors.ENDC+'\n'+bcolors.OKGREEN+trans_message1+bcolors.ENDC+'\n')
        
-        elif form.cantidad1.data == None and request.form.get('crear', False) == 'None' :
+        elif trans.origen1.data == '--' and trans.destino1.data == '--' and trans.input1.data == '--' :
             
             print(f'{bcolors.FAIL}La transición del automata 1 es invalida'+bcolors.ENDC)
         
@@ -276,41 +264,39 @@ def index():
                     aux.update( { trans.input2.data : aux1 } )
                     transitions2.update( { 'q'+str(int(trans.origen2.data)-1) : aux } )
 
-            trans_message2 = str(transitions2)
             message2 = 'Transicion (q'+str(int(trans.origen2.data)-1)+', '+'"'+trans.input2.data+'"'+', q'+str(int(trans.destino2.data)-1)+') en automata 2 ['+tipo2+'] agregada.'
 
             if trans.final2.data == True :
                 
                 qf = 'q'+str(int(trans.destino2.data)-1)
-                
-                if  qf != 'q0':
-                    
-                    est_finales2.append(qf)
-                    final_states2 = set(est_finales2)
+                est_finales2.append(qf)
+                final_states2 = set(est_finales2)
+                est_finales2.clear()
 
-                    message2 = message2+' Estado final '+qf+' agregado en los estados finales : '+str(final_states2)+'.'
+                message2 = message2+' Estado final '+qf+' agregado en los estados finales.'
                     
-                    print(f'{bcolors.WARNING}Estado final '+qf+' agregado en los estados finales : '+str(final_states2)+' del automata 2.'+bcolors.ENDC)
-        
-                else:
-
-                    error2 = 'No se puede agregar el estado a finales de automata 2 debido a que es el inicial q0.'
-                    message2 = message2+' '+error2
-                    
-                    print(bcolors.FAIL+error2+bcolors.ENDC)
+            trans_message2 = str(transitions2)+', finales '+str(final_states2)
             
-            print('\n'+bcolors.OKGREEN+message2+'\n'+trans_message2+bcolors.ENDC+'\n')
+            print(bcolors.OKGREEN+message2+bcolors.ENDC+' '+bcolors.FAIL+error2+bcolors.ENDC+'\n'+bcolors.OKGREEN+trans_message2+bcolors.ENDC+'\n')
         
         elif form.cantidad2.data == None and request.form.get('crear', False) == 'None' :
             
             print(f'{bcolors.FAIL}La transición del automata 2 es invalida{bcolors.ENDC}')
     
+    
+    if request.method == 'POST' and request.form.get('reset1', True) == 'Reiniciar estados finales del Automata 1' :
+        
+        final_states1.clear()
+        final_states1 = {}
+
+    if request.method == 'POST' and request.form.get('reset2', True) == 'Reiniciar estados finales del Automata 2' :
+
+        final_states2.clear()
+        final_states2 = {}
+
     if request.method == 'POST' and request.form.get('crear', True) == 'Crear Automatas' :
         
         if switch == True :
-            
-            global automata1
-            global automata2
             
             sets1 = [states1, input_symbols1, transitions1, 'q0', final_states1]
             sets2 = [states2, input_symbols2, transitions2, 'q0', final_states2]
@@ -322,6 +308,9 @@ def index():
 
                 automata1 = crear(sets1, AFND1)
                 automata2 = crear(sets2, AFND2)
+
+                #draw(automata1, AFND1, 'automata1')
+                #draw(automata2, AFND2, 'automata2')
                 
                 print(f'{bcolors.OKGREEN}Los automatas han sido creados satisfactoriamente.{bcolors.ENDC}')
                 
@@ -331,20 +320,20 @@ def index():
 
                 if validacion1 == False :
                 
-                    error1 = 'El automata 1 ingresado no pudo ser creado debido a que no es valido.'
+                    error1 = 'El automata 1 ingresado no pudo ser creado debido a que no es válido.'
                     
-                    print(bcolors.FAIL+error1+bcolors.ENDC)
+                    print(bcolors.FAIL+error1+bcolors.ENDC+'\n')
     
                 if validacion2 == False :
 
-                    error2 = 'El automata 2 ingresado no pudo ser creado debido a que no es valido.'
+                    error2 = 'El automata 2 ingresado no pudo ser creado debido a que no es válido.'
                     
-                    print(bcolors.FAIL+error2+bcolors.ENDC)
+                    print(bcolors.FAIL+error2+bcolors.ENDC+'\n')
     
         else:
             
-            error0 = 'No se ha creado ningun automata aún.'
-            print('\n'+bcolors.FAIL+error0+bcolors.ENDC+'\n')
+            error0 = 'No se ha determinado la cantidad de estados o alfabetos de los automatas.'
+            print(bcolors.FAIL+error0+bcolors.ENDC+'\n')
     
     return render_template('form.html', form = form, trans = trans, trans_message1 = trans_message1, trans_message2 = trans_message2, message0 = message0, message1 = message1, message2 = message2, error0 = error0, error1 = error1, error2 = error2)
 
@@ -354,17 +343,18 @@ def automatas() :
     
     if request.method == 'GET' and switch == False:
 
-        print(f'{bcolors.FAIL}\nNo se ha creado ningún automata aún.\n{bcolors.ENDC}')
+        print(f'{bcolors.FAIL}No se ha creado ningún automata aún.\n{bcolors.ENDC}')
         
         return redirect('/')
 
+    message = ''
     output1 = ''
     output2 = ''
 
     inputs = inputString()
 
-    imprimirAutomata(automata1,tipo1)
-    imprimirAutomata(automata2,tipo2)
+    imprimirAutomata(automata1, tipo1)
+    imprimirAutomata(automata2, tipo2)
     
     if request.method == 'POST' :
         
@@ -376,8 +366,76 @@ def automatas() :
             
             output2 = leer(automata2, inputs.inputString2.data)
     
+        if request.form.get('AFNDtoAFD1', True) == 'AFND -> AFD mín':
+
+            if AFND1 == True : 
+
+                automata1_min = AFNDtoAFD(automata1, AFND1)
+                imprimirAutomata(automata1_min, tipo2)
+                message = 'El automata 1 ha sido convertido a su equivalente AFD y minimizado'
+                print(bcolors.OKGREEN+message+bcolors.ENDC+'\n')
+            
+            else:
+
+                automata1_min = AFNDtoAFD(automata1, AFND1)
+                message = 'El automata 1 ya es AFD, pero ha sido minimizado'
+                print(bcolors.FAIL+message+bcolors.ENDC+'\n')
+
+        if request.form.get('AFNDtoAFD2', True) == 'AFND -> AFD mín':
+
+            if AFND2 == True :
+
+                automata2_min = AFNDtoAFD(automata2, AFND2)
+                imprimirAutomata(automata2_min, tipo2)
+                message = 'El automata 2 ha sido convertido a su equivalente AFD y minimizado'
+                
+                print(bcolors.OKGREEN+message+bcolors.ENDC+'\n')
+            
+            else:
+
+                automata2_min = AFNDtoAFD(automata2, AFND2)
+                message = 'El automata 2 ya es AFD, pero ha sido minimizado'
+                
+                print(bcolors.FAIL+message+bcolors.ENDC+'\n')
+        
+        if request.form.get('complemento1', True) == 'Complemento de automata 1' :
+
+            automata_complemento1 = complemento(automata1, AFND1)
+            imprimirAutomata(automata_complemento1, tipo1)
+            
+            return render_template('complemento1.html')
+
+        if request.form.get('complemento2', True) == 'Complemento de automata 2' :
+
+            automata_complemento2 = complemento(automata2, AFND2)
+            imprimirAutomata(automata_complemento2, tipo2)
+            
+            #return render_template('complemento1.html')
+
+        if request.form.get('union', True) == 'Unión entre 1 y 2' :
+
+            automata_union = union(automata1, AFND1, automata2, AFND2)
+            imprimirAutomata(automata_union, tipo2)
+
+            #return render_template('union.html')
+
+        if request.form.get('concatenacion', True) == 'Concatenación entre 1 y 2' :
+
+            automata_concatenacion = concatenacion(automata1, AFND1, automata2, AFND2)
+
+            imprimirAutomata(automata_concatenacion, tipo2)
+
+            #return render_template('concatenacion.html')
+
+        if request.form.get('interseccion', True) == 'Intersección entre 1 y 2' :
+
+            automata_interseccion = interseccion(automata1, AFND1, automata2, AFND2)
+
+            imprimirAutomata(automata_interseccion, tipo2)
+
+            #return render_template('interseccion.html')
     
-    return render_template('automatas.html', inputs = inputs, output1 = output1, output2 = output2)
+    return render_template('automatas.html', inputs = inputs, output1 = output1, output2 = output2, message = message)
 
 
 if __name__ == '__main__':

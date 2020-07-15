@@ -13,10 +13,10 @@ class bcolors:
 
 class Form(FlaskForm):
     
-    cantidad1 = IntegerField('cantidad1', validators = [] )
-    cantidad2 = IntegerField('cantidad1', validators = [] )
-    simbolos1 = StringField('alfabeto1', validators = [])
-    simbolos2 = StringField('alfabeto2', validators = [])
+    cantidad1 = IntegerField('Cantidad de estados automata 1', validators = [])
+    cantidad2 = IntegerField('Cantidad de estados automata 2', validators = [])
+    simbolos1 = StringField('Alfabeto de automata 1', validators = [])
+    simbolos2 = StringField('Alfabeto de automata 2', validators = [])
     tipo1 = BooleanField()
     tipo2 = BooleanField()
     
@@ -34,6 +34,8 @@ class Transiciones(FlaskForm):
     destino2 = SelectField('Estado', choices = [(0,'--')])
     final2 = BooleanField()
     
+    reset1 = SubmitField('Reiniciar estados finales del Automata 1')
+    reset2 = SubmitField('Reiniciar estados finales del Automata 2')
     submit = SubmitField('Agregar transicion(es)')
 
 class inputString(FlaskForm):
