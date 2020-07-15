@@ -1,21 +1,44 @@
 <!DOCTYPE html>
-<html>
-<head>
-	<title>Automatas</title>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Automatas</title>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+		<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css'>
+		<link rel="stylesheet" href="/static/style.css">
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+		<script src="/static/script.js"></script>
+	</head>
+	<body>
+			<div class="logmod">
+				<!-- Image and text -->
+				<nav class="navbar navbar-light bg-light">
+					<a class="navbar-brand" href="/home">
+					<img src="/static/icon.png" width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy">
+					Automatas
+					</a>
+				</nav>
+				{% block content %}
+				{% endblock %}
+				<div class="footer">
+					<footer>
+						<h1 class="textTittle">Grafos y Lenguajes Formales</h1>
+						<p class="text">Integrantes: </p>
+						<ul class="text">
+							<li>Oscar Peñaloza</li>
+							<li>Edgar Matus</li>
+							<li>Daniela Galleguillos</li>
+							<li>Jennifer Portiño</li>
+							<li>Diego Tapia</li>
+						</ul>
+						
+						<!--<a title="Repositorio en GitHub" href="https://github.com/OEPO/Automatas-AFD-AFND"><img class="icongit" src="/static/icongit.png" width="50" height="50" alt="Repositorio GitHub" /></a>-->
+						
+					</footer>
+				</div>
+			</div>
+	</body>
 	
-	<meta charset="UTF-8">
-	<!-- Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-
-</head>
-<body>
-
-
-
-    {% block content %} {% endblock %}
 	
-	
-
-
-</body>
 </html>

@@ -1,53 +1,90 @@
 {% extends "layout.html" %}
-
 {% block content %}
-
-<div>
-	<form action = "#", method = "POST">
-		<p>
-			cantidad de estados automata 1 : <br>
-			{{ form.cantidad1 }} AFND : {{ form.tipo1 }}  / simbolos : {{form.simbolos1(value = "a,b,c") }}
-		</p>
-		<p>
-			cantidad de estados automata 2 : <br>
-			{{ form.cantidad2 }} AFND : {{ form.tipo2 }} / simbolos : {{ form.simbolos2(value = "0,1") }}
-		</p>
-		<p>
-			{% if message0 %} {{ message0 }} {% endif %} {% if error0 %} {{ error0 }} {% endif %}
-		</p>
-		<p>
-			{{ form.submit }}
-		</p>
-	</form>
-	<form action = "", method = "POST">	
-		<p>
-			Transiciones automata 1 <br>
-			{{ trans.origen1.label }} {{ trans.origen1 }} {{ trans.input1.label }} {{ trans.input1 }} {{ trans.destino1.label }} [{{ trans.destino1 }}]-> ¿Es final? {{ trans.final1 }} {{ trans.reset1 }}
-		</p>
-		<p class = "transiciones">
-			{% if trans_message1 %} {{ trans_message1 }} {% endif %} 
-		</p>
-		<p>
-			{% if message1 %} {{ message1 }} {% endif %} 
-			{% if error1 %} {{ error1 }} {% endif %}
-		</p>
-		<p>
-			Transiciones automata 2 <br>
-			{{ trans.origen2.label }} {{ trans.origen2 }} {{ trans.input2.label }} {{ trans.input2 }} {{ trans.destino2.label }} [{{ trans.destino2 }}]-> ¿Es final? {{ trans.final2 }}  {{ trans.reset2 }}
-		</p>
-		<p class = "transiciones">
-			{% if trans_message2 %} {{ trans_message2 }} {% endif %}
-		</p>
-		<p>
-			{% if message2 %} {{ message2 }} {% endif %} 
-			{% if error2 %} {{ error2 }} {% endif %}
-		</p>
-		<p>
-			{{ trans.submit }}
-		</p>
-	</form>
-	<form action = "", method = "POST">
-		<input type = "submit" name = "crear" value = "Crear Automatas"/>
-	</form>
-</div>
+	<div class="logmod__wrapper">
+		<ul class="logmod__tabs">
+			<li data-tabtar="lgm-1"><a href="#">Crear AFD | AFND</a></li>
+			<li data-tabtar="lgm-2"><a href="#">Transiciones</a></li>
+		</ul>
+		<div class="logmod__tab-wrapper">
+			<div class="logmod__tab lgm-1">
+				<div class="logmod__heading">
+					</span>Ingrese los estados para los <strong>Automatas</strong></span>
+					<div>
+						<!--Formulario para ingresar estados-->
+						<form action = "#", method = "POST">
+							<p>
+								<span class="logmod__heading-subtitle">Ingrese la cantidad de estados del <strong>Automata 1:</strong></span>
+								{{ form.cantidad1(placeholder="Ej: 3") }} AFND : {{ form.tipo1 }}  / simbolos : {{form.simbolos1(placeholder="Ej: a,b,c") }}
+							</p>
+							<p>
+								<span class="logmod__heading-subtitle">Ingrese la cantidad de estados del <strong>Automata 1:</strong></span>
+								{{ form.cantidad2(placeholder="Ej: 3") }} AFND : {{ form.tipo2 }} / simbolos : {{ form.simbolos2(placeholder="Ej: 0,1") }}
+							</p>
+							<p>
+								{% if message0 %} {{ message0 }} {% endif %} {% if error0 %} {{ error0 }} {% endif %}
+							</p>
+							<p>
+								{{ form.submit(Class="btn blue-grey") }}
+							</p>
+						</form>
+					</div>
+				</div>
+			</div>
+		<div class="logmod__tab lgm-2">
+				<div class="logmod__heading">
+					<!--Formulario para ingresar transiciones-->
+					</span>A continuacion, ingrese las transiciones de los <strong>Automatas</strong></span>
+					<form action = "", method = "POST">	
+						<p>
+							<span class="logmod__heading-subtitle">Ingrese las transiciones del <strong>Automata 1:</strong></span>
+							{{ trans.origen1.label }} {{ trans.origen1(Class="btn blue-grey") }} {{ trans.input1.label }} {{ trans.input1(Class="btn blue-grey") }} {{ trans.destino1.label }} [{{ trans.destino1(Class="btn blue-grey") }}] &rarr; ¿Es final? {{ trans.final1 }} 
+							<p></p>
+							{{ trans.reset1(Class="btn grey")}}
+						</p>
+						<p class = "transiciones">
+							{% if trans_message1 %} {{ trans_message1 }} {% endif %} 
+						</p>
+						<p>
+							{% if message1 %} {{ message1 }} {% endif %} 
+							{% if error1 %} {{ error1 }} {% endif %}
+						</p>
+						<p>
+							<span class="logmod__heading-subtitle">Ingrese las transiciones del <strong>Automata 2:</strong></span>
+							{{ trans.origen2.label }} {{ trans.origen2(Class="btn blue-grey") }} {{ trans.input2.label }} {{ trans.input2(Class="btn blue-grey") }} {{ trans.destino2.label }} [{{ trans.destino2(Class="btn blue-grey") }}] &rarr; ¿Es final? {{ trans.final2 }}  
+							<p></p>
+							{{trans.reset2(Class="btn grey")}}
+						</p>
+						<p class = "transiciones">
+							{% if trans_message2 %} {{ trans_message2 }} {% endif %}
+						</p>
+						<p>
+							{% if message2 %} {{ message2 }} {% endif %} 
+							{% if error2 %} {{ error2 }} {% endif %}
+						</p>
+						<p>
+							
+						</p>
+					
+					</form>
+					
+				
+					<hr width="100%" />
+					<form action = "", method = "POST">
+						{{ trans.submit(Class="btn blue-grey") }}
+						&emsp;
+						&emsp;
+						&emsp;
+						&emsp;
+						&emsp;
+						&emsp;
+						&emsp;
+						&emsp;
+						<input class="btn light-blue" type = "submit" name = "crear" value = "Crear Automatas"/>
+					</form>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>				
+						
 {% endblock %}

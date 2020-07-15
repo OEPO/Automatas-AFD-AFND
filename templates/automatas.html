@@ -1,10 +1,16 @@
 {% extends "layout.html" %}
-
 {% block content %}
 
 <h1> YA ESTAMOS EN EL TEMPLATE DE LOS AUTOMATAS </h1>
 
 <div class = "automata">
+    <html>
+    <body>
+        <h1>Graph</h1>
+        <img src="data:image/png;base64,{{au1|safe}}" alt="El automata generado" height="200" />
+        <img src="data:image/png;base64,{{au2|safe}}" alt="El automata generado" height="200" />
+    </body>
+    </html>
     <!-- Referencia a la imagen -->
     <p>
         <form action = "", method = "POST">
