@@ -17,7 +17,7 @@
 								{{ form.cantidad1(placeholder="Ej: 3") }} AFND : {{ form.tipo1 }}  / simbolos : {{form.simbolos1(placeholder="Ej: a,b,c") }}
 							</p>
 							<p>
-								<span class="logmod__heading-subtitle">Ingrese la cantidad de estados del <strong>Automata 1:</strong></span>
+								<span class="logmod__heading-subtitle">Ingrese la cantidad de estados del <strong>Automata 2:</strong></span>
 								{{ form.cantidad2(placeholder="Ej: 3") }} AFND : {{ form.tipo2 }} / simbolos : {{ form.simbolos2(placeholder="Ej: 0,1") }}
 							</p>
 							<p>
@@ -62,25 +62,12 @@
 							{% if error2 %} {{ error2 }} {% endif %}
 						</p>
 						<p>
-							
+							{{ trans.submit(Class="btn blue-grey") }}
 						</p>
-					
-					</form>
-					
-				
-					<hr width="100%" />
-					<form action = "", method = "POST">
-						{{ trans.submit(Class="btn blue-grey") }}
-						&emsp;
-						&emsp;
-						&emsp;
-						&emsp;
-						&emsp;
-						&emsp;
-						&emsp;
-						&emsp;
 						<input class="btn light-blue" type = "submit" name = "crear" value = "Crear Automatas"/>
+					
 					</form>
+					
 					</a>
 				</div>
 			</div>
