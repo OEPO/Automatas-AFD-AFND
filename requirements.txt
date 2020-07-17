@@ -8,4 +8,4 @@ graphviz
 Flask
 Flask-WTF
 WTForms
-automata-lib 
+automata-lib

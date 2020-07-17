@@ -225,6 +225,7 @@ def interseccion (automata1, tipo1, automata2, tipo2): # ingresan 2 automatas af
   
 #Funciones para graficar automata
 def imprimirAutomata(automata, tipo):
+  
   print (f'{bcolors.OKGREEN}Tipo ['+tipo+']'+bcolors.ENDC)
   print (f'{bcolors.OKGREEN}Estados iniciales : ', str(automata.initial_state)+bcolors.ENDC)
   print (f'{bcolors.OKGREEN}Estados Finales : ', str(automata.final_states)+bcolors.ENDC)
