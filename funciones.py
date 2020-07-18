@@ -68,7 +68,7 @@ def validar(sets, tipo):
 
 def leer(automata, entrada):
   if automata.accepts_input(entrada):
-    return 'El automata responde al string con el estado : '+automata.read_input(entrada)#+automata.read_input_stepwise(entrada)
+    return 'El automata responde al string finalizando en el estado : '+automata.read_input(entrada)#+automata.read_input_stepwise(entrada)
   else:
     return 'La cadena ingresada no es válida para el automata.'
 

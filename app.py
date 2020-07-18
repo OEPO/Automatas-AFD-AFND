@@ -1,7 +1,6 @@
 from config import Config
 from flask import Flask, render_template, request, redirect, url_for, send_file
 from forms import Form, Transiciones, inputString, bcolors
-from funciones import validar, crear, leer, draw, AFNDtoAFD, AFDtoAFND, union, complemento, concatenacion, interseccion, imprimirAutomata
 from funciones import validar, crear, leer, AFNDtoAFD, AFDtoAFND, union, complemento, concatenacion, interseccion, imprimirAutomata, draw
 #Para graficar
 import base64
@@ -102,6 +101,7 @@ def index():
                     aux1.pop('', -1)
                     aux1.update( { alfabeto1[j+1] : '' } )  
                     transitions1.update( {'q'+str(i) : aux1 } )
+        
         else:
             
             tipo1 = 'AFND'
@@ -140,6 +140,7 @@ def index():
                     aux1.pop('', -1)
                     aux1.update( { alfabeto2[j+1] : '' } )  
                     transitions2.update( {'q'+str(i) : aux1 } )
+        
         else:
             
             tipo2 = 'AFND'
@@ -174,6 +175,27 @@ def index():
         message0 = 'Automata1 '+tipo1+' de '+str(form.cantidad1.data)+' estados y Automata2 '+tipo2+' de '+str(form.cantidad2.data)+' estados listos para obtener transiciones.'
     
     if request.method == 'POST' and switch == True :
+
+        global sets1
+        global sets2
+        global validacion1
+        global validacion2
+
+        validacion1 = False
+        validacion2 = False
+        
+        sets1 = [states1, input_symbols1, transitions1, 'q0', final_states1]
+        sets2 = [states2, input_symbols2, transitions2, 'q0', final_states2]
+        
+        validacion1 = validar(sets1,AFND1)
+        validacion2 = validar(sets2,AFND2)
+
+        global creacion 
+        creacion = False
+
+        if validacion1 == True and validacion2 == True :
+
+            creacion = True
         
         trans.origen1.choices = [(i,'q'+str(i-1)) for i in range(len(transitions1)+1)]   
         trans.input1.choices = [(alfabeto1[i],alfabeto1[i]) for i in range(len(alfabeto1))]
@@ -196,12 +218,15 @@ def index():
             
             else:
                 
+                if trans.input1.data == 'ε':
+
+                    trans.input1.data = ''
+
                 aux = transitions1.pop('q'+str(int(trans.origen1.data)-1))
                 
                 if trans.input1.data not in aux.keys() :
                     
                     aux.update( { trans.input1.data : { 'q'+str(int(trans.destino1.data)-1) } } )
-                    aux.pop('',-1)
                     transitions1.update( {'q'+str(int(trans.origen1.data)-1) : aux } )
                 
                 else:
@@ -227,10 +252,10 @@ def index():
             trans_message1 = str(transitions1)+', finales '+str(final_states1)
             
             print(bcolors.OKGREEN+message1+bcolors.ENDC+' '+bcolors.FAIL+error1+bcolors.ENDC+'\n'+bcolors.OKGREEN+trans_message1+bcolors.ENDC+'\n')
-       
-        elif trans.origen1.data == '--' and trans.destino1.data == '--' and trans.input1.data == '--' :
+        
+        elif trans.origen1.data == '--' or trans.destino1.data == '--' or trans.input1.data == '--' and request.form.get('submit', True) != 'Crear Automatas' :
             
-            print(f'{bcolors.FAIL}La transición del automata 1 es invalida'+bcolors.ENDC)
+            print(f'{bcolors.FAIL}La transición del automata 1 es inválida\n'+bcolors.ENDC)
         
         if  trans.origen2.data != 'None' and trans.destino2.data != 'None' and trans.input2.data != 'None' and trans.input2.data != '--' and trans.origen2.data != '0' and trans.destino2.data != '0' :
             
@@ -243,12 +268,15 @@ def index():
             
             else:
                 
+                if trans.input2.data == 'ε':
+
+                    trans.input2.data = ''
+
                 aux = transitions2.pop('q'+str(int(trans.origen2.data)-1))
                 
                 if trans.input2.data not in aux.keys() :
                     
                     aux.update( { trans.input2.data : { 'q'+str(int(trans.destino2.data)-1) } } )
-                    aux.pop('',-1)
                     transitions2.update( { 'q'+str(int(trans.origen2.data)-1) : aux } )
                 
                 else:
@@ -274,10 +302,10 @@ def index():
             trans_message2 = str(transitions2)+', finales '+str(final_states2)
             
             print(bcolors.OKGREEN+message2+bcolors.ENDC+' '+bcolors.FAIL+error2+bcolors.ENDC+'\n'+bcolors.OKGREEN+trans_message2+bcolors.ENDC+'\n')
-        
-        elif form.cantidad2.data == None and request.form.get('crear', False) == 'None' :
+
+        elif trans.origen2.data == '--' or trans.destino2.data == '--' or trans.input2.data == '--' and request.form.get('submit', True) != 'Crear Automatas' :
             
-            print(f'{bcolors.FAIL}La transición del automata 2 es invalida{bcolors.ENDC}')
+            print(f'{bcolors.FAIL}La transición del automata 2 es inválida\n'+bcolors.ENDC)
     
     if request.method == 'POST' and request.form.get('reset1', True) == 'Reiniciar estados finales del Automata 1' :
         
@@ -301,22 +329,14 @@ def index():
         
         print(bcolors.FAIL+message2+bcolors.ENDC+'\n')
 
-    if request.method == 'POST' and request.form.get('crear', True) == 'Crear Automatas' :
+    if request.method == 'POST' and request.form.get('submit', True) == 'Crear Automatas' :
         
         if switch == True :
             
-            sets1 = [states1, input_symbols1, transitions1, 'q0', final_states1]
-            sets2 = [states2, input_symbols2, transitions2, 'q0', final_states2]
-            validacion1 = validar(sets1,AFND1)
-            validacion2 = validar(sets2,AFND2)
-            
-            if validacion1 == True and validacion2 == True :
+            if creacion == True :
                 
                 automata1 = crear(sets1, AFND1)
                 automata2 = crear(sets2, AFND2)
-
-                #draw(automata1, AFND1, 'automata1')
-                #draw(automata2, AFND2, 'automata2')
                 
                 print(f'{bcolors.OKGREEN}Los automatas han sido creados satisfactoriamente.{bcolors.ENDC}')
                 
@@ -361,11 +381,11 @@ def automatas() :
     imprimirAutomata(automata1, tipo1)
     imprimirAutomata(automata2, tipo2)
     
-    au1 = draw(automata1,tipo1,'automata1')
-    au2 = draw(automata2,tipo2,'automata2')
+    #au1 = draw(automata1,tipo1,'automata1')
+    #au2 = draw(automata2,tipo2,'automata2')
     
-    au1 = base64.b64encode(au1).decode('utf-8')
-    au2 = base64.b64encode(au2).decode('utf-8')
+    #au1 = base64.b64encode(au1).decode('utf-8')
+    #au2 = base64.b64encode(au2).decode('utf-8')
     
     if request.method == 'POST' :
         

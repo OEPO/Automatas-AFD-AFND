@@ -36,7 +36,9 @@ class Transiciones(FlaskForm):
     
     reset1 = SubmitField('Reiniciar estados finales del Automata 1')
     reset2 = SubmitField('Reiniciar estados finales del Automata 2')
-    submit = SubmitField('Agregar transicion(es)')
+    addtrans = SubmitField('Agregar transicion(es)')
+
+    submit = SubmitField('Crear Automatas')
 
 class inputString(FlaskForm):
 
