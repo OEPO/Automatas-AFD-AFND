@@ -39,7 +39,7 @@
 							<span class="logmod__heading-subtitle">Ingrese las transiciones del <strong>Automata 1:</strong></span>
 							{{ trans.origen1.label }} {{ trans.origen1(Class="btn blue-grey") }} {{ trans.input1.label }} {{ trans.input1(Class="btn blue-grey") }} {{ trans.destino1.label }} {{ trans.destino1(Class="btn blue-grey") }} &rarr; ¿Es final? {{ trans.final1 }} 
 							<p></p>
-							{{ trans.reset1(Class="btn grey")}}
+							{{ trans.addtrans1(Class="btn blue-grey") }} {{ trans.reset1(Class="btn grey")}}
 						</p>
 						<p class = "transiciones">
 							{% if trans_message1 %} {{ trans_message1 }} {% endif %} 
@@ -52,7 +52,7 @@
 							<span class="logmod__heading-subtitle">Ingrese las transiciones del <strong>Automata 2:</strong></span>
 							{{ trans.origen2.label }} {{ trans.origen2(Class="btn blue-grey") }} {{ trans.input2.label }} {{ trans.input2(Class="btn blue-grey") }} {{ trans.destino2.label }} {{ trans.destino2(Class="btn blue-grey") }} &rarr; ¿Es final? {{ trans.final2 }}  
 							<p></p>
-							{{trans.reset2(Class="btn grey")}}
+							{{ trans.addtrans2(Class="btn blue-grey") }} {{trans.reset2(Class="btn grey")}}
 						</p>
 						<p class = "transiciones">
 							{% if trans_message2 %} {{ trans_message2 }} {% endif %}
@@ -61,18 +61,9 @@
 							{% if message2 %} {{ message2 }} {% endif %} 
 							{% if error2 %} {{ error2 }} {% endif %}
 						</p>
+						
 						<p>
-							{{ trans.addtrans(Class="btn blue-grey") }}
-							&emsp;
-							&emsp;
-							&emsp;
-							&emsp;
-							&emsp;
-							&emsp;
-							&emsp;
-							&emsp;
-							{{ trans.submit(Class="btn light-blue") }}
-							<!--<input class="btn light-blue" type = "submit" name = "crear" value = "Crear Automatas"/> -->
+							<input class="btn {{ color }}" type = "submit" name = "crear" value = "Crear Automatas"/>
 						</p>
 					</form>
 					
