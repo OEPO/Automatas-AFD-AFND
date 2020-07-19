@@ -496,39 +496,39 @@ def automatas() :
         if request.form.get('complemento1', True) == 'Complemento de automata 1' :
 
             automata_complemento1 = complemento(automata1, AFND1)
-            imprimirAutomata(automata_complemento1, tipo1)
+            #imprimirAutomata(automata_complemento1, tipo1)
             
             return render_template('complemento1.html')
 
         if request.form.get('complemento2', True) == 'Complemento de automata 2' :
 
             automata_complemento2 = complemento(automata2, AFND2)
-            imprimirAutomata(automata_complemento2, tipo2)
+            #imprimirAutomata(automata_complemento2, tipo2)
             
-            #return render_template('complemento1.html')
+            return render_template('complemento2.html')
 
         if request.form.get('union', True) == 'Unión entre 1 y 2' :
 
             automata_union = union(automata1, AFND1, automata2, AFND2)
-            imprimirAutomata(automata_union, tipo2)
+            #imprimirAutomata(automata_union, tipo2)
 
-            #return render_template('union.html')
+            return render_template('union.html')
 
         if request.form.get('concatenacion', True) == 'Concatenación entre 1 y 2' :
 
             automata_concatenacion = concatenacion(automata1, AFND1, automata2, AFND2)
 
-            imprimirAutomata(automata_concatenacion, tipo2)
+            #imprimirAutomata(automata_concatenacion, tipo2)
 
-            #return render_template('concatenacion.html')
+            return render_template('concatenacion.html')
 
         if request.form.get('interseccion', True) == 'Intersección entre 1 y 2' :
 
             automata_interseccion = interseccion(automata1, AFND1, automata2, AFND2)
 
-            imprimirAutomata(automata_interseccion, tipo2)
+            #imprimirAutomata(automata_interseccion, tipo2)
 
-            #return render_template('interseccion.html')
+            return render_template('interseccion.html')
     
     return render_template('automatas.html', inputs = inputs, output1 = output1, output2 = output2, message = message)
 
