@@ -14,11 +14,11 @@
 						<form action = "", method = "POST">
 							<p>
 								<span class="logmod__heading-subtitle">Ingrese la cantidad de estados del <strong>Automata 1:</strong></span>
-								{{ form.cantidad1(placeholder="Ej: 3") }} AFND : {{ form.tipo1 }}  / simbolos : {{form.simbolos1(placeholder="Ej: a,b,c") }}
+								{{ form.cantidad1(placeholder="Ej: 3") }} AFND : {{ form.tipo1 }}  | símbolos : {{form.simbolos1(placeholder="Ej: a,b,c") }}
 							</p>
 							<p>
 								<span class="logmod__heading-subtitle">Ingrese la cantidad de estados del <strong>Automata 2:</strong></span>
-								{{ form.cantidad2(placeholder="Ej: 3") }} AFND : {{ form.tipo2 }} / simbolos : {{ form.simbolos2(placeholder="Ej: 0,1") }}
+								{{ form.cantidad2(placeholder="Ej: 3") }} AFND : {{ form.tipo2 }} | símbolos : {{ form.simbolos2(placeholder="Ej: 0,1") }}
 							</p>
 							<p>
 								{% if message0 %} {{ message0 }} {% endif %} {% if error0 %} {{ error0 }} {% endif %}
@@ -42,7 +42,7 @@
 							{{ trans.addtrans1(Class="btn blue-grey") }} {{ trans.reset1(Class="btn grey")}}
 						</p>
 						<p class = "transiciones">
-							{% if trans_message1 %} {{ trans_message1 }} {% endif %} 
+							<strong> {% if trans_message1 %} {{ trans_message1 }} {% endif %} </strong>
 						</p>
 						<p>
 							{% if message1 %} {{ message1 }} {% endif %} 
@@ -55,7 +55,7 @@
 							{{ trans.addtrans2(Class="btn blue-grey") }} {{trans.reset2(Class="btn grey")}}
 						</p>
 						<p class = "transiciones">
-							{% if trans_message2 %} {{ trans_message2 }} {% endif %}
+							<strong> {% if trans_message2 %} {{ trans_message2 }} {% endif %} </strong>
 						</p>
 						<p>
 							{% if message2 %} {{ message2 }} {% endif %} 

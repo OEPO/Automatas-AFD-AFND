@@ -308,7 +308,7 @@ def index():
             elif trans.origen2.data == '--' or trans.destino2.data == '--' or trans.input2.data == '--' and request.form.get('crear', True) != 'Crear Automatas' :
             
                 print(f'{bcolors.FAIL}La transición del automata 2 es inválida\n'+bcolors.ENDC)
-    
+        
         sets1 = [states1, input_symbols1, transitions1, 'q0', final_states1]
         sets2 = [states2, input_symbols2, transitions2, 'q0', final_states2]
     
@@ -317,10 +317,51 @@ def index():
 
         if validacion1 == True and validacion2 == True :
 
+            if '✓' not in trans_message1 :
+                
+                trans_message1 = trans_message1 + ' ✓'
+            
+            if '✓' not in trans_message2 :
+                
+                trans_message2 = trans_message2 + ' ✓'
+            
             creacion = True
+            
             color = 'green'
-    
+        
+        else:
+            
+            if validacion1 == True :
+                
+                if '✓' not in trans_message1 :
+                
+                    trans_message1 = trans_message1 + ' ✓'
+            
+            else:
+                
+                if '✓' in trans_message1 :
+                    
+                    trans_message1 = trans_message1.split(' ✓')
+            
+            if validacion2 == True :
+                
+                if '✓' not in trans_message2 :
+                    
+                    trans_message2 = trans_message2 + ' ✓'
+            
+            else:
+                
+                if '✓' in trans_message2 :
+                    
+                    trans_message2 = trans_message2.split(' ✓')
+
+            color = 'red'
+
     if request.method == 'POST' and request.form.get('reset1', True) == 'Reiniciar estados finales del Automata 1' :
+        
+        creacion = False
+        validacion1 = False
+        color = 'red'
         
         final_states1.clear()
         final_states1 = {}
@@ -333,6 +374,10 @@ def index():
 
     if request.method == 'POST' and request.form.get('reset2', True) == 'Reiniciar estados finales del Automata 2' :
 
+        creacion = False
+        validacion2 = False
+        color = 'red'
+
         final_states2.clear()
         final_states2 = {}
         
@@ -341,7 +386,7 @@ def index():
         trans_message2 = str(transitions2)+', finales '+str(final_states2)
         
         print(bcolors.FAIL+message2+bcolors.ENDC+'\n')
-
+    
     if request.method == 'POST' and request.form.get('crear', True) == 'Crear Automatas' :
         
         if switch == True :
