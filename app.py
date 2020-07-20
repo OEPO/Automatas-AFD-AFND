@@ -255,7 +255,9 @@ def index():
         
             elif trans.origen1.data == '--' or trans.destino1.data == '--' or trans.input1.data == '--' and request.form.get('submit', True) != 'Crear Automatas' :
             
-                print(f'{bcolors.FAIL}La transición del automata 1 es inválida\n'+bcolors.ENDC)
+                error1 = 'La transición del automata 1 es inválida.'
+                
+                print(bcolors.FAIL+error1+bcolors.ENDC+'\n')
         
         if request.form.get('addtrans2', True) == 'Agregar transición' and request.form.get('crear', True) != 'Crear Automatas':
         
@@ -307,7 +309,10 @@ def index():
 
             elif trans.origen2.data == '--' or trans.destino2.data == '--' or trans.input2.data == '--' and request.form.get('crear', True) != 'Crear Automatas' :
             
-                print(f'{bcolors.FAIL}La transición del automata 2 es inválida\n'+bcolors.ENDC)
+                error2 = 'La transición del automata 2 es inválida.'
+                
+                print(bcolors.FAIL+error2+bcolors.ENDC+'\n')
+        
         
         sets1 = [states1, input_symbols1, transitions1, 'q0', final_states1]
         sets2 = [states2, input_symbols2, transitions2, 'q0', final_states2]

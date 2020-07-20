@@ -8,20 +8,34 @@
 		<div class="logmod__tab-wrapper">
 			<div class="logmod__tab lgm-1">
 				<div class="logmod__heading">
-					</span>Ingrese los estados para los <strong>Automatas</strong></span>
+					</span>Porfavor ingrese lo siguiente para los <strong>Automatas</strong></span>
 					<div>
 						<!--Formulario para ingresar estados-->
 						<form action = "", method = "POST">
 							<p>
-								<span class="logmod__heading-subtitle">Ingrese la cantidad de estados del <strong>Automata 1:</strong></span>
-								{{ form.cantidad1(placeholder="Ej: 3") }} AFND : {{ form.tipo1 }}  | símbolos : {{form.simbolos1(placeholder="Ej: a,b,c") }}
+								<span class="logmod__heading-subtitle">Ingrese la cantidad de estados y símbolos del <strong>Automata 1:</strong></span>
+								Q: {{ form.cantidad1(placeholder="Ej: 3", size=2) }} Ʃ: {{form.simbolos1(placeholder="Ej: a,b,c") }}
+								¿Es AFND? {{ form.tipo1 }} (✓: sí)
+							</p>
+							<hr style="width:75%;">
+							<p>
+								<span class="logmod__heading-subtitle">Ingrese la cantidad de estados y símbolos del <strong>Automata 2:</strong></span>
+								Q: {{ form.cantidad2(placeholder="Ej: 3", size=2) }} Ʃ: {{ form.simbolos2(placeholder="Ej: 0,1") }}
+								¿Es AFND? {{ form.tipo2 }} (✓: sí)
+								
 							</p>
 							<p>
-								<span class="logmod__heading-subtitle">Ingrese la cantidad de estados del <strong>Automata 2:</strong></span>
-								{{ form.cantidad2(placeholder="Ej: 3") }} AFND : {{ form.tipo2 }} | símbolos : {{ form.simbolos2(placeholder="Ej: 0,1") }}
-							</p>
-							<p>
-								{% if message0 %} {{ message0 }} {% endif %} {% if error0 %} {{ error0 }} {% endif %}
+								{% if message0 %} 
+								<div class="alert alert-success" role="alert">
+									{{ message0 }}
+								</div>
+								{% endif %} 
+								{% if error0 %}
+								<div class="alert alert-alert" role="alert"></div>
+									{{ error0 }}
+								</div>
+								{% endif %}
+									
 							</p>
 							<p>
 								{{ form.submit(Class="btn blue-grey") }}
@@ -45,8 +59,16 @@
 							<strong> {% if trans_message1 %} {{ trans_message1 }} {% endif %} </strong>
 						</p>
 						<p>
-							{% if message1 %} {{ message1 }} {% endif %} 
-							{% if error1 %} {{ error1 }} {% endif %}
+							{% if message1 %} 
+							<div class="alert alert-success" role="alert">
+								{{ message1 }} 
+							</div>
+							{% endif %} 
+							{% if error1 %}
+							<div class="alert alert-danger" role="alert">
+								 <p> {{ error1 }} </p>
+							</div>
+							{% endif %}
 						</p>
 						<p>
 							<span class="logmod__heading-subtitle">Ingrese las transiciones del <strong>Automata 2:</strong></span>
@@ -58,8 +80,16 @@
 							<strong> {% if trans_message2 %} {{ trans_message2 }} {% endif %} </strong>
 						</p>
 						<p>
-							{% if message2 %} {{ message2 }} {% endif %} 
-							{% if error2 %} {{ error2 }} {% endif %}
+							{% if message2 %} 
+							<div class="alert alert-success" role="alert">
+								{{ message2 }} 
+							</div>
+							{% endif %}
+							{% if error2 %}
+							<div class="alert alert-danger" role="alert">
+								<p> {{ error2 }} </p>
+						   </div>
+						   {% endif %}
 						</p>
 						
 						<p>
@@ -71,6 +101,17 @@
 				</div>
 			</div>
 		</div>
-	</div>				
+	</div>
+	<div class="logmod__wrapper">
+		<div class="logmod__wrapper">
+			<div class="jumbotron">
+				<strong>IMPORTANTE:</strong>
+				<li>Formato AFD para m estados de n entradas: { q0: {"1" : q0, ... , "n": qm}, ... , qm: {"1" : q0, ... , "n": qm} }</li>
+        		<li>Formato AFND para m estados de n entradas: : { q0: {"1" : {q0, ... , qm}}, ... , qm: {"n" : {q0, ... , qm}} }</li>
+			</div>
+			
+		</div>
+		
+	</div>			
 						
 {% endblock %}
