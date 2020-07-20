@@ -439,8 +439,8 @@ def automatas() :
     imprimirAutomata(automata1, tipo1)
     imprimirAutomata(automata2, tipo2)
     
-    #au1 = draw(automata1,tipo1,'automata1')
-    #au2 = draw(automata2,tipo2,'automata2')
+    au1 = draw(automata1,tipo1,'automata1')
+    au2 = draw(automata2,tipo2,'automata2')
     
     #au1 = base64.b64encode(au1).decode('utf-8')
     #au2 = base64.b64encode(au2).decode('utf-8')

@@ -5,68 +5,46 @@
 <div class="logmod__wrapper">
     <div class="logmod__heading">
                     <div class = "automata">
-                        <html>
-                        <body>
-                            <h1>Graph</h1>
-                            <!-- CHANGE -->
-                            <img src="../static/automata1.sv.png" alt="El automata generado" height="200" />
-                            <img src="../static/automata2.sv.png" alt="El automata generado" height="200" />
-                        </body>
-                        </html>
-                        <!-- Referencia a la imagen -->
+                        <img src="../static/automata1.sv.png" alt="El automata generado" height="200" />
                         <p>
                             <form action = "", method = "POST">
                                 <input Class="btn blue-grey" type = "submit" name = "AFNDtoAFD1" value = "AFND &rarr; AFD mín"/>
                                 <input Class="btn blue-grey" type = "submit" name = "complemento1" value = "Complemento de automata 1"/>
                             </form>
                         </p>
-                        <form action = "", method = "POST">
-                            {{ inputs.inputString1 }}
-                            {{ inputs.submit(Class="btn grey") }}
-                        </form>
+                        <p>
+                            <form action = "", method = "POST">
+                                {{ inputs.inputString1 }}
+                                {{ inputs.submit(Class="btn grey") }}
+                            </form>
+                        </p>
                         {% if output1 %}
                         <p class = "output">
                             {{ output1 }}
                         </p>
                         {% endif %}
                     </div>
-
-<!-- Esto es un comentario 
-
                     <hr style="width:75%;">
-                    <div>
-                        <form action = "", method = "POST">
-                            
-                            <input Class="btn blue-grey" type = "submit" name = "union" value = "Unión entre 1 y 2"/>
-                            <input Class="btn blue-grey" type = "submit" name = "concatenacion" value = "Concatenación entre 1 y 2"/>
-                            <input Class="btn blue-grey" type = "submit" name = "interseccion" value = "Intersección entre 1 y 2"/>
-                        </form>
-                    </div>
-                    <hr style="width:75%;">
-
--->
-
                     <div class = "automata">
-                        <!-- Referencia a la imagen -->
+                        <img src="../static/automata2.sv.png" alt="El automata generado" height="200" />
                         <p>
                             <form action = "", method = "POST">
                                 <input Class="btn blue-grey" type = "submit" name = "AFNDtoAFD2" value = "AFND &rarr; AFD mín"/>
                                 <input Class="btn blue-grey" type = "submit" name = "complemento2" value = "Complemento de automata 2"/>
                             </form>
                         </p>
-                        <form action = "", method = "POST">
-                            <p>
+                        <p>
+                            <form action = "", method = "POST">
                                 {{ inputs.inputString2 }}
                                 {{ inputs.submit(Class="btn grey") }}
-                            </p> 
-                        </form>
+                            </form>
+                        </p>
                         {% if output2 %}
                         <p class = "output">
                             {{ output2 }}  
                         </p>
                         {% endif %}
                     </div>
-
                     <hr style="width:75%;">
                     <div>
                         <form action = "", method = "POST">
@@ -75,12 +53,7 @@
                             <input Class="btn blue-grey" type = "submit" name = "concatenacion" value = "Concatenación entre 1 y 2"/>
                             <input Class="btn blue-grey" type = "submit" name = "interseccion" value = "Intersección entre 1 y 2"/>
                         </form>
-                    </div>
-                    <hr style="width:75%;">
-
-
-
-
+                    </div>           
     </div>
 </div>
 

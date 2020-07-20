@@ -263,16 +263,6 @@ def draw(automata, tipo, nombre):
     g.graph_attr['rankdir'] = 'LR'
     g.node('ini', shape="point")
 
-
-    # print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
-    # print(automata.transitions)
-    # print(trans)
-    # print(automata.states)
-    # print(automata.initial_state)
-    # print(automata.input_symbols)
-    # print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
-
-    # print("111111111111111111111111111111111111111111111111111111111111111")
     for e in list(automata.states):
         if e in list(automata.final_states):     
             g.node(e, shape="doublecircle")
@@ -280,7 +270,6 @@ def draw(automata, tipo, nombre):
             g.node(e)
         if e in [automata.initial_state]:
             g.edge('ini',e)
-    # print("111111111111111111111111111111111111111111111111111111111111111")
 
     for t in trans:
         if t[2] not in list(automata.input_symbols):
@@ -289,6 +278,4 @@ def draw(automata, tipo, nombre):
           if(t[1] != "q"):
             g.edge(t[0], "q"+t[1], label=str(t[2])) ##CHANGE
 
-    # print("222222222222222222222222222222222222222222222222222222222222222")
-    
-    g.render(nombre, view=True,directory="static/")
+    g.render(nombre, view=False,directory="static/")
