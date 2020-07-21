@@ -28,6 +28,11 @@ Y luego ejecute app.py
 ```bash
 python app.py
 ```
+## Algunas vistas del proyecto
+![Coloque la cantidad de estados, los simbolos y marque la casilla, si el automata es AFND](https://github.com/OEPO/Automatas-AFD-AFND/blob/master/static/gif/Captura_1.gif)
+
+![Cuando termine de completar, haga click en ingresar, y vaya a la pestaña de transiciones](https://github.com/OEPO/Automatas-AFD-AFND/blob/master/static/gif/Captura_2.gif)
+
 ## Integrantes
 + Jennifer Portiño
 + Diego Tapia
