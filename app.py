@@ -3,10 +3,8 @@ from flask import Flask, render_template, request, redirect, url_for, send_file
 from forms import Form, Transiciones, inputString, bcolors
 from funciones import validar, crear, leer, AFNDtoAFD, AFDtoAFND, union, complemento, concatenacion, interseccion, imprimirAutomata, draw
 #Para graficar
-import base64
 import os
 os.environ["PATH"] += os.pathsep + './grafos-venv/release/bin/'
-import graphviz as gv
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -150,15 +148,15 @@ def index():
             
             for i in range(form.cantidad2.data):
                 
-                transitions2.update({'q'+str(i) : { '': ''} } )
-                aux0.append('q'+str(i))
+                transitions2.update({'r'+str(i) : { '': ''} } )
+                aux0.append('r'+str(i))
                 
                 for j in range(len(alfabeto2)-1):
                     
-                    aux1 = transitions2.pop('q'+str(i))
+                    aux1 = transitions2.pop('r'+str(i))
                     aux1.pop('', -1)
                     aux1.update( { alfabeto2[j+1] : '' } )  
-                    transitions2.update( {'q'+str(i) : aux1 } )
+                    transitions2.update( {'r'+str(i) : aux1 } )
         
         else:
             
@@ -171,11 +169,11 @@ def index():
             
             for i in range(form.cantidad2.data):
                 
-                aux0.append('q'+str(i))
-                transitions2.update( {'q'+str(i) : { '': { } } } )
-                aux1 = transitions2.pop('q'+str(i))
+                aux0.append('r'+str(i))
+                transitions2.update( {'r'+str(i) : { '': { } } } )
+                aux1 = transitions2.pop('r'+str(i))
                 aux1.pop('',-1)
-                transitions2.update( { 'q'+str(i) : aux1 } )
+                transitions2.update( { 'r'+str(i) : aux1 } )
         
         states2 = set(aux0)
         
@@ -200,15 +198,15 @@ def index():
         trans.destino1.choices = [(i,'q'+str(i-1)) for i in range(len(transitions1)+1)]
         trans.origen1.choices[0] = (0,'--')
         trans.destino1.choices[0] = (0,'--')
-        trans.origen2.choices = [(i,'q'+str(i-1)) for i in range(len(transitions2)+1)]   
+        trans.origen2.choices = [(i,'r'+str(i-1)) for i in range(len(transitions2)+1)]   
         trans.input2.choices = [(alfabeto2[i],alfabeto2[i]) for i in range(len(alfabeto2))]
-        trans.destino2.choices = [(i,'q'+str(i-1)) for i in range(len(transitions2)+1)]
+        trans.destino2.choices = [(i,'r'+str(i-1)) for i in range(len(transitions2)+1)]
         trans.origen2.choices[0] = (0,'--')
         trans.destino2.choices[0] = (0,'--')
         
         if request.form.get('addtrans1', True) == 'Agregar transición' and request.form.get('crear', True) != 'Crear Automatas':
             
-            if  trans.origen1.data != 'None' and trans.destino1.data != 'None' and trans.input1.data != 'None' and trans.input1.data != '--' and trans.origen1.data != '0' and trans.destino1.data != '0' :
+            if trans.input1.data != '--' and trans.origen1.data != '0' and trans.destino1.data != '0' :
             
                 if AFND1 == False:
                 
@@ -245,7 +243,6 @@ def index():
                     qf = 'q'+str(int(trans.destino1.data)-1)
                     est_finales1.append(qf)
                     final_states1 = set(est_finales1)
-                    #est_finales1.clear()
 
                     message1 = message1+' Estado final '+qf+' agregado en los estados finales.'
             
@@ -253,7 +250,7 @@ def index():
             
                 print(bcolors.OKGREEN+message1+bcolors.ENDC+' '+bcolors.FAIL+error1+bcolors.ENDC+'\n'+bcolors.OKGREEN+trans_message1+bcolors.ENDC+'\n')
         
-            elif trans.origen1.data == '--' or trans.destino1.data == '--' or trans.input1.data == '--' and request.form.get('submit', True) != 'Crear Automatas' :
+            elif trans.origen1.data == '0' or trans.destino1.data == '0' or trans.input1.data == '--' and request.form.get('submit', True) != 'Crear Automatas' :
             
                 error1 = 'La transición del automata 1 es inválida.'
                 
@@ -261,14 +258,14 @@ def index():
         
         if request.form.get('addtrans2', True) == 'Agregar transición' and request.form.get('crear', True) != 'Crear Automatas':
         
-            if  trans.origen2.data != 'None' and trans.destino2.data != 'None' and trans.input2.data != 'None' and trans.input2.data != '--' and trans.origen2.data != '0' and trans.destino2.data != '0' :
+            if  trans.input2.data != '--' and trans.origen2.data != '0' and trans.destino2.data != '0' :
             
                 if AFND2 == False:
                 
-                    aux = transitions2.pop('q'+str(int(trans.origen2.data)-1))
+                    aux = transitions2.pop('r'+str(int(trans.origen2.data)-1))
                     aux.pop('',-1)
-                    aux.update({trans.input2.data : 'q'+str(int(trans.destino2.data)-1) })
-                    transitions2.update( {'q'+str(int(trans.origen2.data)-1) : aux } )
+                    aux.update({trans.input2.data : 'r'+str(int(trans.destino2.data)-1) })
+                    transitions2.update( {'r'+str(int(trans.origen2.data)-1) : aux } )
             
                 else:
                 
@@ -276,30 +273,29 @@ def index():
 
                         trans.input2.data = ''
 
-                    aux = transitions2.pop('q'+str(int(trans.origen2.data)-1))
+                    aux = transitions2.pop('r'+str(int(trans.origen2.data)-1))
                 
                     if trans.input2.data not in aux.keys() :
                     
-                        aux.update( { trans.input2.data : { 'q'+str(int(trans.destino2.data)-1) } } )
-                        transitions2.update( { 'q'+str(int(trans.origen2.data)-1) : aux } )
+                        aux.update( { trans.input2.data : { 'r'+str(int(trans.destino2.data)-1) } } )
+                        transitions2.update( { 'r'+str(int(trans.origen2.data)-1) : aux } )
                 
                     else:
                     
                         aux0 = aux.pop(trans.input2.data)
                         aux1 = list(aux0)
-                        aux1.append('q'+str(int(trans.destino2.data)-1))
+                        aux1.append('r'+str(int(trans.destino2.data)-1))
                         aux1 = set(aux1)
                         aux.update( { trans.input2.data : aux1 } )
-                        transitions2.update( { 'q'+str(int(trans.origen2.data)-1) : aux } )
+                        transitions2.update( { 'r'+str(int(trans.origen2.data)-1) : aux } )
             
-                message2 = 'Transicion (q'+str(int(trans.origen2.data)-1)+', '+'"'+trans.input2.data+'"'+', q'+str(int(trans.destino2.data)-1)+') en automata 2 ['+tipo2+'] agregada.'
+                message2 = 'Transicion (r'+str(int(trans.origen2.data)-1)+', '+'"'+trans.input2.data+'"'+', r'+str(int(trans.destino2.data)-1)+') en automata 2 ['+tipo2+'] agregada.'
             
                 if trans.final2.data == True :
                 
-                    qf = 'q'+str(int(trans.destino2.data)-1)
+                    qf = 'r'+str(int(trans.destino2.data)-1)
                     est_finales2.append(qf)
                     final_states2 = set(est_finales2)
-                    #est_finales2.clear()
 
                     message2 = message2+' Estado final '+qf+' agregado en los estados finales.'
                     
@@ -307,7 +303,7 @@ def index():
             
                 print(bcolors.OKGREEN+message2+bcolors.ENDC+' '+bcolors.FAIL+error2+bcolors.ENDC+'\n'+bcolors.OKGREEN+trans_message2+bcolors.ENDC+'\n')
 
-            elif trans.origen2.data == '--' or trans.destino2.data == '--' or trans.input2.data == '--' and request.form.get('crear', True) != 'Crear Automatas' :
+            elif trans.origen2.data == '0' or trans.destino2.data == '0' or trans.input2.data == '--' and request.form.get('crear', True) != 'Crear Automatas' :
             
                 error2 = 'La transición del automata 2 es inválida.'
                 
@@ -315,7 +311,7 @@ def index():
         
         
         sets1 = [states1, input_symbols1, transitions1, 'q0', final_states1]
-        sets2 = [states2, input_symbols2, transitions2, 'q0', final_states2]
+        sets2 = [states2, input_symbols2, transitions2, 'r0', final_states2]
     
         validacion1 = validar(sets1,AFND1)
         validacion2 = validar(sets2,AFND2)
@@ -370,6 +366,7 @@ def index():
         
         final_states1.clear()
         final_states1 = {}
+        est_finales1.clear()
         
         message1 = 'Estados finales del automata 1 eliminados.'
         
@@ -385,6 +382,7 @@ def index():
 
         final_states2.clear()
         final_states2 = {}
+        est_finales2.clear()
         
         message2 = 'Estados finales del automata 2 eliminados.'
         
@@ -514,8 +512,10 @@ def automatas() :
 
         if request.form.get('union', True) == 'Unión entre 1 y 2' :
 
-            automata_union = union(automata1, AFND1, automata2, AFND2)
-            #imprimirAutomata(automata_union, tipo2)
+            automataUnion = []
+            automataUnion = union(automata1, AFND1, automata2, AFND2)
+            imprimirAutomata(automataUnion[0], 'automataUnion[1]')
+            draw(automataUnion[0],automataUnion[1],'union')
 
             return render_template('union.html')
 
