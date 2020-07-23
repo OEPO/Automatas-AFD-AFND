@@ -1,9 +1,7 @@
 from automata.fa.dfa import DFA   #Libreria Automata
 from automata.fa.nfa import NFA
-import graphviz as gv
 from graphviz import Digraph
 from forms import bcolors
-from flask import url_for
 
 # Todos los parámetros son listas o tuplas
 # donde:
@@ -69,7 +67,7 @@ def validar(sets, tipo):
 
 def leer(automata, entrada):
   if automata.accepts_input(entrada):
-    return 'El automata responde al string finalizando en el estado : '+automata.read_input(entrada)#+automata.read_input_stepwise(entrada)
+    return 'El automata responde al string finalizando en el estado : '+str(automata.read_input(entrada))#+automata.read_input_stepwise(entrada)
   else:
     return 'La cadena ingresada no es válida para el automata.'
 
@@ -237,45 +235,52 @@ def imprimirAutomata(automata, tipo):
 
 def draw(automata, tipo, nombre):
 
-    nombre = nombre+'.sv'
+  g = Digraph(filename=nombre, format='png')
+  g.graph_attr['rankdir'] = 'LR'
+  g.node('ini', shape="point")
 
-    trans = []
+  for e in list(automata.states):
     
-    if tipo == False: #dfa
-        
-        #nombre = 'dfa'
-    
-        for k,v in automata.transitions.items():
+    if e in list(automata.final_states) : 
       
-            for i in v:
-                trans.append(( k, v[i], i))
+      g.node(e, shape="doublecircle") 
+        
+    else:   
+        
+        g.node(e)
+        
+    if e in [automata.initial_state] : 
+          
+        g.edge('ini', e)
 
-    else:  #nfa
+  if tipo == False :
+      
+    for k, d in automata.transitions.items() :
+          
+      v = list(d.values())
+          
+      inputs = list(d.keys())
+          
+      for i in range(len(inputs)) :
         
-        #nombre = 'nfa'
-        
-        for k,v in automata.transitions.items():
-            for i in v:
-                for j in v[i]:
-                    trans.append(( k,j, i))
+        g.edge(k, v[i], label=str(inputs[i]))
     
-    g = Digraph(filename=nombre, format='png')
-    g.graph_attr['rankdir'] = 'LR'
-    g.node('ini', shape="point")
+  else:
 
-    for e in list(automata.states):
-        if e in list(automata.final_states):     
-            g.node(e, shape="doublecircle")
-        else:   
-            g.node(e)
-        if e in [automata.initial_state]:
-            g.edge('ini',e)
+    for k1, d1 in automata.transitions.items() :
 
-    for t in trans:
-        if t[2] not in list(automata.input_symbols):
-            return 0
-        else:
-          if(t[1] != "q"):
-            g.edge(t[0], "q"+t[1], label=str(t[2])) ##CHANGE
+      for k2, d2 in d1.items() :
+        
+        v = list(d2)
 
-    g.render(nombre, view=False,directory="static/")
+        aux = k2
+        
+        if k2 == '' :
+          aux = 'ε'
+        
+        for i in range(len(v)):
+
+          g.edge(k1, v[i], label=aux)
+  
+  print(bcolors.WARNING+str(v)+bcolors.ENDC)
+  return g.pipe(format='png')
