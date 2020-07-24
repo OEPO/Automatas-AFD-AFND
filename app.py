@@ -473,7 +473,7 @@ def automatas() :
             output2 = leer(automata2, inputs.inputString2.data)
     
             
-    return render_template('informe.html', inputs = inputs, output1 = output1, output2 = output2, message = message, automata1 = au1, automata2 = au2, automata_complemento1=automata_complemento1, automata_complemento2=automata_complemento2, automataUnion=automataUnion, automata_concatenacion=automata_concatenacion, automata_interseccion=automata_interseccion)
+    return render_template('automatas.html', inputs = inputs, output1 = output1, output2 = output2, message = message, automata1 = au1, automata2 = au2, automata_complemento1=automata_complemento1, automata_complemento2=automata_complemento2, automataUnion=automataUnion, automata_concatenacion=automata_concatenacion, automata_interseccion=automata_interseccion)
 
 
 
