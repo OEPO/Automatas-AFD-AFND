@@ -133,28 +133,35 @@ def union (automata1, tipo1, automata2, tipo2):
       automata1, tipo1 = AFDtoAFND (automata1, tipo1)
       return union (automata1, tipo1, automata2, tipo2)
 
-def complemento (automata, tipo):  
-  #intercambiar estados finales por estados
+def complemento(automata, tipo):  
+  
   if tipo == False :
-    fin = []
-    final= automata.final_states
-    estados = automata.states
-    for i in estados:
-      for l in final:
-        if i != l:
-          fin.append(i)
-    finales = set(fin)
-    automata = DFA(
-      states=automata.states,
-      input_symbols=automata.input_symbols,
-      transitions=automata.transitions,
-      initial_state=automata.initial_state,
-      final_states= finales
-    )
-    return automata , tipo
-  else: 
-    ADF = NFA.from_dfa(automata)
-    complemento(ADF,False)
+    
+    newFinales = []
+    finales = list(automata.final_states)
+    estados = list(automata.states)
+    
+    for i in estados :
+      
+      if i not in finales :
+        
+        newFinales.append(i)
+    
+    newFinales = set(newFinales)
+    
+    CDFA = [set(automata.states),set(automata.input_symbols),automata.transitions.copy(),automata.initial_state,newFinales]
+    
+    if validar(CDFA, tipo) == True :
+
+      return crear(CDFA, tipo)
+    
+    else :
+      
+      return automata
+  
+  else :
+    
+    return automata
 
 def concatenacion(automata1, tipo1, automata2, tipo2):  # entran 2 NFA y no se saca la chucha :)
   simbolos = []
@@ -199,28 +206,34 @@ def concatenacion(automata1, tipo1, automata2, tipo2):  # entran 2 NFA y no se s
       return concatenacion(automata1, tipo1, automata2, tipo2)
     
 def interseccion (automata1, tipo1, automata2, tipo2): # ingresan 2 automatas afd y salen 1 afnd 
-  if tipo1 == tipo2:
-    if tipo1 == False:
-      automata1, tipo1 = complemento (automata1, tipo1)
-      automata1, tipo1 = AFDtoAFND (automata1, tipo1)
-      automata2, tipo2 = complemento (automata2, tipo2)
-      automata2, tipo2 = AFDtoAFND (automata2, tipo2)
-      automata3, tipo3 = union (automata1, tipo1, automata2, tipo2)
-      automata3, tipo3 = AFNDtoAFD (automata3, tipo3)
-      automata3, tipo3 = complemento (automata3, tipo3)
-      return automata3, tipo3
-    else:
-      automata1, tipo1 = AFNDtoAFD (automata1, tipo1)
-      automata2, tipo2 = AFNDtoAFD (automata2, tipo2)
-      return interseccion (automata1, tipo1, automata2, tipo2)
-  else:
-    if tipo1:
-      automata2, tipo2 = AFNDtoAFD (automata2, tipo2)
-      return interseccion (automata1, tipo1, automata2, tipo2)
+  
+  return print('en progreso')
+  #input_symbols = []
+  #states = []
+  
+  #if tipo1 == False and tipo2 == False :
+
+    #for i in automata1.input_symbols :
       
-    if tipo2:
-      automata1, tipo1 = AFNDtoAFD (automata1, tipo1)
-      return interseccion (automata1, tipo1, automata2, tipo2)
+      #for j in automata2.input_symbols :
+        
+        #if i == j and (i not in input_symbols) and (j not in input_symbols) :
+          
+          #input_symbols.append(i)
+
+    
+    #states = set(states)
+    #input_symbols = set(input_symbols)
+    
+    #IntSet = [states, input_symbols , transitions2, 'q0r0', final_states2]
+
+    #validacion = validar(IntSet, False)
+
+    #if validacion == True : 
+
+      #InterAutomata = crear(IntSet, False)
+    
+    #print(bcolors.WARNING+str(lang)+bcolors.ENDC)
   
 #Funciones para graficar automata
 def imprimirAutomata(automata, tipo):
@@ -282,5 +295,4 @@ def draw(automata, tipo, nombre):
 
           g.edge(k1, v[i], label=aux)
   
-  print(bcolors.WARNING+str(v)+bcolors.ENDC)
   return g.pipe(format='png')

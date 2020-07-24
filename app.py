@@ -2,13 +2,16 @@ from config import Config
 from flask import Flask, render_template, request, redirect, url_for, send_file
 from forms import Form, Transiciones, inputString, bcolors
 from funciones import validar, crear, leer, AFNDtoAFD, AFDtoAFND, union, complemento, concatenacion, interseccion, imprimirAutomata, draw
+
 #Para graficar
 import os
-os.environ["PATH"] += os.pathsep + './grafos-venv/release/bin/'
 import base64
+
+os.environ["PATH"] += os.pathsep + './grafos-venv/release/bin/'
 
 app = Flask(__name__)
 app.config.from_object(Config)
+
 
 @app.route('/')
 def home():
@@ -440,14 +443,8 @@ def automatas() :
     output1 = ''
     output2 = ''
     inputs = inputString()
-    imprimirAutomata(automata1, tipo1)
-    imprimirAutomata(automata2, tipo2)
-    
-    #au1 =
-    #au2 = draw(automata2,AFND2,'automata2')
-    
-    au1 = base64.b64encode(draw(automata1,AFND1,'automata1')).decode('utf-8')
-    au2 = base64.b64encode(draw(automata2,AFND2,'automata2')).decode('utf-8')
+
+    varGlobales = globals()
     
     if request.method == 'POST' :
         
@@ -499,17 +496,19 @@ def automatas() :
         
         if request.form.get('complemento1', True) == 'Complemento de automata 1' :
 
-            automata_complemento1 = complemento(automata1, AFND1)
-            #imprimirAutomata(automata_complemento1, tipo1)
+            varGlobales['automata1'] = complemento(automata1, AFND1)
             
-            return render_template('complemento1.html')
+            output1 = 'Se ha obtenido el complemento del Automata 1'
+            
+            imprimirAutomata(automata1, tipo1)
 
         if request.form.get('complemento2', True) == 'Complemento de automata 2' :
 
-            automata_complemento2 = complemento(automata2, AFND2)
-            #imprimirAutomata(automata_complemento2, tipo2)
+            varGlobales['automata2'] = complemento(automata2, AFND2)
+
+            output2 = 'Se ha obtenido el complemento del Automata 2'
             
-            return render_template('complemento2.html')
+            imprimirAutomata(automata2, tipo2)
 
         if request.form.get('union', True) == 'Unión entre 1 y 2' :
 
@@ -535,6 +534,12 @@ def automatas() :
             #imprimirAutomata(automata_interseccion, tipo2)
 
             return render_template('interseccion.html')
+        
+    imprimirAutomata(automata1, tipo1)
+    imprimirAutomata(automata2, tipo2)
+
+    au1 = base64.b64encode(draw(automata1,AFND1,'automata1')).decode('utf-8')
+    au2 = base64.b64encode(draw(automata2,AFND2,'automata2')).decode('utf-8')
     
     return render_template('automatas.html', inputs = inputs, output1 = output1, output2 = output2, message = message, automata1 = au1, automata2 = au2)
 

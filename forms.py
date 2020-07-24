@@ -39,8 +39,6 @@ class Transiciones(FlaskForm):
     addtrans1 = SubmitField('Agregar transición')
     addtrans2 = SubmitField('Agregar transición')
 
-    #submit = SubmitField('Crear Automatas')
-
 class inputString(FlaskForm):
 
     inputString1 = StringField('Cadena de Entrada', validators = [])

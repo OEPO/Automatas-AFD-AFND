@@ -13,17 +13,17 @@
                                 <input Class="btn blue-grey" type = "submit" name = "complemento1" value = "Complemento de automata 1"/>
                             </form>
                         </p>
+                        {% if output1 %}
+                        <div class = "alert alert-primary", role="alert">
+                            {{ output1 }}
+                        </div>
+                        {% endif %}
                         <p>
                             <form action = "", method = "POST">
                                 {{ inputs.inputString1 }}
                                 {{ inputs.submit(Class="btn grey") }}
                             </form>
-                        </p>
-                        {% if output1 %}
-                        <p class = "output">
-                            {{ output1 }}
-                        </p>
-                        {% endif %}
+                        </p> 
                     </div>
                     <hr style="width:75%;">
                     <div class = "automata">
@@ -34,17 +34,17 @@
                                 <input Class="btn blue-grey" type = "submit" name = "complemento2" value = "Complemento de automata 2"/>
                             </form>
                         </p>
+                        {% if output2 %}
+                        <div class = "alert alert-primary", role="alert">
+                            {{ output2 }}
+                        </div>
+                        {% endif %}
                         <p>
                             <form action = "", method = "POST">
                                 {{ inputs.inputString2 }}
                                 {{ inputs.submit(Class="btn grey") }}
                             </form>
                         </p>
-                        {% if output2 %}
-                        <p class = "output">
-                            {{ output2 }}  
-                        </p>
-                        {% endif %}
                     </div>
                     <hr style="width:75%;">
                     <div>
