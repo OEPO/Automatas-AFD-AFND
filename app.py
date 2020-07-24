@@ -443,11 +443,24 @@ def automatas() :
     imprimirAutomata(automata1, tipo1)
     imprimirAutomata(automata2, tipo2)
     
-    #au1 =
-    #au2 = draw(automata2,AFND2,'automata2')
-    
     au1 = base64.b64encode(draw(automata1,AFND1,'automata1')).decode('utf-8')
     au2 = base64.b64encode(draw(automata2,AFND2,'automata2')).decode('utf-8')
+
+    automataUnion = []
+    automata_complemento1D = complemento(automata1, AFND1)
+    automata_complemento1 =  base64.b64encode(draw(automata_complemento1D[0],automata_complemento1D[1],'automata_complemento1')).decode('utf-8')
+
+    automata_complemento2D = complemento(automata2, AFND2)
+    automata_complemento2 = base64.b64encode(draw(automata_complemento2D[0],automata_complemento2D[1],'automata_complemento2')).decode('utf-8')
+
+    automataUnionD = union(automata1, AFND1, automata2, AFND2)
+    automataUnion = base64.b64encode(draw(automataUnionD[0],automataUnionD[1],'automataUnion')).decode('utf-8')
+
+    automata_concatenacionD = concatenacion(automata1, AFND1, automata2, AFND2)
+    automata_concatenacion = base64.b64encode(draw(automata_concatenacionD[0],automata_concatenacionD[1],'automata_concatenacion')).decode('utf-8')
+
+    automata_interseccionD = interseccion(automata1, AFND1, automata2, AFND2)
+    automata_interseccion = base64.b64encode(draw(automata_interseccionD[0],automata_interseccionD[1],'automata_interseccion')).decode('utf-8')
     
     if request.method == 'POST' :
         
@@ -459,84 +472,9 @@ def automatas() :
             
             output2 = leer(automata2, inputs.inputString2.data)
     
-        if request.form.get('AFNDtoAFD1', True) == 'AFND -> AFD mín':
-
-            if AFND1 == True : 
-
-                automata1_min = AFNDtoAFD(automata1, AFND1)
-                imprimirAutomata(automata1_min, tipo2)
-                
-                message = 'El automata 1 ha sido convertido a su equivalente AFD y minimizado'
-                
-                print(bcolors.OKGREEN+message+bcolors.ENDC+'\n')
             
-            else:
-                
-                automata1_min = AFNDtoAFD(automata1, AFND1)
-                
-                message = 'El automata 1 ya es AFD, pero ha sido minimizado'
-                
-                print(bcolors.FAIL+message+bcolors.ENDC+'\n')
+    return render_template('informe.html', inputs = inputs, output1 = output1, output2 = output2, message = message, automata1 = au1, automata2 = au2, automata_complemento1=automata_complemento1, automata_complemento2=automata_complemento2, automataUnion=automataUnion, automata_concatenacion=automata_concatenacion, automata_interseccion=automata_interseccion)
 
-        if request.form.get('AFNDtoAFD2', True) == 'AFND -> AFD mín':
-
-            if AFND2 == True :
-
-                automata2_min = AFNDtoAFD(automata2, AFND2)
-                imprimirAutomata(automata2_min, tipo2)
-                
-                message = 'El automata 2 ha sido convertido a su equivalente AFD y minimizado'
-                
-                print(bcolors.OKGREEN+message+bcolors.ENDC+'\n')
-            
-            else:
-
-                automata2_min = AFNDtoAFD(automata2, AFND2)
-                
-                message = 'El automata 2 ya es AFD, pero ha sido minimizado'
-                
-                print(bcolors.FAIL+message+bcolors.ENDC+'\n')
-        
-        if request.form.get('complemento1', True) == 'Complemento de automata 1' :
-
-            automata_complemento1 = complemento(automata1, AFND1)
-            #imprimirAutomata(automata_complemento1, tipo1)
-            
-            return render_template('complemento1.html')
-
-        if request.form.get('complemento2', True) == 'Complemento de automata 2' :
-
-            automata_complemento2 = complemento(automata2, AFND2)
-            #imprimirAutomata(automata_complemento2, tipo2)
-            
-            return render_template('complemento2.html')
-
-        if request.form.get('union', True) == 'Unión entre 1 y 2' :
-
-            automataUnion = []
-            automataUnion = union(automata1, AFND1, automata2, AFND2)
-            imprimirAutomata(automataUnion[0], 'automataUnion[1]')
-            draw(automataUnion[0],automataUnion[1],'union')
-
-            return render_template('union.html')
-
-        if request.form.get('concatenacion', True) == 'Concatenación entre 1 y 2' :
-
-            automata_concatenacion = concatenacion(automata1, AFND1, automata2, AFND2)
-
-            #imprimirAutomata(automata_concatenacion, tipo2)
-
-            return render_template('concatenacion.html')
-
-        if request.form.get('interseccion', True) == 'Intersección entre 1 y 2' :
-
-            automata_interseccion = interseccion(automata1, AFND1, automata2, AFND2)
-
-            #imprimirAutomata(automata_interseccion, tipo2)
-
-            return render_template('interseccion.html')
-    
-    return render_template('automatas.html', inputs = inputs, output1 = output1, output2 = output2, message = message, automata1 = au1, automata2 = au2)
 
 
 if __name__ == '__main__':

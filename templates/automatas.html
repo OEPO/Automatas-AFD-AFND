@@ -1,60 +1,45 @@
-{% extends "layout.html" %}
-{% block content %}
+{% extends "layout.html" %} {% block content %}
 
 
 <div class="logmod__wrapper">
     <div class="logmod__heading">
-                    <h1>Automatas</h1>
-                    <div class = "automata">
-                        <img src="data:image/png;base64,{{automata1|safe}}" alt="El automata generado" height="200" />
-                        <p>
-                            <form action = "", method = "POST">
-                                <input Class="btn blue-grey" type = "submit" name = "AFNDtoAFD1" value = "AFND &rarr; AFD mín"/>
-                                <input Class="btn blue-grey" type = "submit" name = "complemento1" value = "Complemento de automata 1"/>
-                            </form>
-                        </p>
-                        <p>
-                            <form action = "", method = "POST">
-                                {{ inputs.inputString1 }}
-                                {{ inputs.submit(Class="btn grey") }}
-                            </form>
-                        </p>
-                        {% if output1 %}
-                        <p class = "output">
-                            {{ output1 }}
-                        </p>
-                        {% endif %}
-                    </div>
-                    <hr style="width:75%;">
-                    <div class = "automata">
-                        <img src="data:image/png;base64,{{automata2|safe}}" alt="El automata generado" height="200" />
-                        <p>
-                            <form action = "", method = "POST">
-                                <input Class="btn blue-grey" type = "submit" name = "AFNDtoAFD2" value = "AFND &rarr; AFD mín"/>
-                                <input Class="btn blue-grey" type = "submit" name = "complemento2" value = "Complemento de automata 2"/>
-                            </form>
-                        </p>
-                        <p>
-                            <form action = "", method = "POST">
-                                {{ inputs.inputString2 }}
-                                {{ inputs.submit(Class="btn grey") }}
-                            </form>
-                        </p>
-                        {% if output2 %}
-                        <p class = "output">
-                            {{ output2 }}  
-                        </p>
-                        {% endif %}
-                    </div>
-                    <hr style="width:75%;">
-                    <div>
-                        <form action = "", method = "POST">
-                            
-                            <input Class="btn blue-grey" type = "submit" name = "union" value = "Unión entre 1 y 2"/>
-                            <input Class="btn blue-grey" type = "submit" name = "concatenacion" value = "Concatenación entre 1 y 2"/>
-                            <input Class="btn blue-grey" type = "submit" name = "interseccion" value = "Intersección entre 1 y 2"/>
-                        </form>
-                    </div>           
+        <h1>Automatas</h1>
+        <div class="automata">
+            <img src="data:image/png;base64,{{automata1|safe}}" alt="El automata generado" height="200" />
+
+            <p>
+                <form action="" , method="POST">
+                    {{ inputs.inputString1 }} {{ inputs.submit(Class="btn grey") }}
+                </form>
+            </p>
+            {% if output1 %}
+            <p class="output">
+                {{ output1 }}
+            </p>
+            {% endif %}
+        </div>
+        <hr style="width:75%;">
+        <div class="automata">
+            <img src="data:image/png;base64,{{automata2|safe}}" alt="El automata generado" height="200" />
+
+            <p>
+                <form action="" , method="POST">
+                    {{ inputs.inputString2 }} {{ inputs.submit(Class="btn grey") }}
+                </form>
+            </p>
+            {% if output2 %}
+            <p class="output">
+                {{ output2 }}
+            </p>
+            {% endif %}
+        </div>
+        <hr style="width:75%;">
+        <div>
+            <form action="" , method="POST">
+
+                <input Class="btn blue-grey" type="submit" name="Informe" value="Informe" />
+            </form>
+        </div>
     </div>
 </div>
 

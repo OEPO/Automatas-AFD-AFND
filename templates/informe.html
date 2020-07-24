@@ -1,0 +1,92 @@
+{% extends "layout.html" %} {% block content %}
+
+
+<div class="logmod__wrapper">
+    <div class="logmod__heading">
+        <h1>Automatas</h1>
+        <h4>Automata 1</h4>
+        <div class="automata">
+            <img src="data:image/png;base64,{{automata1|safe}}" alt="El automata generado" height="200" /> {% if output1 %}
+            <p class="output">
+                {{ output1 }}
+            </p>
+            {% endif %}
+        </div>
+        <hr style="width:75%;">
+        <h4>Automata 2</h4>
+        <div class="automata">
+            <img src="data:image/png;base64,{{automata2|safe}}" alt="El automata generado" height="200" /> {% if output2 %}
+            <p class="output">
+                {{ output2 }}
+            </p>
+            {% endif %}
+        </div>
+
+    </div>
+</div>
+<div class="logmod__wrapper">
+    <div class="logmod__heading">
+        <h1>Complementos</h1>
+        <h6>Intercambio de estados finales por estadon no finales</h6>
+        <h1> </h1>
+        <h4>Complemento automata 1</h4>
+        <div class="automata">
+            <img src="data:image/png;base64,{{automata_complemento1|safe}}" alt="automata complemento 1" height="200" /> {% if output2 %}
+            <p class="output">
+                {{ output2 }}
+            </p>
+            {% endif %}
+        </div>
+        <hr style="width:75%;">
+        <h4>Complemento automata 2</h4>
+        <div class="automata">
+            <img src="data:image/png;base64,{{automata_complemento2|safe}}" alt="automata complemento 2" height="200" /> {% if output2 %}
+            <p class="output">
+                {{ output2 }}
+            </p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<div class="logmod__wrapper">
+    <div class="logmod__heading">
+        <h4>Union automatas</h4>
+        <h6>descripcion union</h6>
+        <div class="automata">
+            <img src="data:image/png;base64,{{automataUnion|safe}}" alt="automata union " height="200" /> {% if output2 %}
+            <p class="output">
+                {{ output2 }}
+            </p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<div class="logmod__wrapper">
+    <div class="logmod__heading">
+        <h4>Concatenacion automatas</h4>
+        <h6>descripcion concatenacion</h6>
+        <div class="automata">
+            <img src="data:image/png;base64,{{automata_concatenacion|safe}}" alt="automata concatenacion" height="200" /> {% if output2 %}
+            <p class="output">
+                {{ output2 }}
+            </p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<div class="logmod__wrapper">
+    <div class="logmod__heading">
+        <h4>Interseccion automatas </h4>
+        <h6>descripcion interseccion</h6>
+        <div class="automata">
+            <img src="data:image/png;base64,{{automata_interseccion|safe}}" alt="automata interseccion" height="200" /> {% if output2 %}
+            <p class="output">
+                {{ output2 }}
+            </p>
+            {% endif %}
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

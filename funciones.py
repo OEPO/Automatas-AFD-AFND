@@ -75,9 +75,9 @@ def AFNDtoAFD (automata, tipo):
   if tipo:
     dfa = DFA.from_nfa(automata) 
     minimal_dfa = dfa.minify()
-    return minimal_dfa
+    return minimal_dfa, False
   else: 
-    return automata
+    return automata, tipo
 
 def AFDtoAFND (automata, tipo):
   if tipo==False:
