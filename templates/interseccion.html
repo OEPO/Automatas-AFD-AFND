@@ -1,6 +1,30 @@
 {% extends "layout.html" %} {% block content %}
 
-
-<h1>ESTAMOS EN EL TEMPLATE DE INTERSECCIÓN</h1>
+<div class="logmod__wrapper">
+	<div class="logmod__heading">
+		<div class = "automata">
+			<img src="data:image/png;base64,{{interseccion|safe}}" alt="La unión entre los 2 automatas" height="420" />
+			<p>
+				<form action = "", method = "POST">
+					<input Class="btn blue-grey" type = "submit" name = "minifyInter" value = "AFD mínimo"/>
+				</form>
+			</p>
+			{% if message0 %}
+			<div class = "alert {{ alerta }}", role="alert">
+				{{ message0 }}
+			</div>
+			{% endif %}
+			<p>
+				<form action = "", method = "POST">
+					{{ inputs.inputInter }}
+					{{ inputs.submit(Class="btn grey") }}
+				</form>
+			</p> 
+		</div>
+	
+	
+	</div>
+	
+</div>	
 
 {% endblock %}

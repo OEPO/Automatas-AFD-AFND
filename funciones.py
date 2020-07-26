@@ -83,7 +83,7 @@ def AFNDtoAFD(automata) :
   
   dfa = DFA.from_nfa(automata)
     
-  return dfa.minify()
+  return dfa
 
 def AFDtoAFND(automata) :
   
@@ -137,14 +137,14 @@ def union(automata1, tipo1, automata2, tipo2) :
       automata1 = AFDtoAFND(automata1)
       return union(automata1, True, automata2, True)
 
-def complemento(automata, tipo):  
+def complemento(automata):  
+  
+  newFinales = []
+  finales = list(automata.final_states)
+  estados = list(automata.states)
   
   if len(finales) < len(estados) :
-    
-    newFinales = []
-    finales = list(automata.final_states)
-    estados = list(automata.states)
-    
+  
     for i in estados :
       
       if i not in finales :
@@ -155,9 +155,9 @@ def complemento(automata, tipo):
     
     CDFA = [set(automata.states),set(automata.input_symbols),automata.transitions.copy(),automata.initial_state,newFinales]
     
-    if validar(CDFA, tipo) == True :
+    if validar(CDFA, False) == True :
 
-      return crear(CDFA, tipo)
+      return crear(CDFA, False)
     
     else :
       
@@ -209,35 +209,50 @@ def concatenacion(automata1, tipo1, automata2, tipo2):  # entran 2 NFA y no se s
       automata1, tipo1 = AFDtoAFND (automata1, tipo1)
       return concatenacion(automata1, tipo1, automata2, tipo2)
     
-def interseccion (automata1, tipo1, automata2, tipo2): # ingresan 2 automatas afd y salen 1 afnd 
+def interseccion (automata1, tipo1, automata2, tipo2) : # ingresan 2 automatas afd y salen 1 afnd 
   
-  return print('en progreso')
-  #input_symbols = []
-  #states = []
+  if len(list(automata1.final_states)) < len(list(automata1.states)) and len(list(automata2.final_states)) < len(list(automata2.states)) :
   
-  #if tipo1 == False and tipo2 == False :
+    if tipo1 == False and tipo2 == False :
 
-    #for i in automata1.input_symbols :
+      automata1 = complemento(automata1)
+      automata2 = complemento(automata2)
+
+      aux = union(automata1, False, automata2, False)
+    
+      interseccion = complemento(AFNDtoAFD(aux))
       
-      #for j in automata2.input_symbols :
-        
-        #if i == j and (i not in input_symbols) and (j not in input_symbols) :
-          
-          #input_symbols.append(i)
-
+      return interseccion
     
-    #states = set(states)
-    #input_symbols = set(input_symbols)
+    else :
+
+      if tipo1 == True :
+
+        automata1 = AFNDtoAFD(automata1)
+        automata1 = complemento(automata1)
     
-    #IntSet = [states, input_symbols , transitions2, 'q0r0', final_states2]
+      if tipo2 == True :
 
-    #validacion = validar(IntSet, False)
+        automata2 = AFNDtoAFD(automata2)
+        automata2 = complemento(automata2)
 
-    #if validacion == True : 
-
-      #InterAutomata = crear(IntSet, False)
+      aux = union(automata1, False, automata2, False)
     
-    #print(bcolors.WARNING+str(lang)+bcolors.ENDC)
+      interseccion = complemento(AFNDtoAFD(aux))
+ 
+      if validar(interseccion, False) == True :
+
+        return interseccion
+
+      else :
+
+        return automata1
+
+  else :
+  
+    return union(automata1, tipo1, automata2, tipo2)
+
+#return print('en progreso')
   
 #Funciones para graficar automata
 def imprimirAutomata(automata, tipo):
@@ -256,13 +271,13 @@ def draw(automata, tipo, nombre):
   g.graph_attr['rankdir'] = 'LR'
   g.node('ini', shape="point")
 
-  for e in automata.states : # <- 
+  for e in list(automata.states):
     
-    if e in automata.final_states : 
+    if e in list(automata.final_states) : 
       
       g.node(e, shape="doublecircle") 
         
-    if e == automata.initial_state : 
+    if e in [automata.initial_state] : 
           
         g.edge('ini', e)
 
@@ -276,7 +291,7 @@ def draw(automata, tipo, nombre):
           
       for i in range(len(inputs)) :
         
-        g.edge(k, v[i], label=str(inputs[i])) #
+        g.edge(k, v[i], label=str(inputs[i]))
     
   else:
 
@@ -289,7 +304,6 @@ def draw(automata, tipo, nombre):
         aux = k2
         
         if k2 == '' :
-          
           aux = 'ε'
         
         for i in range(len(v)):

@@ -39,14 +39,22 @@ class Transiciones(FlaskForm):
     addtrans1 = SubmitField('Agregar transición')
     addtrans2 = SubmitField('Agregar transición')
 
-class inputString(FlaskForm):
+class inputStrings(FlaskForm) :
 
     inputString1 = StringField('Cadena de Entrada', validators = [])
     inputString2 = StringField('Cadena de Entrada', validators = [])
+    inputUnion = StringField('Cadena de Entrada', validators = [])
+    inputInter = StringField('Cadena de Entrada', validators = [])
 
     submit = SubmitField('Ingresar Cadena')
 
-class inputStringUnion(FlaskForm):
+class inputStringUnion(FlaskForm) :
+
+    inputString = StringField('Cadena de Entrada', validators = [])
+
+    submit = SubmitField('Ingresar Cadena')
+
+class inputStringInter(FlaskForm) :
 
     inputString = StringField('Cadena de Entrada', validators = [])
 

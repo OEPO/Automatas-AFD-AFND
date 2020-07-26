@@ -1,6 +1,6 @@
 from config import Config
 from flask import Flask, render_template, request, redirect, url_for, send_file
-from forms import Form, Transiciones, inputString, bcolors, inputStringUnion
+from forms import Form, Transiciones, inputStrings, bcolors #inputString
 from funciones import validar, crear, leer, AFNDtoAFD, AFDtoAFND, union, complemento, concatenacion, interseccion, imprimirAutomata, draw, validarInput
 
 #Para graficar
@@ -442,8 +442,7 @@ def automatas() :
     message0 = ''
     message1 = ''
     message2 = ''
-    inputs = inputString()
-    inputUnion = inputStringUnion()
+    inputs = inputStrings()
 
     alerta = 'alert-success'
 
@@ -521,7 +520,7 @@ def automatas() :
 
                 if len(list(automata1.final_states)) < len(list(automata1.states)) :
                 
-                    varGlobales['automata1'] = complemento(automata1, AFND1)
+                    varGlobales['automata1'] = complemento(automata1)
 
                     message1 = 'Se ha obtenido el complemento del Automata 1.'
 
@@ -543,7 +542,7 @@ def automatas() :
 
                 if len(list(automata2.final_states)) < len(list(automata2.states)) :
                 
-                    varGlobales['automata2'] = complemento(automata2, AFND2)
+                    varGlobales['automata2'] = complemento(automata2)
 
                     message2 = 'Se ha obtenido el complemento del Automata 2.'
 
@@ -559,7 +558,7 @@ def automatas() :
                 
                 message2 = 'El Automata 2 es AFND.'
 
-        if request.form.get('union', True) == 'Unión entre 1 y 2' or inputUnion.inputString.data or request.form.get('AFNDtoAFDUnion', True) == 'AFND a su AFD mínimo' :
+        if request.form.get('union', True) == 'Unión entre 1 y 2' or inputs.inputUnion.data or request.form.get('AFNDtoAFDUnion', True) == 'AFND a su AFD mínimo' :
 
             global automataUnion
                 
@@ -577,23 +576,23 @@ def automatas() :
 
                 tipoUnion = False
             
-            if inputUnion.inputString.data : 
+            if inputs.inputUnion.data : 
                 
-                if validarInput(automataUnion, inputUnion.inputString.data) == True : 
+                if validarInput(automataUnion, inputs.inputUnion.data) == True : 
 
-                    message0 = leer(automataUnion, inputUnion.inputString.data)
+                    message0 = leer(automataUnion, inputs.inputUnion.data)
 
                 else :
                     
                     alerta = 'alert-danger'
                 
-                    message0 = 'La cadena "'+str(inputUnion.inputString.data)+'" no es válida para el automata.'
+                    message0 = 'La cadena "'+str(inputs.inputUnion.data)+'" no es válida para el automata.'
 
-            auu = base64.b64encode(draw(automataUnion,tipoUnion,'union')).decode('utf-8')
+            auU = base64.b64encode(draw(automataUnion,tipoUnion,'union')).decode('utf-8')
             
-            imprimirAutomata(automataUnion,'$$$$$$$$$$$$$$$$$$$$ AFND Union $$$$$$$$$$$$$$$$$$$$$')
+            imprimirAutomata(automataUnion,str(tipoUnion))
             
-            return render_template('union.html', union = auu, message0 = message0, alerta = alerta, inputUnion = inputUnion)
+            return render_template('union.html', union = auU, message0 = message0, alerta = alerta, inputs = inputs)
         
         if request.form.get('concatenacion', True) == 'Concatenación entre 1 y 2' :
 
@@ -601,11 +600,31 @@ def automatas() :
 
             return render_template('concatenacion.html')
 
-        if request.form.get('interseccion', True) == 'Intersección entre 1 y 2' :
+        if request.form.get('interseccion', True) == 'Intersección entre 1 y 2' or inputs.inputInter.data or request.form.get('minifyInter', True) == 'AFD mínimo' :
 
-            automata_interseccion = interseccion(automata1, AFND1, automata2, AFND2)
+            global automataInter
+            
+            if request.form.get('interseccion', True) == 'Intersección entre 1 y 2' :
+                
+                automataInter = interseccion(automata1, AFND1, automata2, AFND2)
 
-            return render_template('interseccion.html')
+            if inputs.inputInter.data : 
+
+                if validarInput(automataInter, inputs.inputInter.data) == True : 
+
+                    message0 = leer(automataInter, inputs.inputInter.data)
+
+                else :
+                    
+                    alerta = 'alert-danger'
+                
+                    message0 = 'La cadena "'+str(inputs.inputInter.data)+'" no es válida para el automata.'
+            
+            auI = base64.b64encode(draw(automataInter,False,'interseccion')).decode('utf-8')
+            
+            imprimirAutomata(automataInter,'$$$$$$$$$$$$$$$$$$$$ Interseccion $$$$$$$$$$$$$$$$$$$$$')
+            
+            return render_template('interseccion.html', interseccion = auI, message0 = message0, alerta = alerta, inputs = inputs)
         
     imprimirAutomata(automata1, tipo1)
     imprimirAutomata(automata2, tipo2)
@@ -613,7 +632,7 @@ def automatas() :
     au1 = base64.b64encode(draw(automata1,AFND1,'automata1')).decode('utf-8')
     au2 = base64.b64encode(draw(automata2,AFND2,'automata2')).decode('utf-8')
     
-    return render_template('automatas.html', inputs = inputs, message1 = message1,  message2 = message2, automata1 = au1, automata2 = au2, alerta = alerta, inputUnion = inputUnion)
+    return render_template('automatas.html', inputs = inputs, message1 = message1,  message2 = message2, automata1 = au1, automata2 = au2, alerta = alerta)
 
 
 if __name__ == '__main__':
