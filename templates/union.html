@@ -1,13 +1,28 @@
 {% extends "layout.html" %} {% block content %}
 
-
-<h1>ESTAMOS EN EL TEMPLATE DE UNIÓN</h1>
 <div class="logmod__wrapper">
-	<div class="logmod__wrapper">
-		<div class="jumbotron">
-			<img src="../static/union.png" alt="La unión entre los 2 automatas" height="200" />
+	<div class="logmod__heading">
+		<div class = "automata">
+			<img src="data:image/png;base64,{{union|safe}}" alt="La unión entre los 2 automatas" height="420" />
+			<p>
+				<form action = "", method = "POST">
+					<input Class="btn blue-grey" type = "submit" name = "AFNDtoAFDUnion" value = "AFND a su AFD mínimo"/>
+				</form>
+			</p>
+			{% if message0 %}
+			<div class = "alert {{ alerta }}", role="alert">
+				{{ message0 }}
+			</div>
+			{% endif %}
+			<p>
+				<form action = "", method = "POST">
+					{{ inputUnion.inputString }}
+					{{ inputUnion.submit(Class="btn grey") }}
+				</form>
+			</p> 
 		</div>
-		
+	
+	
 	</div>
 	
 </div>		

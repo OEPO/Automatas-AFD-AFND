@@ -1,7 +1,7 @@
 from config import Config
 from flask import Flask, render_template, request, redirect, url_for, send_file
-from forms import Form, Transiciones, inputString, bcolors
-from funciones import validar, crear, leer, AFNDtoAFD, AFDtoAFND, union, complemento, concatenacion, interseccion, imprimirAutomata, draw
+from forms import Form, Transiciones, inputString, bcolors, inputStringUnion
+from funciones import validar, crear, leer, AFNDtoAFD, AFDtoAFND, union, complemento, concatenacion, interseccion, imprimirAutomata, draw, validarInput
 
 #Para graficar
 import os
@@ -152,15 +152,15 @@ def index():
             
             for i in range(form.cantidad2.data):
                 
-                transitions2.update({'r'+str(i) : { '': ''} } )
-                aux0.append('r'+str(i))
+                transitions2.update({'p'+str(i) : { '': ''} } )
+                aux0.append('p'+str(i))
                 
                 for j in range(len(alfabeto2)-1):
                     
-                    aux1 = transitions2.pop('r'+str(i))
+                    aux1 = transitions2.pop('p'+str(i))
                     aux1.pop('', -1)
                     aux1.update( { alfabeto2[j+1] : '' } )  
-                    transitions2.update( {'r'+str(i) : aux1 } )
+                    transitions2.update( {'p'+str(i) : aux1 } )
         
         else:
             
@@ -173,11 +173,11 @@ def index():
             
             for i in range(form.cantidad2.data):
                 
-                aux0.append('r'+str(i))
-                transitions2.update( {'r'+str(i) : { '': { } } } )
-                aux1 = transitions2.pop('r'+str(i))
+                aux0.append('p'+str(i))
+                transitions2.update( {'p'+str(i) : { '': { } } } )
+                aux1 = transitions2.pop('p'+str(i))
                 aux1.pop('',-1)
-                transitions2.update( { 'r'+str(i) : aux1 } )
+                transitions2.update( { 'p'+str(i) : aux1 } )
         
         states2 = set(aux0)
         
@@ -202,9 +202,9 @@ def index():
         trans.destino1.choices = [(i,'q'+str(i-1)) for i in range(len(transitions1)+1)]
         trans.origen1.choices[0] = (0,'--')
         trans.destino1.choices[0] = (0,'--')
-        trans.origen2.choices = [(i,'r'+str(i-1)) for i in range(len(transitions2)+1)]   
+        trans.origen2.choices = [(i,'p'+str(i-1)) for i in range(len(transitions2)+1)]   
         trans.input2.choices = [(alfabeto2[i],alfabeto2[i]) for i in range(len(alfabeto2))]
-        trans.destino2.choices = [(i,'r'+str(i-1)) for i in range(len(transitions2)+1)]
+        trans.destino2.choices = [(i,'p'+str(i-1)) for i in range(len(transitions2)+1)]
         trans.origen2.choices[0] = (0,'--')
         trans.destino2.choices[0] = (0,'--')
         
@@ -266,10 +266,10 @@ def index():
             
                 if AFND2 == False:
                 
-                    aux = transitions2.pop('r'+str(int(trans.origen2.data)-1))
+                    aux = transitions2.pop('p'+str(int(trans.origen2.data)-1))
                     aux.pop('',-1)
-                    aux.update({trans.input2.data : 'r'+str(int(trans.destino2.data)-1) })
-                    transitions2.update( {'r'+str(int(trans.origen2.data)-1) : aux } )
+                    aux.update({trans.input2.data : 'p'+str(int(trans.destino2.data)-1) })
+                    transitions2.update( {'p'+str(int(trans.origen2.data)-1) : aux } )
             
                 else:
                 
@@ -277,27 +277,27 @@ def index():
 
                         trans.input2.data = ''
 
-                    aux = transitions2.pop('r'+str(int(trans.origen2.data)-1))
+                    aux = transitions2.pop('p'+str(int(trans.origen2.data)-1))
                 
                     if trans.input2.data not in aux.keys() :
                     
-                        aux.update( { trans.input2.data : { 'r'+str(int(trans.destino2.data)-1) } } )
-                        transitions2.update( { 'r'+str(int(trans.origen2.data)-1) : aux } )
+                        aux.update( { trans.input2.data : { 'p'+str(int(trans.destino2.data)-1) } } )
+                        transitions2.update( { 'p'+str(int(trans.origen2.data)-1) : aux } )
                 
                     else:
                     
                         aux0 = aux.pop(trans.input2.data)
                         aux1 = list(aux0)
-                        aux1.append('r'+str(int(trans.destino2.data)-1))
+                        aux1.append('p'+str(int(trans.destino2.data)-1))
                         aux1 = set(aux1)
                         aux.update( { trans.input2.data : aux1 } )
-                        transitions2.update( { 'r'+str(int(trans.origen2.data)-1) : aux } )
+                        transitions2.update( { 'p'+str(int(trans.origen2.data)-1) : aux } )
             
-                message2 = 'Transicion (r'+str(int(trans.origen2.data)-1)+', '+'"'+trans.input2.data+'"'+', r'+str(int(trans.destino2.data)-1)+') en automata 2 ['+tipo2+'] agregada.'
+                message2 = 'Transicion (p'+str(int(trans.origen2.data)-1)+', '+'"'+trans.input2.data+'"'+', p'+str(int(trans.destino2.data)-1)+') en automata 2 ['+tipo2+'] agregada.'
             
                 if trans.final2.data == True :
                 
-                    qf = 'r'+str(int(trans.destino2.data)-1)
+                    qf = 'p'+str(int(trans.destino2.data)-1)
                     est_finales2.append(qf)
                     final_states2 = set(est_finales2)
 
@@ -315,7 +315,7 @@ def index():
         
         
         sets1 = [states1, input_symbols1, transitions1, 'q0', final_states1]
-        sets2 = [states2, input_symbols2, transitions2, 'r0', final_states2]
+        sets2 = [states2, input_symbols2, transitions2, 'p0', final_states2]
     
         validacion1 = validar(sets1,AFND1)
         validacion2 = validar(sets2,AFND2)
@@ -403,7 +403,7 @@ def index():
                 automata1 = crear(sets1, AFND1)
                 automata2 = crear(sets2, AFND2)
                 
-                print(f'{bcolors.OKGREEN}Los automatas han sido creados satisfactoriamente.{bcolors.ENDC}')
+                print(f'{bcolors.OKGREEN}Los automatas han sido creados satisfactoriamente.\n{bcolors.ENDC}')
                 
                 return redirect('automatas')
             
@@ -439,10 +439,13 @@ def automatas() :
         
         return redirect('/')
 
-    message = ''
-    output1 = ''
-    output2 = ''
+    message0 = ''
+    message1 = ''
+    message2 = ''
     inputs = inputString()
+    inputUnion = inputStringUnion()
+
+    alerta = 'alert-success'
 
     varGlobales = globals()
     
@@ -450,88 +453,157 @@ def automatas() :
         
         if inputs.inputString1.data :
             
-            output1 = leer(automata1, inputs.inputString1.data)
+            if validarInput(automata1, inputs.inputString1.data) == True : 
+                
+                message1 = leer(automata1, inputs.inputString1.data)
+            
+            else :
+
+                alerta = 'alert-danger'
+                
+                message1 = 'La cadena "'+str(inputs.inputString1.data)+'" no es válida para el automata.'
     
         if inputs.inputString2.data :
             
-            output2 = leer(automata2, inputs.inputString2.data)
+            if validarInput(automata2, inputs.inputString2.data) == True : 
+                
+                message2 = leer(automata2, inputs.inputString2.data)
+            
+            else :
+
+                alerta = 'alert-danger'
+
+                message2 = 'La cadena "'+str(inputs.inputString2.data)+'" no es válida para el automata.'
     
-        if request.form.get('AFNDtoAFD1', True) == 'AFND -> AFD mín':
+        if request.form.get('AFNDtoAFD1', True) == 'AFND a su AFD mínimo':
 
             if AFND1 == True : 
 
-                automata1_min = AFNDtoAFD(automata1, AFND1)
-                imprimirAutomata(automata1_min, tipo2)
+                varGlobales['automata1'] = AFNDtoAFD(automata1)
                 
-                message = 'El automata 1 ha sido convertido a su equivalente AFD y minimizado'
+                varGlobales['AFND1'] = False
                 
-                print(bcolors.OKGREEN+message+bcolors.ENDC+'\n')
+                message1 = 'El automata 1 ha sido convertido a su equivalente AFD y minimizado'
+                
+                print(bcolors.OKGREEN+message1+bcolors.ENDC+'\n')
             
             else:
                 
-                automata1_min = AFNDtoAFD(automata1, AFND1)
+                alerta = 'alert-danger'
                 
-                message = 'El automata 1 ya es AFD, pero ha sido minimizado'
+                message1 = 'El automata 1 ya es AFD'
                 
-                print(bcolors.FAIL+message+bcolors.ENDC+'\n')
-
-        if request.form.get('AFNDtoAFD2', True) == 'AFND -> AFD mín':
+                print(bcolors.WARNING+message1+bcolors.ENDC+'\n')
+        
+        if request.form.get('AFNDtoAFD2', True) == 'AFND a su AFD mínimo':
 
             if AFND2 == True :
+                
+                varGlobales['automata2'] = AFNDtoAFD(automata2)
 
-                automata2_min = AFNDtoAFD(automata2, AFND2)
-                imprimirAutomata(automata2_min, tipo2)
+                varGlobales['AFND2'] = False
                 
-                message = 'El automata 2 ha sido convertido a su equivalente AFD y minimizado'
+                message2 = 'El automata 2 ha sido convertido a su equivalente AFD y minimizado.'
                 
-                print(bcolors.OKGREEN+message+bcolors.ENDC+'\n')
+                print(bcolors.OKGREEN+message2+bcolors.ENDC+'\n')
             
             else:
 
-                automata2_min = AFNDtoAFD(automata2, AFND2)
+                alerta = 'alert-danger'
                 
-                message = 'El automata 2 ya es AFD, pero ha sido minimizado'
+                message2 = 'El automata 2 ya es AFD.'
                 
-                print(bcolors.FAIL+message+bcolors.ENDC+'\n')
+                print(bcolors.WARNING+message2+bcolors.ENDC+'\n')
         
         if request.form.get('complemento1', True) == 'Complemento de automata 1' :
 
-            varGlobales['automata1'] = complemento(automata1, AFND1)
+            if AFND1 == False :
+
+                if len(list(automata1.final_states)) < len(list(automata1.states)) :
+                
+                    varGlobales['automata1'] = complemento(automata1, AFND1)
+
+                    message1 = 'Se ha obtenido el complemento del Automata 1.'
+
+                else : 
+
+                    alerta = 'alert-danger'
+                    
+                    message1 = 'El complemento del automata 1 no existe.'
             
-            output1 = 'Se ha obtenido el complemento del Automata 1'
-            
-            imprimirAutomata(automata1, tipo1)
+            else :
+               
+                alerta = 'alert-danger'
+                
+                message1 = 'El Automata 1 es AFND.'
 
         if request.form.get('complemento2', True) == 'Complemento de automata 2' :
 
-            varGlobales['automata2'] = complemento(automata2, AFND2)
+            if AFND2 == False :
 
-            output2 = 'Se ha obtenido el complemento del Automata 2'
+                if len(list(automata2.final_states)) < len(list(automata2.states)) :
+                
+                    varGlobales['automata2'] = complemento(automata2, AFND2)
+
+                    message2 = 'Se ha obtenido el complemento del Automata 2.'
+
+                else :
+
+                    alerta = 'alert-danger'
+                    
+                    message2 = 'El complemento del automata 2 no existe.'
             
-            imprimirAutomata(automata2, tipo2)
+            else :
 
-        if request.form.get('union', True) == 'Unión entre 1 y 2' :
+                alerta = 'alert-danger'
+                
+                message2 = 'El Automata 2 es AFND.'
 
-            automataUnion = []
-            automataUnion = union(automata1, AFND1, automata2, AFND2)
-            imprimirAutomata(automataUnion[0], 'automataUnion[1]')
-            draw(automataUnion[0],automataUnion[1],'union')
+        if request.form.get('union', True) == 'Unión entre 1 y 2' or inputUnion.inputString.data or request.form.get('AFNDtoAFDUnion', True) == 'AFND a su AFD mínimo' :
 
-            return render_template('union.html')
+            global automataUnion
+                
+            global tipoUnion
+            
+            if request.form.get('union', True) == 'Unión entre 1 y 2' :
+                
+                automataUnion = union(automata1, AFND1, automata2, AFND2)
 
+                tipoUnion = True
+            
+            if request.form.get('AFNDtoAFDUnion', True) == 'AFND a su AFD mínimo' and tipoUnion == True:
+
+                automataUnion = AFNDtoAFD(automataUnion)
+
+                tipoUnion = False
+            
+            if inputUnion.inputString.data : 
+                
+                if validarInput(automataUnion, inputUnion.inputString.data) == True : 
+
+                    message0 = leer(automataUnion, inputUnion.inputString.data)
+
+                else :
+                    
+                    alerta = 'alert-danger'
+                
+                    message0 = 'La cadena "'+str(inputUnion.inputString.data)+'" no es válida para el automata.'
+
+            auu = base64.b64encode(draw(automataUnion,tipoUnion,'union')).decode('utf-8')
+            
+            imprimirAutomata(automataUnion,'$$$$$$$$$$$$$$$$$$$$ AFND Union $$$$$$$$$$$$$$$$$$$$$')
+            
+            return render_template('union.html', union = auu, message0 = message0, alerta = alerta, inputUnion = inputUnion)
+        
         if request.form.get('concatenacion', True) == 'Concatenación entre 1 y 2' :
 
             automata_concatenacion = concatenacion(automata1, AFND1, automata2, AFND2)
-
-            #imprimirAutomata(automata_concatenacion, tipo2)
 
             return render_template('concatenacion.html')
 
         if request.form.get('interseccion', True) == 'Intersección entre 1 y 2' :
 
             automata_interseccion = interseccion(automata1, AFND1, automata2, AFND2)
-
-            #imprimirAutomata(automata_interseccion, tipo2)
 
             return render_template('interseccion.html')
         
@@ -541,7 +613,7 @@ def automatas() :
     au1 = base64.b64encode(draw(automata1,AFND1,'automata1')).decode('utf-8')
     au2 = base64.b64encode(draw(automata2,AFND2,'automata2')).decode('utf-8')
     
-    return render_template('automatas.html', inputs = inputs, output1 = output1, output2 = output2, message = message, automata1 = au1, automata2 = au2)
+    return render_template('automatas.html', inputs = inputs, message1 = message1,  message2 = message2, automata1 = au1, automata2 = au2, alerta = alerta, inputUnion = inputUnion)
 
 
 if __name__ == '__main__':

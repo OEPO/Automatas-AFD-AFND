@@ -65,45 +65,49 @@ def validar(sets, tipo):
     del automata
     return False
 
-def leer(automata, entrada):
+def validarInput(automata, entrada):
+  
   if automata.accepts_input(entrada):
-    return 'El automata responde al string finalizando en el estado : '+str(automata.read_input(entrada))#+automata.read_input_stepwise(entrada)
-  else:
-    return 'La cadena ingresada no es válida para el automata.'
-
-def AFNDtoAFD (automata, tipo):
-  if tipo:
-    dfa = DFA.from_nfa(automata) 
-    minimal_dfa = dfa.minify()
-    return minimal_dfa
-  else: 
-    return automata
-
-def AFDtoAFND (automata, tipo):
-  if tipo==False:
-    nfa = NFA.from_dfa(automata) 
-    return nfa, True
-  else: 
-    return automata, tipo 
     
-def union (automata1, tipo1, automata2, tipo2):
+    return True
+  
+  else:
+    
+    return False
+
+def leer(automata, cadena):
+    
+  return 'El automata responde a la cadena finalizando en el estado : '+str(automata.read_input(cadena))#+automata.read_input_stepwise(entrada)
+
+def AFNDtoAFD(automata) :
+  
+  dfa = DFA.from_nfa(automata)
+    
+  return dfa.minify()
+
+def AFDtoAFND(automata) :
+  
+  nfa = NFA.from_dfa(automata)
+
+  return nfa
+  
+def union(automata1, tipo1, automata2, tipo2) :
   # Crear un estado inicial y juntar 2 automatas
   simbolos = []
-  for i in automata1.input_symbols:
+  for i in list(automata1.input_symbols) :
     simbolos.append(i)
-  for a in automata2.input_symbols:
+  for a in (automata2.input_symbols) :
     simbolos.append(a)
-  simbolos.append('')
   estados = []
-  for i in automata1.states:
+  for i in list(automata1.states) :
     estados.append(i)
-  for a in automata2.states:
+  for a in list(automata2.states):
     estados.append(a)
   estados.append('inicio')
   final = []
-  for i in automata1.final_states:
+  for i in list(automata1.final_states) :
     final.append(i)
-  for a in automata2.final_states:
+  for a in list(automata2.final_states) :
     final.append(a)
   dic1 = automata1.transitions.copy()
   dic2 = automata2.transitions.copy()
@@ -117,25 +121,25 @@ def union (automata1, tipo1, automata2, tipo2):
         transitions=dic1,
         initial_state='inicio',
         final_states= set(final)
-        )
-      return automata, tipo1
-  # Formato dfa:  'q0': {'0': 'q0', '1': 'q1'},
-  # Formato nfa:  'q1': {'0': {'q1'}, '1': {'q2'}},
+      )
+      return automata
+  # Formato dfa:  'q0': {'0': 'q0', '1': 'q1'}
+  # Formato nfa:  'q1': {'0': {'q1'}, '1': {'q2'}}
     else:
-      automata2, tipo2 = AFDtoAFND (automata2, tipo2)
-      automata1, tipo1 = AFDtoAFND (automata1, tipo1)
-      return union (automata1, tipo1, automata2, tipo2)
+      automata2 = AFDtoAFND(automata2)
+      automata1 = AFDtoAFND(automata1)
+      return union(automata1, True, automata2, True)
   else:
     if tipo1:
-      automata2, tipo2 = AFDtoAFND (automata2, tipo2)
-      return union (automata1, tipo1, automata2, tipo2)
+      automata2 = AFDtoAFND(automata2)
+      return union(automata1, True, automata2, True)
     if tipo2:
-      automata1, tipo1 = AFDtoAFND (automata1, tipo1)
-      return union (automata1, tipo1, automata2, tipo2)
+      automata1 = AFDtoAFND(automata1)
+      return union(automata1, True, automata2, True)
 
 def complemento(automata, tipo):  
   
-  if tipo == False :
+  if len(finales) < len(estados) :
     
     newFinales = []
     finales = list(automata.final_states)
@@ -191,7 +195,7 @@ def concatenacion(automata1, tipo1, automata2, tipo2):  # entran 2 NFA y no se s
         transitions=dic1,
         initial_state=automata1.initial_state,
         final_states= set(automata2.final_states)
-        )
+      )
       return automata, tipo1
     else:
       automata1, tipo1 = AFDtoAFND (automata1, tipo1)
@@ -239,7 +243,7 @@ def interseccion (automata1, tipo1, automata2, tipo2): # ingresan 2 automatas af
 def imprimirAutomata(automata, tipo):
   
   print (f'{bcolors.OKGREEN}Tipo ['+tipo+']'+bcolors.ENDC)
-  print (f'{bcolors.OKGREEN}Estados iniciales : ', str(automata.initial_state)+bcolors.ENDC)
+  print (f'{bcolors.OKGREEN}Estado inicial : ', str(automata.initial_state)+bcolors.ENDC)
   print (f'{bcolors.OKGREEN}Estados Finales : ', str(automata.final_states)+bcolors.ENDC)
   print (f'{bcolors.OKGREEN}Estados : ', str(automata.states)+bcolors.ENDC)  
   print (f'{bcolors.OKGREEN}Símbolos de Entrada : ', str(automata.input_symbols)+bcolors.ENDC)
@@ -252,17 +256,13 @@ def draw(automata, tipo, nombre):
   g.graph_attr['rankdir'] = 'LR'
   g.node('ini', shape="point")
 
-  for e in list(automata.states):
+  for e in automata.states : # <- 
     
-    if e in list(automata.final_states) : 
+    if e in automata.final_states : 
       
       g.node(e, shape="doublecircle") 
         
-    else:   
-        
-        g.node(e)
-        
-    if e in [automata.initial_state] : 
+    if e == automata.initial_state : 
           
         g.edge('ini', e)
 
@@ -276,7 +276,7 @@ def draw(automata, tipo, nombre):
           
       for i in range(len(inputs)) :
         
-        g.edge(k, v[i], label=str(inputs[i]))
+        g.edge(k, v[i], label=str(inputs[i])) #
     
   else:
 
@@ -289,6 +289,7 @@ def draw(automata, tipo, nombre):
         aux = k2
         
         if k2 == '' :
+          
           aux = 'ε'
         
         for i in range(len(v)):

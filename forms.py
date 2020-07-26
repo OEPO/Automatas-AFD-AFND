@@ -45,3 +45,9 @@ class inputString(FlaskForm):
     inputString2 = StringField('Cadena de Entrada', validators = [])
 
     submit = SubmitField('Ingresar Cadena')
+
+class inputStringUnion(FlaskForm):
+
+    inputString = StringField('Cadena de Entrada', validators = [])
+
+    submit = SubmitField('Ingresar Cadena')
