@@ -31,10 +31,18 @@
 				</p>
 			</form>
 		</div>
-	</div>
+</div>
 
 
-		<div class="logmod__wrapper">
+	<div class="logmod__wrapper">
+		<div class="jumbotron">
+			<strong>IMPORTANTE:</strong>
+			<li>Formato AFD para m estados de n entradas: { q0: {'1' : q0, ... , 'n': qm}, ... , qm: {'1' : q0, ... , 'n': qm} }</li>
+			<li>Formato AFND para m estados de n entradas: : { q0: {'1' : {q0, ... , qm}}, ... , qm: {'n' : {q0, ... , qm}} }</li>
+		</div>
+	</div>	
+
+<div class="logmod__wrapper">
 		<div class="logmod__heading">
 			<h1><strong>Transiciones</strong></h1>
 			</span>A continuacion, ingrese las transiciones de los <strong>Automatas</strong></span>
@@ -87,16 +95,10 @@
 			</form>
 			</a>
 		</div>
-	</div>
+</div>
 
 
 
-<div class="logmod__wrapper">
-	<div class="jumbotron">
-		<strong>IMPORTANTE:</strong>
-		<li>Formato AFD para m estados de n entradas: { q0: {'1' : q0, ... , 'n': qm}, ... , qm: {'1' : q0, ... , 'n': qm} }</li>
-		<li>Formato AFND para m estados de n entradas: : { q0: {'1' : {q0, ... , qm}}, ... , qm: {'n' : {q0, ... , qm}} }</li>
-	</div>
-</div>	
+
 						
 {% endblock %}
