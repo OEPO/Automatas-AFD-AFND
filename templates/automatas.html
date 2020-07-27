@@ -3,58 +3,63 @@
 
 
 <div class="logmod__wrapper">
-    <div class="logmod__heading">
-                    <h1>Automatas</h1>
-                    <div class = "automata">
-                        <img src="data:image/png;base64,{{automata1|safe}}" alt="El automata generado" height="200" />
-                        <p>
-                            <form action = "", method = "POST">
-                                <input Class="btn blue-grey" type = "submit" name = "AFNDtoAFD1" value = "AFND a su AFD mínimo"/>
-                                <input Class="btn blue-grey" type = "submit" name = "complemento1" value = "Complemento de automata 1"/>
-                            </form>
-                        </p>
-                        {% if message1 %}
-                        <div class = "alert {{ alerta }}", role="alert">
-                            {{ message1 }}
-                        </div>
-                        {% endif %}
-                        <p>
-                            <form action = "", method = "POST">
-                                {{ inputs.inputString1 }}
-                                {{ inputs.submit(Class="btn grey") }}
-                            </form>
-                        </p> 
-                    </div>
-                    <hr style="width:75%;">
-                    <div class = "automata">
-                        <img src="data:image/png;base64,{{automata2|safe}}" alt="El automata generado" height="200" />
-                        <p>
-                            <form action = "", method = "POST">
-                                <input Class="btn blue-grey" type = "submit" name = "AFNDtoAFD2" value = "AFND a su AFD mínimo"/>
-                                <input Class="btn blue-grey" type = "submit" name = "complemento2" value = "Complemento de automata 2"/>
-                            </form>
-                        </p>
-                        {% if message2 %}
-                        <div class = "alert {{ alerta }}", role="alert">
-                            {{ message2 }}
-                        </div>
-                        {% endif %}
-                        <p>
-                            <form action = "", method = "POST">
-                                {{ inputs.inputString2 }}
-                                {{ inputs.submit(Class="btn grey") }}
-                            </form>
-                        </p>
-                    </div>
-                    <hr style="width:75%;">
-                    <div>
-                        <form action = "", method = "POST">
-                            
-                            <input Class="btn blue-grey" type = "submit" name = "union" value = "Unión entre 1 y 2"/>
-                            <input Class="btn blue-grey" type = "submit" name = "concatenacion" value = "Concatenación entre 1 y 2"/>
-                            <input Class="btn blue-grey" type = "submit" name = "interseccion" value = "Intersección entre 1 y 2"/>
-                        </form>
-                    </div>           
+    <div class="logmod__heading">  
+        <h1>Automatas</h1>
+        <div class = "automata">
+            <img src="data:image/png;base64,{{automata1|safe}}" alt="El automata generado" height="200" />
+            <p>
+                <form action = "", method = "POST">
+                    <input Class="btn blue-grey" type = "submit" name = "AFNDtoAFD1" value = "AFND a su AFD mínimo"/>
+                    <input Class="btn blue-grey" type = "submit" name = "complemento1" value = "Complemento de automata 1"/>
+                </form>
+            </p>
+            {% if message1 %}
+            <div class = "alert {{ alerta }}", role="alert">
+                 {{ message1 }}
+            </div>
+            {% endif %}
+            <p>
+                <form action = "", method = "POST">
+                    {{ inputs.inputString1 }}
+                    {{ inputs.submit(Class="btn grey") }}
+                </form>
+            </p> 
+        </div>
+        <hr style="width:75%;">
+        {% if message0 %}
+        <div class = "alert {{ alerta }}", role="alert">
+        {{ message0 }}
+        </div>
+        <hr style="width:75%;">
+        {% endif %}  
+        <div class = "automata">
+            <img src="data:image/png;base64,{{automata2|safe}}" alt="El automata generado" height="200" />
+            <p>
+                <form action = "", method = "POST">
+                    <input Class="btn blue-grey" type = "submit" name = "AFNDtoAFD2" value = "AFND a su AFD mínimo"/>
+                    <input Class="btn blue-grey" type = "submit" name = "complemento2" value = "Complemento de automata 2"/>
+                </form>
+            </p>
+            {% if message2 %}
+            <div class = "alert {{ alerta }}", role="alert">
+                {{ message2 }}
+            </div>
+            {% endif %}
+            <p>
+                <form action = "", method = "POST">
+                    {{ inputs.inputString2 }}
+                    {{ inputs.submit(Class="btn grey") }}
+                </form>
+            </p>
+        </div>
+        <hr style="width:75%;">
+        <div>
+            <form action = "", method = "POST">             
+                <input Class="btn blue-grey" type = "submit" name = "union" value = "Unión entre 1 y 2"/>
+                <input Class="btn blue-grey" type = "submit" name = "concatenacion" value = "Concatenación entre 1 y 2"/>
+                <input Class="btn blue-grey" type = "submit" name = "interseccion" value = "Intersección entre 1 y 2"/>
+            </form>
+        </div>           
     </div>
 </div>
 

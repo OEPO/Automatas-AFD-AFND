@@ -1,7 +1,7 @@
 from config import Config
 from flask import Flask, render_template, request, redirect, url_for, send_file
 from forms import Form, Transiciones, inputStrings, bcolors #inputString
-from funciones import validar, crear, leer, AFNDtoAFD, AFDtoAFND, union, complemento, concatenacion, interseccion, imprimirAutomata, draw, validarInput
+from funciones import validar, crear, leer, AFNDtoAFD, AFDtoAFND, union, complemento, concatenacion, interseccion, imprimirAutomata, draw, validarInput, validarInter, simplificar
 
 #Para graficar
 import os
@@ -474,7 +474,7 @@ def automatas() :
 
                 message2 = 'La cadena "'+str(inputs.inputString2.data)+'" no es válida para el automata.'
     
-        if request.form.get('AFNDtoAFD1', True) == 'AFND a su AFD mínimo':
+        if request.form.get('AFNDtoAFD1', True) == 'AFND a su AFD mínimo' :
 
             if AFND1 == True : 
 
@@ -482,25 +482,29 @@ def automatas() :
                 
                 varGlobales['AFND1'] = False
                 
-                message1 = 'El automata 1 ha sido convertido a su equivalente AFD y minimizado'
+                message1 = 'El automata 1 ha sido convertido a su equivalente AFD y minimizado.'
                 
                 print(bcolors.OKGREEN+message1+bcolors.ENDC+'\n')
             
             else:
                 
-                alerta = 'alert-danger'
+                alerta = 'alert-warning'
                 
-                message1 = 'El automata 1 ya es AFD'
+                message1 = 'El automata 1 ya es AFD, pero se ha simplificado.'
                 
                 print(bcolors.WARNING+message1+bcolors.ENDC+'\n')
+
+            varGlobales['automata2'] = simplificar(automata2)
         
-        if request.form.get('AFNDtoAFD2', True) == 'AFND a su AFD mínimo':
+        if request.form.get('AFNDtoAFD2', True) == 'AFND a su AFD mínimo' :
 
             if AFND2 == True :
                 
                 varGlobales['automata2'] = AFNDtoAFD(automata2)
 
                 varGlobales['AFND2'] = False
+
+                
                 
                 message2 = 'El automata 2 ha sido convertido a su equivalente AFD y minimizado.'
                 
@@ -508,11 +512,13 @@ def automatas() :
             
             else:
 
-                alerta = 'alert-danger'
+                alerta = 'alert-warning'
                 
-                message2 = 'El automata 2 ya es AFD.'
+                message2 = 'El automata 2 ya es AFD, pero se ha simplificado.'
                 
                 print(bcolors.WARNING+message2+bcolors.ENDC+'\n')
+        
+            varGlobales['automata2'] = simplificar(automata2)
         
         if request.form.get('complemento1', True) == 'Complemento de automata 1' :
 
@@ -600,12 +606,12 @@ def automatas() :
 
             return render_template('concatenacion.html')
 
-        if request.form.get('interseccion', True) == 'Intersección entre 1 y 2' or inputs.inputInter.data or request.form.get('minifyInter', True) == 'AFD mínimo' :
+        if (request.form.get('interseccion', True) == 'Intersección entre 1 y 2' or inputs.inputInter.data or request.form.get('minifyInter', True) == 'AFD mínimo') and validarInter(automata1, automata2) == True :
 
             global automataInter
             
             if request.form.get('interseccion', True) == 'Intersección entre 1 y 2' :
-                
+                  
                 automataInter = interseccion(automata1, AFND1, automata2, AFND2)
 
             if inputs.inputInter.data : 
@@ -626,13 +632,21 @@ def automatas() :
             
             return render_template('interseccion.html', interseccion = auI, message0 = message0, alerta = alerta, inputs = inputs)
         
+        elif validarInter(automata1, automata2) == False and request.form.get('interseccion', True) == 'Intersección entre 1 y 2' :
+
+            alerta = 'alert-danger'
+
+            message0 = 'La intersección entre los dos automatas no existe, debido a que alguno no posee un lenguaje regular para su complemento.'
+
+            print(bcolors.FAIL+message0+bcolors.ENDC)
+    
     imprimirAutomata(automata1, tipo1)
     imprimirAutomata(automata2, tipo2)
 
     au1 = base64.b64encode(draw(automata1,AFND1,'automata1')).decode('utf-8')
     au2 = base64.b64encode(draw(automata2,AFND2,'automata2')).decode('utf-8')
     
-    return render_template('automatas.html', inputs = inputs, message1 = message1,  message2 = message2, automata1 = au1, automata2 = au2, alerta = alerta)
+    return render_template('automatas.html', inputs = inputs, message0 = message0, message1 = message1,  message2 = message2, automata1 = au1, automata2 = au2, alerta = alerta)
 
 
 if __name__ == '__main__':
