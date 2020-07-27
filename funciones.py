@@ -27,7 +27,6 @@ def validarSimbolos(simbolos) :
   simbolos.replace(' ','')
 
   aux = simbolos.split(',')
-  print('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$',simbolos.split(','))
 
   for s in list(simbolos.split(',')) :
 
@@ -99,7 +98,7 @@ def validarInput(automata, entrada):
 
 def leer(automata, cadena):
     
-  return 'El automata responde a la cadena finalizando en el estado : '+str(automata.read_input(cadena))#+automata.read_input_stepwise(entrada)
+  return 'El automata responde a la cadena finalizando en el o los estados : '+str(automata.read_input(cadena))#+automata.read_input_stepwise(entrada)
 
 def simplificar(automata) :
 
@@ -216,22 +215,22 @@ def concatenacion(automata1, tipo1, automata2, tipo2):  # entran 2 NFA y no se s
         initial_state=automata1.initial_state,
         final_states= set(automata2.final_states)
       )
-      return automata, tipo1
+      return automata
     else:
-      automata1, tipo1 = AFDtoAFND (automata1, tipo1)
-      automata2, tipo2 = AFDtoAFND (automata2, tipo2)
-      return concatenacion(automata1, tipo1, automata2, tipo2)
+      automata1 = AFDtoAFND (automata1)
+      automata2 = AFDtoAFND (automata2)
+      return concatenacion(automata1, True, automata2, True)
   else:
     if tipo1:
-      automata2, tipo2 = AFDtoAFND (automata2, tipo2)
-      return concatenacion(automata1, tipo1, automata2, tipo2)
+      automata2 = AFDtoAFND (automata2)
+      return concatenacion(automata1, tipo1, automata2, True)
     if tipo2:
-      automata1, tipo1 = AFDtoAFND (automata1, tipo1)
-      return concatenacion(automata1, tipo1, automata2, tipo2)
+      automata1 = AFDtoAFND (automata1)
+      return concatenacion(automata1, True, automata2, tipo2)
     
 def validarInter(automata1, automata2) :
 
-  if len(list(automata1.final_states)) < len(list(automata1.states)) and len(list(automata2.final_states)) < len(list(automata2.states)) :
+  if len(list(automata1.final_states)) < len(list(automata1.states)) or len(list(automata2.final_states)) < len(list(automata2.states)) :
 
     return True
   
@@ -241,7 +240,7 @@ def validarInter(automata1, automata2) :
 
 def interseccion (automata1, tipo1, automata2, tipo2) : 
   
-  if tipo1 == False and tipo2 == False :
+  if tipo1 == False and tipo2 == False and len(list(automata1.final_states)) < len(list(automata1.states)) and len(list(automata2.final_states)) < len(list(automata2.states)) :
 
     automata1 = complemento(automata1)
     automata2 = complemento(automata2)
@@ -249,36 +248,19 @@ def interseccion (automata1, tipo1, automata2, tipo2) :
     aux = union(automata1, False, automata2, False)
     
     interseccion = complemento(AFNDtoAFD(aux))
-      
+
     return interseccion
-    
+  
   else :
 
-    if tipo1 == True :
+    if len(list(automata1.final_states)) >= len(list(automata1.states)) :
 
-      automata1 = AFNDtoAFD(automata1)
-      automata1 = complemento(automata1)
+      return automata2
     
-    if tipo2 == True :
+    if len(list(automata2.final_states)) >= len(list(automata2.states)) :
 
-      automata2 = AFNDtoAFD(automata2)
-      automata2 = complemento(automata2)
+      return automata1
 
-    aux = union(automata1, False, automata2, False)
-    
-    interseccion = complemento(AFNDtoAFD(aux))
- 
-    if validar(interseccion, False) == True :
-
-      return interseccion
-
-    else :
-
-      return automata1 # caso muy extremo en que la intersección no sea válida
-
-
-#return print('en progreso')
-  
 #Funciones para graficar automata
 def imprimirAutomata(automata, tipo):
   

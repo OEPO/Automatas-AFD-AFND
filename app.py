@@ -261,7 +261,7 @@ def index():
 
                     message1 = message1+' Estado final '+qf+' agregado en los estados finales.'
             
-                trans_message1 = str(transitions1)+', finales '+str(final_states1)
+                trans_message1 = str(transitions1)+', finales = '+str(final_states1)
             
                 print(bcolors.OKGREEN+message1+bcolors.ENDC+' '+bcolors.FAIL+error1+bcolors.ENDC+'\n'+bcolors.OKGREEN+trans_message1+bcolors.ENDC+'\n')
         
@@ -314,7 +314,7 @@ def index():
 
                     message2 = message2+' Estado final '+qf+' agregado en los estados finales.'
                     
-                trans_message2 = str(transitions2)+', finales '+str(final_states2)
+                trans_message2 = str(transitions2)+', finales = '+str(final_states2)
             
                 print(bcolors.OKGREEN+message2+bcolors.ENDC+' '+bcolors.FAIL+error2+bcolors.ENDC+'\n'+bcolors.OKGREEN+trans_message2+bcolors.ENDC+'\n')
 
@@ -649,11 +649,15 @@ def automatas() :
 
                 tipoUnion = True
             
-            if request.form.get('AFNDtoAFDUnion', True) == 'AFND a su AFD mínimo' and tipoUnion == True:
+            if request.form.get('AFNDtoAFDUnion', True) == 'AFND a su AFD mínimo' and tipoUnion == True :
 
                 automataUnion = AFNDtoAFD(automataUnion)
 
                 tipoUnion = False
+
+            elif tipoUnion == False :
+
+                automataUnion = simplificar(automataUnion)
             
             if inputs.inputUnion.data : 
                 
@@ -673,19 +677,65 @@ def automatas() :
             
             return render_template('union.html', union = auU, message0 = message0, alerta = alerta, inputs = inputs)
         
-        if request.form.get('concatenacion', True) == 'Concatenación entre 1 y 2' :
+        if request.form.get('concatenacion', True) == 'Concatenación entre 1 y 2' or inputs.inputCon.data or request.form.get('AFNDtoAFDCon', True) == 'AFND a su AFD mínimo' :
 
-            automata_concatenacion = concatenacion(automata1, AFND1, automata2, AFND2)
+            global automataCon
+                
+            global tipoCon
 
-            return render_template('concatenacion.html')
+            if request.form.get('concatenacion', True) == 'Concatenación entre 1 y 2' :
+                
+                automataCon = concatenacion(automata1, AFND1, automata2, AFND2)
+            
+                tipoCon = True
+            
+            if request.form.get('AFNDtoAFDCon', True) == 'AFND a su AFD mínimo' and tipoCon == True :
 
-        if (request.form.get('interseccion', True) == 'Intersección entre 1 y 2' or inputs.inputInter.data or request.form.get('minifyInter', True) == 'AFD mínimo') and validarInter(automata1, automata2) == True :
+                automataCon = AFNDtoAFD(automataCon)
+
+                tipoCon = False
+
+            elif tipoCon == False :
+
+                automataCon = simplificar(automataCon)
+            
+            if inputs.inputCon.data : 
+                
+                if validarInput(automataCon, inputs.inputCon.data) == True : 
+
+                    message0 = leer(automataCon, inputs.inputCon.data)
+
+                else :
+                    
+                    alerta = 'alert-danger'
+                
+                    message0 = 'La cadena "'+str(inputs.inputCon.data)+'" no es válida para el automata.'
+
+            auC = base64.b64encode(draw(automataCon,tipoCon,'concatenacion')).decode('utf-8')
+            
+            imprimirAutomata(automataCon,'AFND')
+            
+            return render_template('concatenacion.html', concatenacion = auC, message0 = message0, alerta = alerta, inputs = inputs)
+
+        if (request.form.get('interseccion', True) == 'Intersección entre 1 y 2' or inputs.inputInter.data or request.form.get('minifyInter', True) == 'AFND a AFD mínimo') and validarInter(automata1, automata2) == True :
 
             global automataInter
+
+            global tipoInter
             
             if request.form.get('interseccion', True) == 'Intersección entre 1 y 2' :
                   
                 automataInter = interseccion(automata1, AFND1, automata2, AFND2)
+
+                tipoInter = False
+                
+                if len(list(automataInter.states)) == len(list(automata1.states)) :
+
+                    tipoInter = AFND1
+
+                if len(list(automataInter.states)) == len(list(automata2.states)) :
+
+                    tipoInter = AFND2
 
             if inputs.inputInter.data : 
 
@@ -699,13 +749,23 @@ def automatas() :
                 
                     message0 = 'La cadena "'+str(inputs.inputInter.data)+'" no es válida para el automata.'
             
-            if request.form.get('minifyInter', True) == 'AFD mínimo' : 
+            if request.form.get('minifyInter', True) == 'AFND a AFD mínimo' : 
 
-                automataInter = simplificar(automataInter)
+                if tipoInter == True :
+                
+                    automataInter = AFNDtoAFD(automataInter)
 
-                message0 = 'leer(automataInter, inputs.inputInter.data)'
+                    automataInter = simplificar(automataInter)
+                
+                    message0 = 'Se ha simplificado el automata a su AFND mínimo'
+                
+                else :
+                    
+                    automataInter = simplificar(automataInter)
 
-            auI = base64.b64encode(draw(automataInter,False,'interseccion')).decode('utf-8')
+                    message0 = 'El automata ya es AFD pero see ha simplificado a su equivalente mínimo'
+
+            auI = base64.b64encode(draw(automataInter,tipoInter,'interseccion')).decode('utf-8')
             
             imprimirAutomata(automataInter,'AFD')
             
@@ -715,7 +775,7 @@ def automatas() :
 
             alerta = 'alert-danger'
 
-            message0 = 'La intersección entre los dos automatas no existe, debido a que alguno no posee un lenguaje regular para su complemento.'
+            message0 = 'La intersección entre los dos automatas no existe, debido a que ninguno posee un lenguaje regular para su complemento.'
 
             print(bcolors.FAIL+message0+bcolors.ENDC)
     
