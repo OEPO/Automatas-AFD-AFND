@@ -240,8 +240,16 @@ def validarInter(automata1, automata2) :
 
 def interseccion (automata1, tipo1, automata2, tipo2) : 
   
-  if tipo1 == False and tipo2 == False and len(list(automata1.final_states)) < len(list(automata1.states)) and len(list(automata2.final_states)) < len(list(automata2.states)) :
+  if len(list(automata1.final_states)) < len(list(automata1.states)) and len(list(automata2.final_states)) < len(list(automata2.states)) :
+  
+    if tipo1 == True : 
+      
+      automata1 = AFNDtoAFD(automata1)
+    
+    if tipo2 == True :
 
+      automata2 = AFNDtoAFD(automata2)
+    
     automata1 = complemento(automata1)
     automata2 = complemento(automata2)
 
@@ -253,11 +261,11 @@ def interseccion (automata1, tipo1, automata2, tipo2) :
   
   else :
 
-    if len(list(automata1.final_states)) >= len(list(automata1.states)) :
+    if len(list(automata1.final_states)) == len(list(automata1.states)) :
 
       return automata2
     
-    if len(list(automata2.final_states)) >= len(list(automata2.states)) :
+    if len(list(automata2.final_states)) == len(list(automata2.states)) :
 
       return automata1
 

@@ -73,7 +73,7 @@ html {
     height: 100%;
     visibility: visible;
   }
-  .logmod__tabs {
+  .logmod__tabs{
     list-style: none;
     padding: 0;
     margin: 0;
@@ -642,4 +642,7 @@ html {
   }
   .icongit{
     text-align: center;
+  }
+  #trans:target{
+    display: block;
   }
