@@ -38,6 +38,7 @@ def index():
     error0 = ''
     error1 = ''
     error2 = ''
+    
     global switch
     global automata1
     global automata2
@@ -118,6 +119,7 @@ def index():
                 aux0.append('q'+str(i))
                 
                 for j in range(len(alfabeto1)-1):
+                    
                     aux1 = transitions1.pop('q'+str(i))
                     aux1.pop('', -1)
                     aux1.update( { alfabeto1[j+1] : '' } )  
@@ -362,37 +364,101 @@ def index():
 
             color = 'red'
 
-    if request.method == 'POST' and request.form.get('reset1', True) == 'Reiniciar estados finales del Automata 1' :
+    if request.method == 'POST' and request.form.get('reset1', True) == 'Reiniciar transiciones del Automata 1' :
         
-        creacion = False
         validacion1 = False
+        creacion = False
         color = 'red'
         
-        final_states1.clear()
         final_states1 = {}
         est_finales1.clear()
+
+        if AFND1 == False :
+            
+            transitions1 = { '': { }}
+            aux0 = []
+            
+            for i in range(len(list(states1))) :
+                
+                transitions1.update( {'q'+str(i) : { '': '' } } )
+                
+                aux0.append('q'+str(i))
+                
+                for j in range(len(alfabeto1)-1):
+                    
+                    aux1 = transitions1.pop('q'+str(i))
+                    aux1.pop('', -1)
+                    aux1.update( { alfabeto1[j+1] : '' } )  
+                    transitions1.update( {'q'+str(i) : aux1 } )
         
-        message1 = 'Estados finales del automata 1 eliminados.'
+        else:
+            
+            transitions1 = { '': {'' : { }}}
+            aux0 = []
+            
+            for i in range(len(list(states1))):
+                
+                transitions1.update( { 'q'+str(i) : { '': { } } } )
+                aux1 = transitions1.pop('q'+str(i))
+                aux1.pop('',-1)
+                transitions1.update( { 'q'+str(i) : aux1 } )
+                aux0.append('q'+str(i))
+
+        transitions1.pop('', -1)
+        
+        message1 = 'Transiciones del automata 1 reiniciadas.'
         
         trans_message1 = str(transitions1)+', finales '+str(final_states1)
         
-        print(bcolors.FAIL+message1+bcolors.ENDC+'\n')
+        print(bcolors.WARNING+message1+bcolors.ENDC+'\n')
 
-    if request.method == 'POST' and request.form.get('reset2', True) == 'Reiniciar estados finales del Automata 2' :
+    if request.method == 'POST' and request.form.get('reset2', True) == 'Reiniciar transiciones del Automata 2' : #
 
-        creacion = False
         validacion2 = False
+        creacion = False
         color = 'red'
-
-        final_states2.clear()
+        
         final_states2 = {}
         est_finales2.clear()
+
+        if AFND2 == False :
+            
+            transitions2 = { '': { }}
+            aux0 = []
+            
+            for i in range(len(list(states2))) :
+                
+                transitions2.update( {'p'+str(i) : { '': '' } } )
+                
+                aux0.append('p'+str(i))
+                
+                for j in range(len(alfabeto2)-1):
+                    
+                    aux1 = transitions2.pop('p'+str(i))
+                    aux1.pop('', -1)
+                    aux1.update( { alfabeto2[j+1] : '' } )  
+                    transitions2.update( {'p'+str(i) : aux1 } )
         
-        message2 = 'Estados finales del automata 2 eliminados.'
+        else:
+            
+            transitions2 = { '': {'' : { }}}
+            aux0 = []
+            
+            for i in range(len(list(states2))):
+                
+                transitions2.update( { 'p'+str(i) : { '': { } } } )
+                aux1 = transitions2.pop('p'+str(i))
+                aux1.pop('',-1)
+                transitions2.update( { 'p'+str(i) : aux1 } )
+                aux0.append('p'+str(i))
+
+        transitions2.pop('', -1)
+        
+        message2 = 'Transiciones del automata 2 reiniciadas.'
         
         trans_message2 = str(transitions2)+', finales '+str(final_states2)
         
-        print(bcolors.FAIL+message2+bcolors.ENDC+'\n')
+        print(bcolors.WARNING+message2+bcolors.ENDC+'\n')
     
     if request.method == 'POST' and request.form.get('crear', True) == 'Crear Automatas' :
         
@@ -411,13 +477,13 @@ def index():
                 
                 if validacion1 == False :
                 
-                    error1 = 'El automata 1 ingresado no pudo ser creado debido a que no es válido.'
+                    error1 = 'El automata 1 ['+tipo1+'] ingresado no pudo ser creado debido a que no es válido.'
                     
                     print(bcolors.FAIL+error1+bcolors.ENDC+'\n')
     
                 if validacion2 == False :
 
-                    error2 = 'El automata 2 ingresado no pudo ser creado debido a que no es válido.'
+                    error2 = 'El automata 2 ['+tipo2+'] ingresado no pudo ser creado debido a que no es válido.'
                     
                     print(bcolors.FAIL+error2+bcolors.ENDC+'\n')
     
@@ -504,8 +570,6 @@ def automatas() :
 
                 varGlobales['AFND2'] = False
 
-                
-                
                 message2 = 'El automata 2 ha sido convertido a su equivalente AFD y minimizado.'
                 
                 print(bcolors.OKGREEN+message2+bcolors.ENDC+'\n')
@@ -596,7 +660,7 @@ def automatas() :
 
             auU = base64.b64encode(draw(automataUnion,tipoUnion,'union')).decode('utf-8')
             
-            imprimirAutomata(automataUnion,str(tipoUnion))
+            imprimirAutomata(automataUnion,'AFND')
             
             return render_template('union.html', union = auU, message0 = message0, alerta = alerta, inputs = inputs)
         
@@ -626,9 +690,15 @@ def automatas() :
                 
                     message0 = 'La cadena "'+str(inputs.inputInter.data)+'" no es válida para el automata.'
             
+            if request.form.get('minifyInter', True) == 'AFD mínimo' : 
+
+                automataInter = simplificar(automataInter)
+
+                message0 = 'leer(automataInter, inputs.inputInter.data)'
+
             auI = base64.b64encode(draw(automataInter,False,'interseccion')).decode('utf-8')
             
-            imprimirAutomata(automataInter,'$$$$$$$$$$$$$$$$$$$$ Interseccion $$$$$$$$$$$$$$$$$$$$$')
+            imprimirAutomata(automataInter,'AFD')
             
             return render_template('interseccion.html', interseccion = auI, message0 = message0, alerta = alerta, inputs = inputs)
         
