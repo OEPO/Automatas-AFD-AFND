@@ -2,12 +2,9 @@
 {% block content %}
 	
 <div class="logmod__wrapper">
-	<ul class="logmod__tabs">
-		<li data-tabtar="lgm-1"><a href="">Crear AFD | AFND</a></li>
-		<li data-tabtar="lgm-2"><a href="#trans">Transiciones</a></li>
-	</ul>
-	<div class="logmod__tab lgm-1">
+
 		<div class="logmod__heading">
+			<h1>Crear  <strong>AFD | AFND</strong></h1>
 			</span>Porfavor ingrese lo siguiente para los <strong>Automatas</strong></span>
 					<!--Formulario para ingresar estados-->
 			<form action = "", method = "POST">
@@ -34,9 +31,20 @@
 				</p>
 			</form>
 		</div>
-	</div>
-	<div class="logmod__tab lgm-2"  id = "trans">
+</div>
+
+
+	<div class="logmod__wrapper">
+		<div class="jumbotron">
+			<strong>IMPORTANTE:</strong>
+			<li>Formato AFD para m estados de n entradas: { q0: {'1' : q0, ... , 'n': qm}, ... , qm: {'1' : q0, ... , 'n': qm} }</li>
+			<li>Formato AFND para m estados de n entradas: : { q0: {'1' : {q0, ... , qm}}, ... , qm: {'n' : {q0, ... , qm}} }</li>
+		</div>
+	</div>	
+
+<div class="logmod__wrapper">
 		<div class="logmod__heading">
+			<h1><strong>Transiciones</strong></h1>
 			</span>A continuacion, ingrese las transiciones de los <strong>Automatas</strong></span>
 			<form action = "#trans", method = "POST">
 				<p>
@@ -87,16 +95,10 @@
 			</form>
 			</a>
 		</div>
-	</div>
 </div>
 
 
-<div class="logmod__wrapper">
-	<div class="jumbotron">
-		<strong>IMPORTANTE:</strong>
-		<li>Formato AFD para m estados de n entradas: { q0: {'1' : q0, ... , 'n': qm}, ... , qm: {'1' : q0, ... , 'n': qm} }</li>
-		<li>Formato AFND para m estados de n entradas: : { q0: {'1' : {q0, ... , qm}}, ... , qm: {'n' : {q0, ... , qm}} }</li>
-	</div>
-</div>	
+
+
 						
 {% endblock %}
