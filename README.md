@@ -1,44 +1,31 @@
-# Aplicación web Flask - Automatas AFD-AFND
+# Aplicación web Flask - Autómatas AFD-AFND
 
 Esta es una aplicación web que muestra las tareas desarrolladas en el ramo de Grafos y lenguajes formales.
 
-## Creacion del entorno virtual en Windows 
-```bash
-python -m venv grafos-venv
-```
-```bash
-cd grafos-venv
-```
-```bash
-Scripts\activate
-```
-## Instalación de dependencias
-
-En el proyecto se distribuye un fichero (requirements.txt) con todas las dependencias. Para instalarlas
-basta con ejectuar:
+## Activación del entorno virtual en Windows 
+En la carpeta del proyecto ejecutar la siguiente linea para activar el entorno virtual
 
 ```bash
-pip install -r requirements.txt
+grafos-venv\Scripts\activate
 ```
 
 ## Ejecución con el servidor
 
-Y luego ejecute app.py
+Y luego ejecute app.py donde el proyecto se mostrara en el puerto 5000 -> http://localhost:5000/
 
 ```bash
-python app.py
+grafos-venv/Scripts/python app.py
 ```
 ## Algunas vistas del proyecto
-![Coloque la cantidad de estados, los simbolos y marque la casilla, si el automata es AFND](https://github.com/OEPO/Automatas-AFD-AFND/blob/master/static/gif/Captura_1.gif)
+![Coloque la cantidad de estados, los símbolos y marque la casilla, si el autómata es AFND](https://github.com/OEPO/Automatas-AFD-AFND/blob/master/static/gif/Captura_1.gif)
 
 ![Cuando termine de completar, haga click en ingresar, y vaya a la pestaña de transiciones](https://github.com/OEPO/Automatas-AFD-AFND/blob/master/static/gif/Captura_2.gif)
 
+![Complete las transiciones, marque el estado que sea final y haga click en agregar transición](https://github.com/OEPO/Automatas-AFD-AFND/blob/master/static/gif/Captura_3.gif)
+
 ## Integrantes
++ Daniela Galleguillos
++ Edgar Matus
++ Oscar Peñaloza
 + Jennifer Portiño
 + Diego Tapia
-+ Oscar Peñaloza
-+ Edgar Matus
-+ Daniela Galleguillos
-
-[ Readme en construcción ] 
-
