@@ -502,7 +502,7 @@ def index():
             
             print(bcolors.FAIL+error0+bcolors.ENDC+'\n')
     
-    return render_template('form.html', form = form, trans = trans, trans_message1 = trans_message1, trans_message2 = trans_message2, message0 = message0, message1 = message1, message2 = message2, color = color, alerta = alerta)
+    return render_template('form.html', form = form, trans = trans, trans_message1 = trans_message1, trans_message2 = trans_message2, message0 = message0, message1 = message1, message2 = message2, color = color, alerta = alerta, error1 = error1, error2 = error2)
 
 
 @app.route('/automatas', methods = ['GET', 'POST']) 

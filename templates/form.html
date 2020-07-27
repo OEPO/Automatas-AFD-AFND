@@ -51,7 +51,7 @@
 				<p>
 				{% if message1 %} 
 				<div class="alert alert-success" role="alert">
-						{{ message1 }} 
+					{{ message1 }} 
 				</div>
 				{% endif %} 
 				{% if error1 %}
@@ -70,16 +70,16 @@
 					<strong> {% if trans_message2 %} {{ trans_message2 }} {% endif %} </strong>
 				</p>
 				<p>
-					{% if message2 %} 
-					<div class="alert alert-success" role="alert">
-						{{ message2 }} 
-					</div>
-					{% endif %}
-					{% if error2 %}
-					<div class="alert alert-danger" role="alert">
-						{{ error2 }}
-					</div>
-					{% endif %}
+				{% if message2 %} 
+				<div class="alert alert-success" role="alert">
+					{{ message2 }} 
+				</div>
+				{% endif %}
+				{% if error2 %}
+				<div class="alert alert-danger" role="alert">
+					{{ error2 }}
+				</div>
+				{% endif %}
 				</p>
 				<p>
 					<input class="btn {{ color }}" type = "submit" name = "crear" value = "Crear Automatas"/>
