@@ -16,6 +16,30 @@ Y luego ejecute app.py donde el proyecto se mostrara en el puerto 5000 -> http:/
 ```bash
 grafos-venv/Scripts/python app.py
 ```
+## Or plan b, crear de 0 el entorno virtual en windows 
+En la carpeta del proyecto ejecutar la siguiente linea para crear el entorno virtual
+```bash
+python -m venv grafos1-venv
+```
+y luego activarlo 
+```bash
+grafos1-venv\Scripts\activate
+```
+## Instalación de dependencias
+
+En el proyecto se encuentra un fichero (requirements.txt) con todas las dependencias. Para instalarlas,
+basta con ejectuar:
+
+```bash
+pip install -r requirements.txt
+```
+
+## Ejecución con el servidor
+Y luego ejecute app.py donde el proyecto se mostrara en el puerto 5000 -> http://localhost:5000/
+
+```bash
+grafos1-venv/Scripts/python app.py
+```
 ## Algunas vistas del proyecto
 ![Coloque la cantidad de estados, los símbolos y marque la casilla, si el autómata es AFND](https://github.com/OEPO/Automatas-AFD-AFND/blob/master/static/gif/Captura_1.gif)
 
