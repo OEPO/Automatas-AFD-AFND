@@ -18,6 +18,28 @@ from forms import bcolors
 
 # https://github.com/caleb531/automata
 
+def validarSimbolos(simbolos) :
+
+  if simbolos == '' :
+
+    return False
+  
+  simbolos.replace(' ','')
+
+  aux = simbolos.split(',')
+  print('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$',simbolos.split(','))
+
+  for s in list(simbolos.split(',')) :
+
+    aux.remove(s)
+    
+    if len(s) > 1 or s in aux or s == '':
+
+      return False
+  
+  return True
+
+
 def crear(sets, tipo):
   if tipo == False :
     automata = DFA(states = sets[0],

@@ -1,7 +1,7 @@
 from config import Config
 from flask import Flask, render_template, request, redirect, url_for, send_file
-from forms import Form, Transiciones, inputStrings, bcolors #inputString
-from funciones import validar, crear, leer, AFNDtoAFD, AFDtoAFND, union, complemento, concatenacion, interseccion, imprimirAutomata, draw, validarInput, validarInter, simplificar
+from forms import Form, Transiciones, inputStrings, bcolors
+from funciones import validar, crear, leer, AFNDtoAFD, AFDtoAFND, union, complemento, concatenacion, interseccion, imprimirAutomata, draw, validarInput, validarInter, simplificar, validarSimbolos
 
 #Para graficar
 import os
@@ -32,10 +32,11 @@ def index():
     global trans_message1
     global trans_message2
     
+    alerta = 'alert-success'
+    
     message0 = '' 
     message1 = ''
     message2 = ''
-    error0 = ''
     error1 = ''
     error2 = ''
     
@@ -77,8 +78,8 @@ def index():
 
         print(f'{bcolors.OKGREEN}Usuario detectado.{bcolors.ENDC}'+'\n')
 
-    if request.method == 'POST' and form.cantidad1.data and form.cantidad2.data :
-        
+    if request.method == 'POST' and request.form.get('submit', True) == ' Ingresar ' and form.cantidad1.data and form.cantidad2.data and validarSimbolos(form.simbolos1.data) == True and validarSimbolos(form.simbolos2.data) == True :
+     
         switch = True
         
         global alfabeto1
@@ -197,6 +198,14 @@ def index():
         trans_message2 = str(transitions2)
         message0 = 'Automata1 '+tipo1+' de '+str(form.cantidad1.data)+' estados y Automata2 '+tipo2+' de '+str(form.cantidad2.data)+' estados listos para obtener transiciones.'
     
+    elif request.form.get('submit', True) == ' Ingresar ' :
+
+        alerta = 'alert-danger'
+            
+        message0 = 'La cantidad o simbolos de ambos automatas no son válidos.'
+        
+        print(bcolors.FAIL+message0+bcolors.ENDC+'\n')
+
     if request.method == 'POST' and switch == True :
 
         trans.origen1.choices = [(i,'q'+str(i-1)) for i in range(len(transitions1)+1)]   
@@ -210,7 +219,7 @@ def index():
         trans.origen2.choices[0] = (0,'--')
         trans.destino2.choices[0] = (0,'--')
         
-        if request.form.get('addtrans1', True) == 'Agregar transición' and request.form.get('crear', True) != 'Crear Automatas':
+        if request.form.get('addtrans1', True) == 'Agregar transición' and request.form.get('crear', True) != 'Crear Automatas' :
             
             if trans.input1.data != '--' and trans.origen1.data != '0' and trans.destino1.data != '0' :
             
@@ -412,7 +421,7 @@ def index():
         
         print(bcolors.WARNING+message1+bcolors.ENDC+'\n')
 
-    if request.method == 'POST' and request.form.get('reset2', True) == 'Reiniciar transiciones del Automata 2' : #
+    if request.method == 'POST' and request.form.get('reset2', True) == 'Reiniciar transiciones del Automata 2' :
 
         validacion2 = False
         creacion = False
@@ -493,7 +502,7 @@ def index():
             
             print(bcolors.FAIL+error0+bcolors.ENDC+'\n')
     
-    return render_template('form.html', form = form, trans = trans, trans_message1 = trans_message1, trans_message2 = trans_message2, message0 = message0, message1 = message1, message2 = message2, error0 = error0, error1 = error1, error2 = error2, color = color)
+    return render_template('form.html', form = form, trans = trans, trans_message1 = trans_message1, trans_message2 = trans_message2, message0 = message0, message1 = message1, message2 = message2, color = color, alerta = alerta)
 
 
 @app.route('/automatas', methods = ['GET', 'POST']) 

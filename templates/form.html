@@ -23,19 +23,13 @@
 						<span class="logmod__heading-subtitle">Ingrese la cantidad de estados y símbolos del <strong>Automata 2:</strong></span>
 						#Q2: {{ form.cantidad2(placeholder="Ej: 3", size=2) }} Ʃ2: {{ form.simbolos2(placeholder="Ej: 0,1") }}
 						¿Es AFND? {{ form.tipo2 }} (✓: sí)
-								
 					</p>
 					<p>
 						{% if message0 %} 
-						<div class="alert alert-success" role="alert">
+						<div class="alert {{ alerta }}" role="alert">
 							{{ message0 }}
 						</div>
-						{% endif %} 
-						{% if error0 %}
-						<div class="alert alert-danger" role="alert">
-							{{ error0 }}
-						</div>
-						{% endif %}		
+						{% endif %}
 					</p>
 					<p>
 						{{ form.submit(Class="btn blue-grey") }}
@@ -53,7 +47,7 @@
 					<span class="logmod__heading-subtitle">Ingrese las transiciones del <strong>Automata 1:</strong></span>
 					{{ trans.origen1.label }} {{ trans.origen1(Class="btn blue-grey") }} {{ trans.input1.label }} {{ trans.input1(Class="btn blue-grey") }} {{ trans.destino1.label }} {{ trans.destino1(Class="btn blue-grey") }} &rarr; ¿Es final? {{ trans.final1 }} 
 					<p></p>
-					{{ trans.addtrans1(Class="btn blue-grey") }} {{ trans.reset1(Class="btn btn-info")}}
+					{{ trans.addtrans1(Class="btn blue-grey") }} {{ trans.reset1(Class="btn btn-info") }}
 					</p>
 					<p class = "transiciones">
 						<strong> {% if trans_message1 %} {{ trans_message1 }} {% endif %} </strong>
@@ -74,7 +68,7 @@
 						<span class="logmod__heading-subtitle">Ingrese las transiciones del <strong>Automata 2:</strong></span>
 						{{ trans.origen2.label }} {{ trans.origen2(Class="btn blue-grey") }} {{ trans.input2.label }} {{ trans.input2(Class="btn blue-grey") }} {{ trans.destino2.label }} {{ trans.destino2(Class="btn blue-grey") }} &rarr; ¿Es final? {{ trans.final2 }}  
 						<p></p>
-						{{ trans.addtrans2(Class="btn blue-grey") }} {{trans.reset2(Class="btn btn-info")}}
+						{{ trans.addtrans2(Class="btn blue-grey") }} {{trans.reset2(Class="btn btn-info") }}
 					</p>
 					<p class = "transiciones">
 						<strong> {% if trans_message2 %} {{ trans_message2 }} {% endif %} </strong>
