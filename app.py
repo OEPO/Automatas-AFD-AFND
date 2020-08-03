@@ -569,7 +569,7 @@ def automatas() :
                 
                 print(bcolors.WARNING+message1+bcolors.ENDC+'\n')
 
-            varGlobales['automata2'] = simplificar(automata2)
+            varGlobales['automata1'] = simplificar(automata1)
         
         if request.form.get('AFNDtoAFD2', True) == 'AFND a su AFD mínimo' :
 
